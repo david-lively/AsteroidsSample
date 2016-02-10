@@ -43,7 +43,7 @@ public:
         return result;
     }
     
-    Matrix operator*(const Matrix& right)
+    Matrix operator*(const Matrix& right) const
     {
         return Multiply(*this, right);
     }

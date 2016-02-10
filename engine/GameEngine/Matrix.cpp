@@ -55,6 +55,17 @@ void Matrix::Multiply(const Matrix& left, const Matrix& right, Matrix& result)
     result.m33 = (((lm41 * rm14) + (lm42 * rm24)) + (lm43 * rm34)) + (lm44 * rm44);
 }
 
+Matrix Matrix::CreateTranslation(float x, float y, float z)
+{
+    auto m = Identity();
+
+    m.m30 = x;
+    m.m31 = y;
+    m.m32 = z;
+    
+    return m;
+}
+
 
 
 
