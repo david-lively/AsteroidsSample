@@ -23,13 +23,35 @@ public:
     /// translation
     float m30, m31, m32, m33;
     
+    const float* Data() const { return &m00; }
+    
+    
+    Matrix() :
+    m00(1), m01(0), m02(0),m03(0)
+    ,
+    m10(0), m11(1), m12(0),m13(0)
+    ,
+    m20(0), m21(0), m22(1),m23(0)
+    ,
+    m30(0), m31(0), m32(0),m33(1)
+    {
+        
+    }
+    
     
     static Matrix Identity();
+    
+    static Matrix CreateRotationZ(float theta);
+    static Matrix CreateRotationY(float theta);
     
     static Matrix CreateRotation(float x, float y, float z);
     static Matrix CreateTranslation(float x, float y, float z);
     static Matrix CreateScale(float uniformScale);
     static Matrix CreateScale(float x, float y, float z);
+    
+    static Matrix CreatePerspective();
+    
+    
 
     
     static void Multiply(const Matrix& left, const Matrix& right, Matrix& result);

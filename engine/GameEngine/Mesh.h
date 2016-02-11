@@ -15,6 +15,7 @@
 #include "GameObject.h"
 #include "Enums.h"
 #include "Material.h"
+#include "Matrix.h"
 
 
 class Mesh : public GameObject
@@ -108,7 +109,7 @@ public:
      generate an OpenGL error.
      */
     template<typename T>
-    void SetUniform(const std::string& name, T value)
+    void SetUniform(const std::string& name, const T& value)
     {
         auto location = gl::GetUniformLocation(Material->Program(), name.c_str());
         
@@ -129,6 +130,11 @@ public:
     inline void SetUniform(int location, int value)
     {
         gl::Uniform1i(location, value);
+    }
+    
+    inline void SetUniform(int location, const Matrix& value)
+    {
+        gl::UniformMatrix4fv(location, 1, false, value.Data());
     }
     
     

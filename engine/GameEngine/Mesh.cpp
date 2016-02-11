@@ -10,6 +10,8 @@
 #include "Common.h"
 #include "Log.h"
 
+#include "Matrix.h"
+
 #include <iostream>
 
 using namespace std;
@@ -61,6 +63,13 @@ void Mesh::SetUniforms(const GameTime& time)
 {
     SetUniform("GameTimeTotalSeconds",time.TotalSeconds());
     SetUniform("TimeScale", 0.5f);
+    
+    auto world = Matrix::CreateRotationY(time.TotalSeconds());
+    auto projection = Matrix::CreatePerspective();
+    
+    SetUniform("Projection",projection);
+    SetUniform("World",world);
+
 }
 
 

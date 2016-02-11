@@ -6,6 +6,10 @@
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
+#include <cmath>
+
+using namespace std;
+
 #include "Matrix.h"
 
 
@@ -64,6 +68,43 @@ Matrix Matrix::CreateTranslation(float x, float y, float z)
     m.m32 = z;
     
     return m;
+}
+
+Matrix Matrix::CreateRotationZ(float theta)
+{
+    auto m = Identity();
+    
+    auto sinTheta = sin(theta);
+    auto cosTheta = cos(theta);
+    
+    m.m00 = cosTheta; m.m01 = -sinTheta;
+    m.m10 = sinTheta; m.m11 = cosTheta;
+    
+    
+    return m;
+}
+
+Matrix Matrix::CreateRotationY(float theta)
+{
+    auto m = Identity();
+    
+    auto sinTheta = sin(theta);
+    auto cosTheta = cos(theta);
+    
+    m.m00 = cosTheta; m.m02 = -sinTheta;
+    m.m20 = sinTheta; m.m22 = cosTheta;
+    
+    return m;
+}
+
+Matrix Matrix::CreatePerspective()
+{
+    auto m = Identity();
+    
+    m.m33 = 0.9f;
+    
+    return m;
+    
 }
 
 

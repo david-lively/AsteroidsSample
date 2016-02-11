@@ -102,7 +102,7 @@ bool SimpleGame::LoadShaders(const string& baseFilename, string& vertexShaderSou
     Log::Info << "Loading vertex shader \"" << vertFilename << "\"\n";
     vertexShaderSource = Files::Read(vertFilename);
 
-    Log::Info << "Loading fragment shader \"" << vertFilename << "\"\n";
+    Log::Info << "Loading fragment shader \"" << fragFilename << "\"\n";
     fragmentShaderSource = Files::Read(fragFilename);
     
     return true;
