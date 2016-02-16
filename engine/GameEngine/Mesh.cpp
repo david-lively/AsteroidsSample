@@ -9,8 +9,10 @@
 #include "Mesh.h"
 #include "Common.h"
 #include "Log.h"
+#include "Game.h"
 
 #include "Matrix.h"
+#include "Vectors.h"
 
 #include <iostream>
 
@@ -64,11 +66,33 @@ void Mesh::SetUniforms(const GameTime& time)
     SetUniform("GameTimeTotalSeconds",time.TotalSeconds());
     SetUniform("TimeScale", 0.5f);
     
-    auto world = Matrix::CreateRotationY(time.TotalSeconds());
-    auto projection = Matrix::CreatePerspective();
     
+    
+    auto rotation = Matrix::CreateRotationY(time.TotalSeconds());
+    auto translation = Matrix::CreateTranslation(0, 0, -2.0f );
+    
+    int w;
+    int h;
+    
+    Game::Instance()->GetFramebufferSize(&w, &h);
+    
+    float aspect = w * 1.f / h;
+
+    auto projection = Matrix::CreatePerspective(45 * 3.14159 / 180, aspect , 1, 1000);
     SetUniform("Projection",projection);
+    
+
+    auto world = rotation * translation;
     SetUniform("World",world);
+    
+    SetUniform("Rotation",rotation);
+    
+
+    Vector2 windowSize;
+    windowSize.X = w;
+    windowSize.Y = h;
+    
+    SetUniform("WindowSize",windowSize);
 
 }
 

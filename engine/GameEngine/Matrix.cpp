@@ -97,15 +97,62 @@ Matrix Matrix::CreateRotationY(float theta)
     return m;
 }
 
-Matrix Matrix::CreatePerspective()
+/*
+ float x = (2.0f * zNear) / (right - left);
+ float y = (2.0f * zNear) / (top - bottom);
+ float a = (right + left) / (right - left);
+ float b = (top + bottom) / (top - bottom);
+ float c = -(zFar + zNear) / (zFar - zNear);
+ float d = -(2.0f * zFar * zNear) / (zFar - zNear);
+*/
+
+void Matrix::CreatePerspectiveOffCenter(
+                                        float left
+                                        , float right
+                                        , float bottom
+                                        , float top
+                                        , float zNear
+                                        , float zFar
+                                        , Matrix &result
+                                        )
 {
-    auto m = Identity();
     
-    m.m33 = 0.9f;
+    float x = (2.0f * zNear) / (right - left);
+    float y = (2.0f * zNear) / (top - bottom);
+    float a = (right + left) / (right - left);
+    float b = (top + bottom) / (top - bottom);
+    float c = -(zFar + zNear) / (zFar - zNear);
+    float d = -(2.0f * zFar * zNear) / (zFar - zNear);
+    
+    result.m00 = x;
+    result.m11 = y;
+    
+    result.m20 = a;
+    result.m21 = b;
+    result.m22 = c;
+    result.m23 = -1;
+    result.m32 = d;
+}
+
+Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
+{
+    Matrix m;
+    
+    auto halfHeight = zNear * tan(fov / 2.0f);
+    auto halfWidth = halfHeight * aspect;
+    auto depth = zFar - zNear;
+    
+    m.m00 = zNear / halfWidth;
+    m.m11 = zNear / halfHeight;
+    m.m22 = -(zFar + zNear) / depth;
+    m.m23 = -1;
+    m.m32 = -2 * zFar * zNear / depth;
+    m.m33 = 0;
     
     return m;
-    
 }
+
+
 
 
 

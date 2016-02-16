@@ -33,9 +33,11 @@ public:
 
 	void GetFramebufferSize(int* width, int* height);
     
-
+    static Game* Instance();
 private:
     GLFWwindow* m_window;
+    static Game* m_instance;
+    
     
     
     bool m_isInitialized;

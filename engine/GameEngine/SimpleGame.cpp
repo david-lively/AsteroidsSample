@@ -32,13 +32,21 @@ bool SimpleGame::OnCreateScene()
 
 	vector<float> coordinates =
 	{
-		-0.5f, +0.5f, 0.f
+		-0.5f, +0.5f, 0.5f
 		,
-		+0.5f, +0.5f, 0.f
+		+0.5f, +0.5f, 0.5f
 		,
-		+0.5f, -0.5f, 0.f
+		+0.5f, -0.5f, 0.5f
 		,
-		-0.5f, -0.5f, 0.f
+		-0.5f, -0.5f, 0.5f
+        ,
+        -0.5f, +0.5f, -0.5f
+        ,
+        +0.5f, +0.5f, -0.5f
+        ,
+        +0.5f, -0.5f, -0.5f
+        ,
+        -0.5f, -0.5f, -0.5f
 	};
 
 	vector<GLushort> indices =
@@ -46,6 +54,10 @@ bool SimpleGame::OnCreateScene()
 		0, 1, 2
 		,
 		2, 3, 0
+        ,
+        4, 6, 5
+        ,
+        6, 4, 7
 	};
 
 	cube.Initialize(coordinates, indices);

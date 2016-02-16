@@ -16,6 +16,7 @@
 #include "Enums.h"
 #include "Material.h"
 #include "Matrix.h"
+#include "Vectors.h"
 
 
 class Mesh : public GameObject
@@ -127,6 +128,11 @@ public:
         gl::Uniform1f(location, value);
     }
     
+    inline void SetUniform(int location, const Vector2& value)
+    {
+        gl::Uniform2f(location, value.X, value.Y);
+    }
+
     inline void SetUniform(int location, int value)
     {
         gl::Uniform1i(location, value);

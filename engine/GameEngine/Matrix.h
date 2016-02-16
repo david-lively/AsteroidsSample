@@ -26,6 +26,7 @@ public:
     const float* Data() const { return &m00; }
     
     
+    /// initialize to identity matrix
     Matrix() :
     m00(1), m01(0), m02(0),m03(0)
     ,
@@ -49,8 +50,17 @@ public:
     static Matrix CreateScale(float uniformScale);
     static Matrix CreateScale(float x, float y, float z);
     
-    static Matrix CreatePerspective();
+    static void CreatePerspectiveOffCenter(
+                                            float left
+                                            , float right
+                                            , float bottom
+                                            , float top
+                                            , float zNear
+                                            , float zFar
+                                            , Matrix &result
+                                           );
     
+    static Matrix CreatePerspective(float fov, float aspect, float zNear, float zFar);
     
 
     

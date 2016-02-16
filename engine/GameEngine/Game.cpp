@@ -11,8 +11,23 @@
 
 using namespace std;
 
+Game* Game::m_instance = nullptr;
+
+Game* Game::Instance()
+{
+    return m_instance;
+    
+}
+
+
 Game::Game() : m_window(nullptr), m_isInitialized(false)
 {
+    if (nullptr != m_instance)
+    {
+        throw;
+    }
+        
+    m_instance =this;
 }
 
 
@@ -80,7 +95,17 @@ bool Game::OnInitialize()
         return false;
     
     gl::ClearColor(0,0,0.2f,1);
+
+    /// turn on face culling, so we don't draw faces that are pointed away from us.
+    gl::Enable(gl::CULL_FACE);
+    // enable depth testing to make sure we don't draw far things on top of near things
+    gl::Enable(gl::DEPTH_TEST);
+    // tell GL to cull faces that point away from the camera (have their backs to us)
+    gl::CullFace(gl::BACK);
+    // tell GL that front-facing polygons have their vertices connected in clockwise order
+    gl::FrontFace(gl::CW);
     
+
     m_isInitialized = true;
 
     return m_isInitialized;
@@ -150,8 +175,6 @@ void Game::GetFramebufferSize(int* width, int* height)
 	}
 
 	glfwGetFramebufferSize(m_window, width, height);
-
-
 }
 
 
