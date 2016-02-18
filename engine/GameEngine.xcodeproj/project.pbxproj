@@ -22,6 +22,8 @@
 		98BD50D21C6BAA0E004A88C1 /* Vectors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */; };
 		98BD50D51C6BAB0A004A88C1 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */; };
 		98BD50D61C6BAB0A004A88C1 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */; };
+		98D191F21C74FF1C005CEA4A /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D191F01C74FF1C005CEA4A /* Transform.cpp */; };
+		98D191F31C74FF1C005CEA4A /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D191F01C74FF1C005CEA4A /* Transform.cpp */; };
 		98D48EEA1C624E0F00C3A36B /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D48EE81C624E0F00C3A36B /* Resource.cpp */; };
 		98D48EED1C6266E300C3A36B /* SimpleGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D48EEB1C6266E300C3A36B /* SimpleGame.cpp */; };
 		98D48EF01C62716800C3A36B /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D48EEE1C62716800C3A36B /* Material.cpp */; };
@@ -78,7 +80,7 @@
 
 /* Begin PBXFileReference section */
 		982B521D1C726B40007B8292 /* GeometryProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryProvider.cpp; sourceTree = "<group>"; };
-		982B521E1C726B40007B8292 /* GeometryProvider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeometryProvider.hpp; sourceTree = "<group>"; };
+		982B521E1C726B40007B8292 /* GeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryProvider.h; sourceTree = "<group>"; };
 		9831A2BB1C56A0A4005F2989 /* GameEngine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameEngine; sourceTree = BUILT_PRODUCTS_DIR; };
 		9831A2BE1C56A0A4005F2989 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9831A2C51C56A11A005F2989 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -115,6 +117,8 @@
 		98BD50D01C6BAA0E004A88C1 /* Vectors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vectors.h; sourceTree = "<group>"; };
 		98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		98BD50D41C6BAB0A004A88C1 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
+		98D191F01C74FF1C005CEA4A /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		98D191F11C74FF1C005CEA4A /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		98D48EE81C624E0F00C3A36B /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
 		98D48EE91C624E0F00C3A36B /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
 		98D48EEB1C6266E300C3A36B /* SimpleGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleGame.cpp; sourceTree = "<group>"; };
@@ -301,7 +305,9 @@
 				98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */,
 				98BD50D41C6BAB0A004A88C1 /* Matrix.h */,
 				982B521D1C726B40007B8292 /* GeometryProvider.cpp */,
-				982B521E1C726B40007B8292 /* GeometryProvider.hpp */,
+				982B521E1C726B40007B8292 /* GeometryProvider.h */,
+				98D191F01C74FF1C005CEA4A /* Transform.cpp */,
+				98D191F11C74FF1C005CEA4A /* Transform.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 				98F03C331C5FCC77008EEF9B /* glError.cpp in Sources */,
 				9831A2F31C56A221005F2989 /* gl_core_4_3.cpp in Sources */,
 				98BD50D51C6BAB0A004A88C1 /* Matrix.cpp in Sources */,
+				98D191F21C74FF1C005CEA4A /* Transform.cpp in Sources */,
 				98F03C361C5FDD5D008EEF9B /* Files.cpp in Sources */,
 				9831A2ED1C56A221005F2989 /* etc1_utils.c in Sources */,
 				9831A2EF1C56A221005F2989 /* image_helper.c in Sources */,
@@ -414,6 +421,7 @@
 				A6BE86651C6B96F900B62F67 /* glError.cpp in Sources */,
 				A6BE86661C6B96F900B62F67 /* gl_core_4_3.cpp in Sources */,
 				98BD50D61C6BAB0A004A88C1 /* Matrix.cpp in Sources */,
+				98D191F31C74FF1C005CEA4A /* Transform.cpp in Sources */,
 				A6BE86671C6B96F900B62F67 /* Files.cpp in Sources */,
 				A6BE86681C6B96F900B62F67 /* etc1_utils.c in Sources */,
 				A6BE86691C6B96F900B62F67 /* image_helper.c in Sources */,

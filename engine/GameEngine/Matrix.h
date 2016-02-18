@@ -11,6 +11,9 @@
 
 #include "Vectors.h"
 
+
+#include <memory>
+
 class Matrix
 {
 public:
@@ -37,6 +40,12 @@ public:
     m30(0), m31(0), m32(0),m33(1)
     {
         
+    }
+    
+    
+    void ToArray(float* array)
+    {
+        memcpy(array, &m00, sizeof(float) * 16);
     }
     
     

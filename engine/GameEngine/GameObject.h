@@ -14,6 +14,7 @@
 #include <map>
 
 #include "Common.h"
+#include "Transform.h"
 
 class GameObject
 {
@@ -24,9 +25,10 @@ public:
     GameObject() : GameObject("unnamed-gameobject")
     {
         
+        
     }
     
-    GameObject(const std::string& name) : Name(name)
+    GameObject(const std::string& name) : Name(name), m_parent(nullptr)
     {
         Id = ++m_nextId;
     }
@@ -49,12 +51,14 @@ public:
     virtual bool OnInitialize() { return true; }
     
     void Dispose();
+
     
     /// create a new game object of the given type and add it as a child of this object.
     template<typename T>
     T& Create(const std::string& name)
     {
         auto* object = new T();
+        object->m_parent = this;
         object->Name = name;
         
         m_children.push_back(object);
@@ -72,6 +76,7 @@ public:
         {
             T* ptr = new T();
             ptr->Name = name;
+            ptr->m_parent = this;
             
             m_children.push_back(ptr);
             
@@ -98,6 +103,11 @@ public:
         return nullptr;
     }
     
+    GameObject& Parent() const
+    {
+        return *m_parent;
+    }
+    
 private:
     std::vector<GameObject*> m_children;
 
@@ -111,6 +121,7 @@ private:
     void DoUpdate(const GameTime& time);
     
     static int m_nextId;
+    GameObject* m_parent;
     
     
 protected:

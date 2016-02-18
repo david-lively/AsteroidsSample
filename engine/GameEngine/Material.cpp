@@ -7,13 +7,40 @@
 //
 
 #include "Material.h"
+#include "Matrix.h"
 #include "Enums.h"
+#include "Game.h"
 
 #include <string>
+#include <cmath>
+
 using namespace std;
 
+void Material::SetUniforms(const GameTime& time)
+{
+    
+	SetUniform("GameTimeTotalSeconds", time.TotalSeconds());
+	SetUniform("TimeScale", 0.5f);
 
+    auto framebufferSize = Game::GetFramebufferSize();
+    
+    auto aspect = framebufferSize.X / framebufferSize.Y;
 
+    auto projection = Matrix::CreatePerspective(60 * 3.14159f / 180, aspect, 1, 1000);
+
+    SetUniform("Projection",projection);
+    
+    check_gl_error();
+
+    auto rotation = Matrix::CreateRotationZ(time.TotalSeconds()) * Matrix::CreateRotationY(time.TotalSeconds());
+
+    auto translation = Matrix::CreateTranslation(0, 0, -2);
+    
+    auto world = rotation * translation;
+    
+    SetUniform("World",world);
+    
+}
 
 
 bool Material::Build(string vertexShaderSource, string fragmentShaderSource)

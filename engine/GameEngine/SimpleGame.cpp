@@ -15,6 +15,7 @@ using namespace std;
 #include "Mesh.h"
 #include "Material.h"
 #include "Files.h"
+#include "GeometryProvider.h"
 
 
 
@@ -29,38 +30,13 @@ bool SimpleGame::OnCreateScene()
 	check_gl_error();
 
 	/// create a screen-aligned quad
-
-	vector<float> coordinates =
-	{
-		-0.5f, +0.5f, 0.5f
-		,
-		+0.5f, +0.5f, 0.5f
-		,
-		+0.5f, -0.5f, 0.5f
-		,
-		-0.5f, -0.5f, 0.5f
-        ,
-        -0.5f, +0.5f, -0.5f
-        ,
-        +0.5f, +0.5f, -0.5f
-        ,
-        +0.5f, -0.5f, -0.5f
-        ,
-        -0.5f, -0.5f, -0.5f
-	};
-
-	vector<GLushort> indices =
-	{
-		0, 1, 2
-		,
-		2, 3, 0
-        ,
-        4, 6, 5
-        ,
-        6, 4, 7
-	};
-
-	cube.Initialize(coordinates, indices);
+    
+    vector<Vector3> vertices;
+    vector<GLushort> indices;
+    
+    GeometryProvider::Cube(vertices, indices);
+    
+	cube.Initialize(vertices, indices);
     
     
     Log::Info << "Working directory is " << Files::GetCurrentDirectory() << endl;

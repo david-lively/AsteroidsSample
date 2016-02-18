@@ -163,18 +163,28 @@ void Game::Shutdown()
     
 }
 
+Vector2 Game::GetFramebufferSize()
+{
+    int w,h;
+    
+    GetFramebufferSize(&w, &h);
+    
+    return Vector2(w,h);
+}
+
+
 /// <summary>
 /// returns the size of the framebuffer (the thing we're drawing to)
 /// </summary>
 void Game::GetFramebufferSize(int* width, int* height)
 {
-	if (!m_window)
+	if (!m_instance || !m_instance->m_window)
 	{
 		Log::Error << "No GLFW window is available. Create a window before calling Game::GetFrameBufferSize\n";
 		DEBUG_BREAK;
 	}
-
-	glfwGetFramebufferSize(m_window, width, height);
+    
+	glfwGetFramebufferSize(m_instance->m_window, width, height);
 }
 
 

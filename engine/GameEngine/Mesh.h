@@ -15,8 +15,6 @@
 #include "GameObject.h"
 #include "Enums.h"
 #include "Material.h"
-#include "Matrix.h"
-#include "Vectors.h"
 
 
 class Mesh : public GameObject
@@ -99,51 +97,7 @@ public:
     }
     
     void OnRender(const GameTime& time) override;
-    
-    virtual void SetUniforms(const GameTime& time);
-    
-    /*
-     set a uniform shader value, if it exists
-     
-     We use this method to check if a uniform is available before actually trying to set its value.
-     In some implementations, calling a gl::Uniform*() function with an invalid location parameter will
-     generate an OpenGL error.
-     */
-    template<typename T>
-    void SetUniform(const std::string& name, const T& value)
-    {
-        auto location = gl::GetUniformLocation(Material->Program(), name.c_str());
-        
-        if (location >= 0)
-            SetUniform(location, value);
-    }
-    
-    /*
-     set a FLOAT uniform shader value. Do not call this directly. Instead, use the templated
-     SetUniform<T> method, which ensures that a uniform exists before setting a value.
-     */
-    
-    inline void SetUniform(int location, float value)
-    {
-        gl::Uniform1f(location, value);
-    }
-    
-    inline void SetUniform(int location, const Vector2& value)
-    {
-        gl::Uniform2f(location, value.X, value.Y);
-    }
 
-    inline void SetUniform(int location, int value)
-    {
-        gl::Uniform1i(location, value);
-    }
-    
-    inline void SetUniform(int location, const Matrix& value)
-    {
-        gl::UniformMatrix4fv(location, 1, false, value.Data());
-    }
-    
-    
 private:
     size_t m_vertexCount = 0;;
     GLuint m_vertexBuffer = 0;

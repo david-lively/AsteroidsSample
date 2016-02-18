@@ -13,6 +13,7 @@
 
 #include "Common.h"
 #include "GameObject.h"
+#include "Vectors.h"
 
 class Game : public GameObject
 {
@@ -31,7 +32,8 @@ public:
         return true;
     }
 
-	void GetFramebufferSize(int* width, int* height);
+	static void GetFramebufferSize(int* width, int* height);
+    static Vector2 GetFramebufferSize();
     
     static Game* Instance();
 private:
