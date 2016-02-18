@@ -122,18 +122,38 @@ bool GameObject::Initialize()
 
 void GameObject::Dispose()
 {
-    for(auto it = begin(m_children); it != end(m_children); ++it)
-    {
-        (*it)->Dispose();
-        delete *it;
-        *it = nullptr;
-    }
-
-    m_children.clear();
+    DisposeChildren();
+    DisposeComponents();
     
     OnDispose();
     
 }
+
+void GameObject::DisposeChildren()
+{
+    for(auto it = begin(m_children); it != end(m_children); ++it)
+    {
+        delete *it;
+        *it = nullptr;
+    }
+    
+    m_children.clear();
+}
+
+void GameObject::DisposeComponents()
+{
+    for(auto it = begin(m_components); it != end(m_components); ++it)
+    {
+        if (nullptr != *it)
+        {
+            delete *it;
+            *it = nullptr;
+        }
+    }
+    
+    m_components.clear();
+}
+
 
 
 

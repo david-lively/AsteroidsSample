@@ -12,9 +12,9 @@
 #include "Common.h"
 #include "Vectors.h"
 #include "Matrix.h"
-#include "GameObject.h"
+#include "Component.h"
 
-class Transform
+class Transform : public Component
 {
 public:
     Vector3 Translation;
@@ -26,6 +26,7 @@ public:
         Scale = Vector3(1,1,1);
         
     }
+    
 private:
 };
 

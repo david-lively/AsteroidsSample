@@ -14,6 +14,7 @@
 #include <map>
 
 #include "Common.h"
+#include "Component.h"
 #include "Transform.h"
 
 class GameObject
@@ -31,6 +32,11 @@ public:
     GameObject(const std::string& name) : Name(name), m_parent(nullptr)
     {
         Id = ++m_nextId;
+    }
+    
+    ~GameObject()
+    {
+        Dispose();
     }
     
     
@@ -109,7 +115,11 @@ public:
     }
     
 private:
+    static int m_nextId;
+    GameObject* m_parent;
+
     std::vector<GameObject*> m_children;
+    std::vector<Component*> m_components;
 
     void DoPreRender(const GameTime& time);
     void DoPostRender(const GameTime& time);
@@ -120,8 +130,9 @@ private:
     void DoRender(const GameTime& time);
     void DoUpdate(const GameTime& time);
     
-    static int m_nextId;
-    GameObject* m_parent;
+    void DisposeChildren();
+    void DisposeComponents();
+    
     
     
 protected:

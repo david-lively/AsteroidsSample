@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9821B3EE1C7605B300DAA2E8 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9821B3EC1C7605B300DAA2E8 /* Component.cpp */; };
+		9821B3EF1C7605B300DAA2E8 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9821B3EC1C7605B300DAA2E8 /* Component.cpp */; };
 		982B521F1C726B40007B8292 /* GeometryProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 982B521D1C726B40007B8292 /* GeometryProvider.cpp */; };
 		982B52201C726B40007B8292 /* GeometryProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 982B521D1C726B40007B8292 /* GeometryProvider.cpp */; };
 		9831A2BF1C56A0A4005F2989 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9831A2BE1C56A0A4005F2989 /* main.cpp */; };
@@ -79,6 +81,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9821B3EC1C7605B300DAA2E8 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
+		9821B3ED1C7605B300DAA2E8 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		982B521D1C726B40007B8292 /* GeometryProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryProvider.cpp; sourceTree = "<group>"; };
 		982B521E1C726B40007B8292 /* GeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryProvider.h; sourceTree = "<group>"; };
 		9831A2BB1C56A0A4005F2989 /* GameEngine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameEngine; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -280,6 +284,8 @@
 			isa = PBXGroup;
 			children = (
 				98F03C301C5FCC3D008EEF9B /* Common.h */,
+				9821B3EC1C7605B300DAA2E8 /* Component.cpp */,
+				9821B3ED1C7605B300DAA2E8 /* Component.h */,
 				98F03C411C5FDEBB008EEF9B /* Enums.h */,
 				98F03C341C5FDD5D008EEF9B /* Files.cpp */,
 				98F03C351C5FDD5D008EEF9B /* Files.h */,
@@ -289,25 +295,25 @@
 				98F03C251C5FCAF3008EEF9B /* GameObject.h */,
 				98F03C2A1C5FCBB4008EEF9B /* GameTime.cpp */,
 				98F03C2B1C5FCBB4008EEF9B /* GameTime.h */,
+				982B521D1C726B40007B8292 /* GeometryProvider.cpp */,
+				982B521E1C726B40007B8292 /* GeometryProvider.h */,
 				98F03C311C5FCC77008EEF9B /* glError.cpp */,
 				98F03C321C5FCC77008EEF9B /* glError.h */,
 				98F03C2D1C5FCBF6008EEF9B /* Log.cpp */,
 				98F03C2E1C5FCBF6008EEF9B /* Log.h */,
 				9831A2BE1C56A0A4005F2989 /* main.cpp */,
+				98D48EEE1C62716800C3A36B /* Material.cpp */,
+				98D48EEF1C62716800C3A36B /* Material.h */,
+				98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */,
+				98BD50D41C6BAB0A004A88C1 /* Matrix.h */,
 				98F4ADB01C60087700D98467 /* Mesh.cpp */,
 				98F4ADB11C60087700D98467 /* Mesh.h */,
 				98D48EE81C624E0F00C3A36B /* Resource.cpp */,
 				98D48EE91C624E0F00C3A36B /* Resource.h */,
-				98D48EEE1C62716800C3A36B /* Material.cpp */,
-				98D48EEF1C62716800C3A36B /* Material.h */,
-				98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */,
-				98BD50D01C6BAA0E004A88C1 /* Vectors.h */,
-				98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */,
-				98BD50D41C6BAB0A004A88C1 /* Matrix.h */,
-				982B521D1C726B40007B8292 /* GeometryProvider.cpp */,
-				982B521E1C726B40007B8292 /* GeometryProvider.h */,
 				98D191F01C74FF1C005CEA4A /* Transform.cpp */,
 				98D191F11C74FF1C005CEA4A /* Transform.h */,
+				98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */,
+				98BD50D01C6BAA0E004A88C1 /* Vectors.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -389,6 +395,7 @@
 				982B521F1C726B40007B8292 /* GeometryProvider.cpp in Sources */,
 				98F03C231C5FA3A2008EEF9B /* Game.cpp in Sources */,
 				98D48EED1C6266E300C3A36B /* SimpleGame.cpp in Sources */,
+				9821B3EE1C7605B300DAA2E8 /* Component.cpp in Sources */,
 				98F03C331C5FCC77008EEF9B /* glError.cpp in Sources */,
 				9831A2F31C56A221005F2989 /* gl_core_4_3.cpp in Sources */,
 				98BD50D51C6BAB0A004A88C1 /* Matrix.cpp in Sources */,
@@ -418,6 +425,7 @@
 				982B52201C726B40007B8292 /* GeometryProvider.cpp in Sources */,
 				A6BE86631C6B96F900B62F67 /* Game.cpp in Sources */,
 				A6BE86641C6B96F900B62F67 /* SimpleGame.cpp in Sources */,
+				9821B3EF1C7605B300DAA2E8 /* Component.cpp in Sources */,
 				A6BE86651C6B96F900B62F67 /* glError.cpp in Sources */,
 				A6BE86661C6B96F900B62F67 /* gl_core_4_3.cpp in Sources */,
 				98BD50D61C6BAB0A004A88C1 /* Matrix.cpp in Sources */,
