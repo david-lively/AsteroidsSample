@@ -18,9 +18,6 @@ using namespace std;
 #include "GeometryProvider.h"
 
 
-
-
-
 bool SimpleGame::OnCreateScene()
 {
 	check_gl_error();
