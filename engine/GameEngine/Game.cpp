@@ -9,25 +9,20 @@
 
 #include <iostream>
 
-using namespace std;
 
 Game* Game::m_instance = nullptr;
-
-Game* Game::Instance()
-{
-    return m_instance;
-    
-}
-
+Camera* Game::m_camera = nullptr;
+using namespace std;
 
 Game::Game() : m_window(nullptr), m_isInitialized(false)
 {
     if (nullptr != m_instance)
     {
+        Log::Error << "Only one instance of Game is allowed\n";
         throw;
     }
-        
-    m_instance =this;
+    
+    m_instance = this;
 }
 
 
@@ -62,9 +57,11 @@ bool Game::OnInitialize()
     
     /// enable multisampling on a 4x4 grid (for full-screen anti-aliasing)
     glfwWindowHint(GLFW_SAMPLES, 4);
+
+	int windowScale = 2;
     
     /* Create a windowed mode window and its OpenGL context */
-    m_window = glfwCreateWindow(1280, 720, "Hello World", NULL, NULL);
+    m_window = glfwCreateWindow(1280 * windowScale, 720 * windowScale, "Hello World", NULL, NULL);
     
     if (!m_window)
     {
@@ -95,17 +92,9 @@ bool Game::OnInitialize()
         return false;
     
     gl::ClearColor(0,0,0.2f,1);
-
-    /// turn on face culling, so we don't draw faces that are pointed away from us.
-    gl::Enable(gl::CULL_FACE);
-    // enable depth testing to make sure we don't draw far things on top of near things
-    gl::Enable(gl::DEPTH_TEST);
-    // tell GL to cull faces that point away from the camera (have their backs to us)
-    gl::CullFace(gl::BACK);
-    // tell GL that front-facing polygons have their vertices connected in clockwise order
-    gl::FrontFace(gl::CW);
     
-
+    m_camera = &Create<class Camera>("primary.camera");
+    
     m_isInitialized = true;
 
     return m_isInitialized;
@@ -160,31 +149,22 @@ void Game::Shutdown()
         m_window = nullptr;
     }
     
-    
 }
-
-Vector2 Game::GetFramebufferSize()
-{
-    int w,h;
-    
-    GetFramebufferSize(&w, &h);
-    
-    return Vector2(w,h);
-}
-
 
 /// <summary>
 /// returns the size of the framebuffer (the thing we're drawing to)
 /// </summary>
 void Game::GetFramebufferSize(int* width, int* height)
 {
-	if (!m_instance || !m_instance->m_window)
+	if (!m_instance->m_window)
 	{
 		Log::Error << "No GLFW window is available. Create a window before calling Game::GetFrameBufferSize\n";
 		DEBUG_BREAK;
 	}
-    
+
 	glfwGetFramebufferSize(m_instance->m_window, width, height);
+
+
 }
 
 

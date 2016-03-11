@@ -36,6 +36,42 @@ public:
 
     bool OnInitialize() override;
     
+    /// initialize a non-indexed mesh (no index buffer, vertex buffer only)
+    template<typename TVertexCollection>
+    void Initialize(const TVertexCollection& vertices)
+    {
+        check_gl_error();
+        
+        gl::GenVertexArrays(1, &m_vao);
+        gl::BindVertexArray(m_vao);
+
+        check_gl_error();
+        
+        /// vertex buffer
+        gl::GenBuffers(1, &m_vertexBuffer);
+        
+        gl::BindBuffer((GLenum)BufferTarget::ArrayBuffer, m_vertexBuffer);
+
+        m_vertexCount = vertices.size();
+        size_t vertexBufferSize = m_vertexCount * sizeof(vertices[0]);
+        
+        gl::BufferData((GLenum)BufferTarget::ArrayBuffer, vertexBufferSize, vertices.data(), (GLenum)BufferUsageHint::StaticDraw);
+        
+        /// get the attribute location of Position (vertex) from the compiled shader
+        auto location = gl::GetAttribLocation(Material->Program(), "Pos");
+        
+        /// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
+        gl::EnableVertexAttribArray(location);
+        
+        /// Describe the vertex format to GL. This is a 3-component struct with float members (ie, vec3 in GLSL)
+        gl::VertexAttribPointer(location, 3, gl::FLOAT, false, 0, nullptr);
+        
+        check_gl_error();
+        
+        gl::BindVertexArray(0);
+        
+    }
+    
     template<typename TVertexCollection, typename TIndexCollection>
     void Initialize(TVertexCollection& vertices,  TIndexCollection& indices)
     {
@@ -69,9 +105,6 @@ public:
                        , (GLenum)BufferUsageHint::StaticDraw
                        );
         
-        /// unbind the vertex buffer
-        gl::BindBuffer((GLenum)BufferTarget::ArrayBuffer, 0);
-        
         
         /// now, generate and populate the index buffer
         gl::GenBuffers(1, &m_indexBuffer);
@@ -89,10 +122,20 @@ public:
                        , (GLenum)BufferUsageHint::StaticDraw
                        );
         
-        gl::BindBuffer((GLenum)BufferTarget::ElementArrayBuffer, 0);
+        /// get the attribute location of Position (vertex) from the compiled shader
+        auto location = gl::GetAttribLocation(Material->Program(), "Pos");
+        
+        /// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
+        gl::EnableVertexAttribArray(location);
+        
+        /// Describe the vertex format to GL. This is a 3-component struct with float members (ie, vec3 in GLSL)
+        gl::VertexAttribPointer(location, 3, gl::FLOAT, false, 0, nullptr);
+        
 
         /// make sure there aren't any pending OpenGL errors
         check_gl_error();
+        
+        gl::BindVertexArray(0);
         
     }
     

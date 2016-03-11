@@ -13,13 +13,20 @@
 
 #include "Common.h"
 #include "GameObject.h"
-#include "Vectors.h"
+#include "Camera.h"
 
 class Game : public GameObject
 {
 public:
     Game();
     GameTime Time;
+    static Camera& Camera()
+    {
+        if (nullptr == m_camera)
+            m_camera = &m_instance->Create<class Camera>("primary.camera");
+        
+        return *m_camera;
+    }
     
     
     bool Run();
@@ -33,13 +40,15 @@ public:
     }
 
 	static void GetFramebufferSize(int* width, int* height);
-    static Vector2 GetFramebufferSize();
     
-    static Game* Instance();
+    static Game& Instance() { return *m_instance; }
+    
+    GLFWwindow* Window() const { return m_window; }
+
 private:
     GLFWwindow* m_window;
     static Game* m_instance;
-    
+    static class Camera* m_camera;
     
     
     bool m_isInitialized;

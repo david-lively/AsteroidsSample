@@ -6,11 +6,12 @@
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
+#include "Matrix.h"
+
 #include <cmath>
+#include <vector>
 
 using namespace std;
-
-#include "Matrix.h"
 
 
 Matrix Matrix::Identity()
@@ -23,6 +24,128 @@ Matrix Matrix::Identity()
     m.m33 = 1;
     
     return m;
+}
+
+void Matrix::CreateRotationX(Matrix& m, float radians)
+{
+    float cosTheta = cos(radians);
+    float sinTheta = sin(radians);
+    
+    m.m11 = cosTheta;
+    m.m12 = -sinTheta;
+    m.m21 = sinTheta;
+    m.m22 = cosTheta;
+    
+}
+
+void Matrix::CreateRotationY(Matrix& m, float radians)
+{
+    float cosTheta = cos(radians);
+    float sinTheta = sin(radians);
+    
+    m.m00 = cosTheta;
+    m.m02 = -sinTheta;
+    m.m20 = sinTheta;;
+    m.m22 = cosTheta;
+    
+}
+
+void Matrix::CreateRotationZ(Matrix& m, float radians)
+{
+    float cosTheta = cos(radians);
+    float sinTheta = sin(radians);
+    
+    m.m00 = cosTheta;
+    m.m01 = -sinTheta;
+    m.m10 = sinTheta;
+    m.m11 = cosTheta;
+    
+}
+
+
+Matrix Matrix::CreateRotationX(float radians)
+{
+    Matrix m;
+
+    CreateRotationX(m,radians);
+    
+    return m;
+    
+}
+
+Matrix Matrix::CreateRotationY(float radians)
+{
+    Matrix m;
+    
+    CreateRotationY(m,radians);
+    
+    return m;
+    
+}
+
+Matrix Matrix::CreateRotationZ(float radians)
+{
+    Matrix m;
+    
+    CreateRotationZ(m,radians);
+    
+    return m;
+    
+}
+
+
+Matrix Matrix::CreateRotation(float x, float y, float z)
+{
+    auto m = CreateRotationX(x) * CreateRotationY(y) * CreateRotationZ(z);
+    
+    return m;
+}
+
+Matrix Matrix::CreateRotation(const Vector3& rotate)
+{
+    return CreateRotation(rotate.X, rotate.Y, rotate.Z);
+    
+}
+
+
+Matrix Matrix::CreateTranslation(float x, float y, float z)
+{
+    Matrix m;
+    
+    m.m30 = x;
+    m.m31 = y;
+    m.m32 = z;
+    
+    return m;
+}
+
+Matrix Matrix::CreateTranslation(const Vector3& position)
+{
+    return CreateTranslation(position.X, position.Y, position.Z);
+}
+
+
+Matrix Matrix::CreateScale(float x, float y, float z)
+{
+    Matrix m;
+    
+    m.m00 = x;
+    m.m11 = y;
+    m.m22 = z;
+    
+    return m;
+}
+
+
+Matrix Matrix::CreateScale(float uniformScale)
+{
+    return CreateScale(uniformScale, uniformScale, uniformScale);
+}
+
+Matrix Matrix::CreateScale(const Vector3& scale)
+{
+    return CreateScale(scale.X, scale.Y, scale.Z);
+    
 }
 
 
@@ -59,97 +182,97 @@ void Matrix::Multiply(const Matrix& left, const Matrix& right, Matrix& result)
     result.m33 = (((lm41 * rm14) + (lm42 * rm24)) + (lm43 * rm34)) + (lm44 * rm44);
 }
 
-Matrix Matrix::CreateTranslation(float x, float y, float z)
+float cot(float radians)
 {
-    auto m = Identity();
-
-    m.m30 = x;
-    m.m31 = y;
-    m.m32 = z;
-    
-    return m;
-}
-
-Matrix Matrix::CreateRotationZ(float theta)
-{
-    auto m = Identity();
-    
-    auto sinTheta = sin(theta);
-    auto cosTheta = cos(theta);
-    
-    m.m00 = cosTheta; m.m01 = -sinTheta;
-    m.m10 = sinTheta; m.m11 = cosTheta;
-    
-    
-    return m;
-}
-
-Matrix Matrix::CreateRotationY(float theta)
-{
-    auto m = Identity();
-    
-    auto sinTheta = sin(theta);
-    auto cosTheta = cos(theta);
-    
-    m.m00 = cosTheta; m.m02 = -sinTheta;
-    m.m20 = sinTheta; m.m22 = cosTheta;
-    
-    return m;
-}
-
-/*
- float x = (2.0f * zNear) / (right - left);
- float y = (2.0f * zNear) / (top - bottom);
- float a = (right + left) / (right - left);
- float b = (top + bottom) / (top - bottom);
- float c = -(zFar + zNear) / (zFar - zNear);
- float d = -(2.0f * zFar * zNear) / (zFar - zNear);
-*/
-
-void Matrix::CreatePerspectiveOffCenter(
-                                        float left
-                                        , float right
-                                        , float bottom
-                                        , float top
-                                        , float zNear
-                                        , float zFar
-                                        , Matrix &result
-                                        )
-{
-    
-    float x = (2.0f * zNear) / (right - left);
-    float y = (2.0f * zNear) / (top - bottom);
-    float a = (right + left) / (right - left);
-    float b = (top + bottom) / (top - bottom);
-    float c = -(zFar + zNear) / (zFar - zNear);
-    float d = -(2.0f * zFar * zNear) / (zFar - zNear);
-    
-    result.m00 = x;
-    result.m11 = y;
-    
-    result.m20 = a;
-    result.m21 = b;
-    result.m22 = c;
-    result.m23 = -1;
-    result.m32 = d;
+    return 1.f / tan(radians);
 }
 
 Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
 {
     Matrix m;
     
-    auto halfHeight = zNear * tan(fov / 2.0f);
-    auto halfWidth = halfHeight * aspect;
-    auto depth = zFar - zNear;
+    auto f = tan(fov / 2);
     
-    m.m00 = zNear / halfWidth;
-    m.m11 = zNear / halfHeight;
-    m.m22 = -(zFar + zNear) / depth;
-    m.m23 = -1;
-    m.m32 = -2 * zFar * zNear / depth;
+    m.m00 = f / aspect;
+    m.m11 = f;
+    m.m22 = (zFar + zNear) / (zNear - zFar);
+    m.m23 = -1.f;
+    m.m32 = (2 * zFar * zNear) / (zNear - zFar);
     m.m33 = 0;
+
     
     return m;
+}
+
+//
+//Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
+//{
+//    Matrix m;
+//    
+//    auto halfHeight = zNear * tan(fov / 2.0f);
+//    
+//    auto halfWidth = halfHeight * aspect;
+//    
+//    auto depth = zFar - zNear;
+//    
+//    m.m00 = zNear / halfHeight;
+//    m.m11 = zNear / halfWidth;
+//    m.m22 = -(zFar + zNear) / depth;
+//    m.m23 = -1;
+//    m.m32 = -2 * zFar * zNear / depth;
+//    m.m33 = 0;
+//    
+//    return m;
+//}
+
+
+#define ROW(r) Vector4(m ## r ## 0, m ## r ## 1, m ## r ## 2, m ## r ## 3)
+#define COL(r) Vector4(m ## 0 ## r, m ## 1 ## r, m ## 2 ## r, m ## 3 ## r)
+
+
+Vector4 Matrix::Transform(const Vector4& v) const
+{
+    
+    auto col0 = COL(0);
+    auto col1 = COL(1);
+    auto col2 = COL(2);
+    auto col3 = COL(3);
+    
+    Vector4 temp;
+
+    temp.X = Vector4::Dot(v,col0);
+    temp.Y = Vector4::Dot(v,col1);
+    temp.Z = Vector4::Dot(v,col2);
+    temp.W = Vector4::Dot(v,col3);
+    
+    
+    return temp;
+    
+
+}
+
+vector<Vector4> Matrix::GetAllCols()
+{
+    vector<Vector4> cols =
+    {
+        COL(0)
+        ,COL(1)
+        ,COL(2)
+        ,COL(3)
+    };
+    
+    return cols;
+    
+}
+
+
+vector<Vector4> Matrix::GetAllRows()
+{
+    vector<Vector4> rows(4);
+    
+    memcpy((void*)(rows.data()), (void*)&m00, sizeof(float) * 16);
+    
+    return rows;
 }
 
 

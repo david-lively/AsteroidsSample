@@ -15,7 +15,9 @@ using namespace std;
 #include "Mesh.h"
 #include "Material.h"
 #include "Files.h"
-#include "GeometryProvider.h"
+
+
+
 
 
 bool SimpleGame::OnCreateScene()
@@ -27,13 +29,26 @@ bool SimpleGame::OnCreateScene()
 	check_gl_error();
 
 	/// create a screen-aligned quad
-    
-    vector<Vector3> vertices;
-    vector<GLushort> indices;
-    
-    GeometryProvider::Cube(vertices, indices);
-    
-	cube.Initialize(vertices, indices);
+
+	vector<float> coordinates =
+	{
+		-0.5f, +0.5f, 0.f
+		,
+		+0.5f, +0.5f, 0.f
+		,
+		+0.5f, -0.5f, 0.f
+		,
+		-0.5f, -0.5f, 0.f
+	};
+
+	vector<GLushort> indices =
+	{
+		0, 1, 2
+		,
+		2, 3, 0
+	};
+
+	cube.Initialize(coordinates, indices);
     
     
     Log::Info << "Working directory is " << Files::GetCurrentDirectory() << endl;
@@ -87,7 +102,7 @@ bool SimpleGame::LoadShaders(const string& baseFilename, string& vertexShaderSou
     Log::Info << "Loading vertex shader \"" << vertFilename << "\"\n";
     vertexShaderSource = Files::Read(vertFilename);
 
-    Log::Info << "Loading fragment shader \"" << fragFilename << "\"\n";
+    Log::Info << "Loading fragment shader \"" << vertFilename << "\"\n";
     fragmentShaderSource = Files::Read(fragFilename);
     
     return true;

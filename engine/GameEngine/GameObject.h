@@ -14,29 +14,22 @@
 #include <map>
 
 #include "Common.h"
-#include "Component.h"
-#include "Transform.h"
 
 class GameObject
 {
 public:
     std::string Name;
     int Id;
+    bool Enabled = true;
     
     GameObject() : GameObject("unnamed-gameobject")
     {
         
-        
     }
     
-    GameObject(const std::string& name) : Name(name), m_parent(nullptr)
+    GameObject(const std::string& name) : Name(name)
     {
         Id = ++m_nextId;
-    }
-    
-    ~GameObject()
-    {
-        Dispose();
     }
     
     
@@ -57,16 +50,13 @@ public:
     virtual bool OnInitialize() { return true; }
     
     void Dispose();
-
     
     /// create a new game object of the given type and add it as a child of this object.
     template<typename T>
     T& Create(const std::string& name)
     {
         auto* object = new T();
-        object->m_parent = this;
-        object->Name = name;
-        
+        object->Name = name + std::to_string(object->Id);
         m_children.push_back(object);
         
         return *object;
@@ -82,7 +72,6 @@ public:
         {
             T* ptr = new T();
             ptr->Name = name;
-            ptr->m_parent = this;
             
             m_children.push_back(ptr);
             
@@ -109,17 +98,8 @@ public:
         return nullptr;
     }
     
-    GameObject& Parent() const
-    {
-        return *m_parent;
-    }
-    
 private:
-    static int m_nextId;
-    GameObject* m_parent;
-
     std::vector<GameObject*> m_children;
-    std::vector<Component*> m_components;
 
     void DoPreRender(const GameTime& time);
     void DoPostRender(const GameTime& time);
@@ -130,9 +110,7 @@ private:
     void DoRender(const GameTime& time);
     void DoUpdate(const GameTime& time);
     
-    void DisposeChildren();
-    void DisposeComponents();
-    
+    static int m_nextId;
     
     
 protected:

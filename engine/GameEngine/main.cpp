@@ -12,22 +12,17 @@
 using namespace std;
 
 #include "Common.h"
-#include "SimpleGame.h"
+#include "AsteroidsGame.h"
 
 
 int main(void)
 {
-    SimpleGame game;
-    
-    Log::Info << "Running game.\n";
-    
-    game.Run();
-    
-    Log::Info << "Done!\n";
+	AsteroidsGame game;
 
-#ifdef _MSC_VER
-	cout << "Press enter to exit\n";
-	getchar();
-#endif
+	Log::Info << "Running game.\n";
+
+	game.Run();
+
+	Log::Info << "Done!\n";
 
 }

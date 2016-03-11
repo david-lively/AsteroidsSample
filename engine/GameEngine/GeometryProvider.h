@@ -2,7 +2,7 @@
 //  GeometryProvider.hpp
 //  GameEngine
 //
-//  Created by David Lively on 2/15/16.
+//  Created by David Lively on 3/8/16.
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
@@ -10,17 +10,20 @@
 #define GEOMETRYPROVIDER_H
 
 #include <vector>
-
-#include "Common.h"
 #include "Vectors.h"
+#include "Common.h"
 
 class GeometryProvider
 {
 public:
-    static void Cube(std::vector<Vector3> &vectors, std::vector<GLushort> &indices);
-
+    /// abstract
+    virtual ~GeometryProvider() = 0;
     
-
+    
+    static void FitToUnitCube(std::vector<Vector3>& vectors);
+    static void LineGrid(std::vector<Vector3>& vertices, int cellCount);
+    static void Sphere(std::vector<Vector3>& vertices, std::vector<GLushort>& indices);
+    
 private:
     
 };

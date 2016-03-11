@@ -26,7 +26,7 @@ void GameObject::DoUpdate(const GameTime& time)
     
     for (auto it = begin(m_children); it != end(m_children); ++it)
     {
-        if (nullptr != *it)
+        if (nullptr != *it && (*it)->Enabled)
             (*it)->DoUpdate(time);
     }
     
@@ -37,7 +37,7 @@ void GameObject::DoPostUpdate(const GameTime& time)
     
     for (auto it = begin(m_children); it != end(m_children); ++it)
     {
-        if (nullptr != *it)
+        if (nullptr != *it && (*it)->Enabled)
             (*it)->DoPostUpdate(time);
     }
     
@@ -51,7 +51,7 @@ void GameObject::DoPreRender(const GameTime& time)
     
     for (auto it = begin(m_children); it != end(m_children); ++it)
     {
-        if (nullptr != *it)
+        if (nullptr != *it && (*it)->Enabled)
             (*it)->DoPreRender(time);
     }
     
@@ -65,7 +65,7 @@ void GameObject::DoRender(const GameTime& time)
     
     for (auto it = begin(m_children); it != end(m_children); ++it)
     {
-        if (nullptr != *it)
+        if (nullptr != *it && (*it)->Enabled)
             (*it)->DoRender(time);
     }
     
@@ -76,7 +76,7 @@ void GameObject::DoPostRender(const GameTime& time)
     
     for (auto it = begin(m_children); it != end(m_children); ++it)
     {
-        if (nullptr != *it)
+        if (nullptr != *it && (*it)->Enabled)
             (*it)->DoPostRender(time);
     }
     
@@ -122,38 +122,18 @@ bool GameObject::Initialize()
 
 void GameObject::Dispose()
 {
-    DisposeChildren();
-    DisposeComponents();
+    for(auto it = begin(m_children); it != end(m_children); ++it)
+    {
+        (*it)->Dispose();
+        delete *it;
+        *it = nullptr;
+    }
+
+    m_children.clear();
     
     OnDispose();
     
 }
-
-void GameObject::DisposeChildren()
-{
-    for(auto it = begin(m_children); it != end(m_children); ++it)
-    {
-        delete *it;
-        *it = nullptr;
-    }
-    
-    m_children.clear();
-}
-
-void GameObject::DisposeComponents()
-{
-    for(auto it = begin(m_components); it != end(m_components); ++it)
-    {
-        if (nullptr != *it)
-        {
-            delete *it;
-            *it = nullptr;
-        }
-    }
-    
-    m_components.clear();
-}
-
 
 
 

@@ -11,8 +11,7 @@
 
 #include "Vectors.h"
 
-
-#include <memory>
+#include <vector>
 
 class Matrix
 {
@@ -26,50 +25,62 @@ public:
     /// translation
     float m30, m31, m32, m33;
     
-    const float* Data() const { return &m00; }
-    
-    
-    /// initialize to identity matrix
     Matrix() :
-    m00(1), m01(0), m02(0),m03(0)
-    ,
-    m10(0), m11(1), m12(0),m13(0)
-    ,
-    m20(0), m21(0), m22(1),m23(0)
-    ,
-    m30(0), m31(0), m32(0),m33(1)
+    m00(1), m01(0), m02(0), m03(0)
+    ,m10(0), m11(1), m12(0), m13(0)
+    ,m20(0), m21(0), m22(1), m23(0)
+    ,m30(0), m31(0), m32(0), m33(1)
     {
         
     }
     
-    
-    void ToArray(float* array)
+    Vector4 Transform(const Vector4& v) const;
+    Vector3 Transform(const Vector3& v) const
     {
-        memcpy(array, &m00, sizeof(float) * 16);
+        return (Vector3)Transform(Vector4(v.X, v.Y, v.Z, 1));
     }
+
+    
+    /// transformed y axis
+    Vector3 Up() { return Vector3(m10, m11, m12); }
+    Vector3 Translation() { return Vector3(m30, m31, m32); }
+    
+    Vector4 GetRow(int index)
+    {
+        Vector4 result;
+        
+        void* ptr = this + (index * 4);
+
+        memcpy(&result,ptr, sizeof(Vector4));
+        
+        return result;
+    }
+    
+    std::vector<Vector4> GetAllRows();
+    std::vector<Vector4> GetAllCols();
     
     
     static Matrix Identity();
+    static void CreateRotationX(Matrix& m, float radians);
+    static void CreateRotationY(Matrix& m, float radians);
+    static void CreateRotationZ(Matrix& m, float radians);
     
-    static Matrix CreateRotationZ(float theta);
-    static Matrix CreateRotationY(float theta);
+    
+    static Matrix CreateRotationX(float radians);
+    static Matrix CreateRotationY(float radians);
+    static Matrix CreateRotationZ(float radians);
     
     static Matrix CreateRotation(float x, float y, float z);
+    static Matrix CreateRotation(const Vector3& rotate);
     static Matrix CreateTranslation(float x, float y, float z);
-    static Matrix CreateScale(float uniformScale);
-    static Matrix CreateScale(float x, float y, float z);
+    static Matrix CreateTranslation(const Vector3& position);
     
-    static void CreatePerspectiveOffCenter(
-                                            float left
-                                            , float right
-                                            , float bottom
-                                            , float top
-                                            , float zNear
-                                            , float zFar
-                                            , Matrix &result
-                                           );
+    static Matrix CreateScale(float x, float y, float z);
+    static Matrix CreateScale(float uniformScale);
+    static Matrix CreateScale(const Vector3& scale);
     
     static Matrix CreatePerspective(float fov, float aspect, float zNear, float zFar);
+  
     
 
     
@@ -84,7 +95,7 @@ public:
         return result;
     }
     
-    Matrix operator*(const Matrix& right) const
+    Matrix operator*(const Matrix& right)
     {
         return Multiply(*this, right);
     }
@@ -94,3 +105,11 @@ private:
 };
 
 #endif /* Matrix_hpp */
+
+
+
+
+
+
+
+

@@ -7,39 +7,18 @@
 //
 
 #include "Material.h"
-#include "Matrix.h"
 #include "Enums.h"
-#include "Game.h"
+#include "Files.h"
 
 #include <string>
-#include <cmath>
-
 using namespace std;
+
+
 
 void Material::SetUniforms(const GameTime& time)
 {
-    
 	SetUniform("GameTimeTotalSeconds", time.TotalSeconds());
 	SetUniform("TimeScale", 0.5f);
-
-    auto framebufferSize = Game::GetFramebufferSize();
-    
-    auto aspect = framebufferSize.X / framebufferSize.Y;
-
-    auto projection = Matrix::CreatePerspective(60 * 3.14159f / 180, aspect, 1, 1000);
-
-    SetUniform("Projection",projection);
-    
-    check_gl_error();
-
-    auto rotation = Matrix::CreateRotationZ(time.TotalSeconds()) * Matrix::CreateRotationY(time.TotalSeconds());
-
-    auto translation = Matrix::CreateTranslation(0, 0, -2);
-    
-    auto world = rotation * translation;
-    
-    SetUniform("World",world);
-    
 }
 
 
@@ -172,4 +151,48 @@ bool Material::CompileSuccessful(GLint program)
 	gl::GetShaderiv(program, gl::COMPILE_STATUS, &status);
 
 	return status != (GLint)false;
+}
+
+
+bool Material::Build(const std::string& path)
+{
+    auto vertFilename = path + ".vert.glsl";
+    auto fragFilename = path + ".frag.glsl";
+    
+    if(!Files::Exists(vertFilename))
+    {
+        Log::Error << "Could not find vertex shader \"" << vertFilename << "\"\n";
+        return false;
+    }
+    
+    if(!Files::Exists(fragFilename))
+    {
+        Log::Error << "Could not find fragment shader \"" << fragFilename << "\"\n";
+        return false;
+    }
+    
+    
+    bool success = true;
+    
+    do
+    {
+    
+        Log::Info << "Loading vertex shader \"" << vertFilename << "\"\n";
+        auto vertexShaderSource = Files::Read(vertFilename);
+        
+        Log::Info << "Loading fragment shader \"" << fragFilename << "\"\n";
+        auto fragmentShaderSource = Files::Read(fragFilename);
+        
+        success = Build(vertexShaderSource, fragmentShaderSource);
+
+        if(!success)
+        {
+            cout << "Press enter to retry." << endl;
+            getchar();
+        }
+        
+    } while(!success);
+    
+    return true;
+    
 }

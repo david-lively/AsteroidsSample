@@ -29,30 +29,33 @@ void Mesh::OnRender(const GameTime& time)
 {
     check_gl_error();
 
-	Material->Bind();
-    check_gl_error();
-	Material->SetUniforms(time);
-    check_gl_error();
+    gl::BindVertexArray(m_vao);
 
-    /// bind the vertex and index buffers
-    gl::BindBuffer((GLenum)BufferTarget::ElementArrayBuffer, m_indexBuffer);
-    gl::BindBuffer((GLenum)BufferTarget::ArrayBuffer, m_vertexBuffer);
+    Material->Bind();
+	Material->SetUniforms(time);
     
-    /// get the attribute location of Position (vertex) from the compiled shader
-    auto location = gl::GetAttribLocation(Material->Program(), "Pos");
-    check_gl_error();
-    
-    /// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
-    gl::EnableVertexAttribArray(location);
-    check_gl_error();
-    
-    /// Describe the vertex format to GL. This is a 3-component struct with float members (ie, vec3 in GLSL)
-    gl::VertexAttribPointer(location, 3, gl::FLOAT, false, 0, nullptr);
+    gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
+
+////    /// bind the vertex and index buffers
+//    gl::BindBuffer((GLenum)BufferTarget::ElementArrayBuffer, m_indexBuffer);
+//    gl::BindBuffer((GLenum)BufferTarget::ArrayBuffer, m_vertexBuffer);
+//    
+//    /// get the attribute location of Position (vertex) from the compiled shader
+//    auto location = gl::GetAttribLocation(Material->Program(), "Pos");
+//    
+//    /// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
+//    gl::EnableVertexAttribArray(location);
+//    
+//    /// Describe the vertex format to GL. This is a 3-component struct with float members (ie, vec3 in GLSL)
+//    gl::VertexAttribPointer(location, 3, gl::FLOAT, false, 0, nullptr);
     //56 draw it!
-    check_gl_error();
-    gl::DrawElements((GLenum)Type, (GLuint)m_indexCount, gl::UNSIGNED_SHORT, (GLvoid*)nullptr);
-    check_gl_error();
-    
+
+    if (m_indexBuffer > 0)
+        gl::DrawElements((GLenum)Type, (GLuint)m_indexCount, gl::UNSIGNED_SHORT, (GLvoid*)nullptr);
+    else
+        gl::DrawArrays((GLenum)Type, (GLuint)0, (GLsizei)m_vertexCount);
+        
+        
     /// unbind the program
     gl::UseProgram(0);
     
