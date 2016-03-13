@@ -14,7 +14,7 @@ bool Log::StopOnErrors = false;
 Handler Log::Error(std::cerr, "ERROR");
 Handler Log::Warning(std::cerr, "WARNING");
 Handler Log::Info(std::cout, "INFO");
-
+Handler Log::Debug(std::cout, "DEBUG");
 
 /*
 Prints an [hh:mm:ss.ms] time stamp. Surely there is an easier way to do this. :(

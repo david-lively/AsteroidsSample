@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <ostream>
 #include <minmax.h>
+#include <random>
 
 
 struct Vector2
@@ -173,6 +174,34 @@ struct Vector3 : public Vector2
         
         return *this;
     }
+
+	
+	/*
+	Returns a random normalized vector.
+	*/
+	static Vector3 Random()
+	{
+		Vector3 v((float)(std::rand() % 100)
+			, (float)(std::rand() % 100)
+			, (float)(std::rand() % 100)
+			);
+
+		return v.Normalized();
+	}
+
+	/*
+	Returns a random normalized vector with Z = 0.
+	*/
+	static Vector3 RandomXY()
+	{
+		Vector3 v(
+			(float)(std::rand() % 100)
+			, (float)(std::rand() % 100)
+			,0
+			);
+
+		return v.Normalized();
+	}
     
     friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
 

@@ -161,7 +161,15 @@ void AsteroidsGame::CreateAsteroids(int count)
     Log::Warning << "Ignoring asteroid count (" << count << ") - creating 1 for debug\n";
     
     auto& asteroid = Create<Asteroid>("asteroid");
-    asteroid.Transform->Scale = Vector3(2);
+
+	auto dir = Vector3::RandomXY();           
+
+	asteroid.Transform->Push(dir * 0.025f);
+
+
+
+	//asteroid.Transform->Push
+ //   asteroid.Transform->Scale = Vector3(2);
 }
 
 

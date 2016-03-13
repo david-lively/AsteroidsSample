@@ -187,6 +187,69 @@ float cot(float radians)
     return 1.f / tan(radians);
 }
 
+
+void Matrix::CreatePerspectiveOffCenter(
+	float left
+	, float right
+	, float bottom
+	, float top
+	, float zNear
+	, float zFar
+	, Matrix &m
+	)
+{
+	if (zNear <= 0)
+		throw out_of_range("Near plane cannot be negative");
+	if (zFar <= 0)
+		throw new out_of_range("Far plane must be greater than the near plane");
+	if (zNear >= zFar)
+		throw new out_of_range("Near plane must be closer than the far plane");
+
+	float x = (2.0f * zNear) / (right - left);
+	float y = (2.0f * zNear) / (top - bottom);
+	float a = (right + left) / (right - left);
+	float b = (top + bottom) / (top - bottom);
+	float c = -(zFar + zNear) / (zFar - zNear);
+	float d = -(2.0f * zFar * zNear) / (zFar - zNear);
+
+	//m.m00 = x;
+	//m.m11 = y;
+	//m.m20 = a;
+	//m.m21 = b;
+	//m.m22 = c;
+	//m.m23 = -1;
+	//m.m32 = d;
+
+	m.m00 = x;
+	m.m11 = y;
+	m.m02 = a;
+	m.m12 = b;
+	m.m22 = c;
+	m.m32 = -1;
+	m.m23 = d;
+
+	//result.row0 = Vector4(x, 0, 0, 0);
+	//result.row1 = Vector4(0, y, 0, 0);
+	//result.row2 = Vector4(a, b, c, -1);
+	//result.row3 = Vector4(0, 0, d, 0);
+}
+
+
+Matrix Matrix::CreatePerspective(float fov, float  aspect, float zNear, float zFar)
+{
+	Matrix m;
+
+	float yMax = zNear * std::tan(0.5f * fov);
+	float yMin = -yMax;
+	float xMin = yMin * aspect;
+	float xMax = yMax * aspect;
+
+	CreatePerspectiveOffCenter(xMin, xMax, yMin, yMax, zNear, zFar, m);
+
+	return m;
+}
+
+/*
 Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
 {
     Matrix m;
@@ -195,15 +258,15 @@ Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFa
     
     m.m00 = f / aspect;
     m.m11 = f;
-    m.m22 = (zFar + zNear) / (zNear - zFar);
+    m.m22 = -(zFar + zNear) / (zNear - zFar);
     m.m23 = -1.f;
-    m.m32 = (2 * zFar * zNear) / (zNear - zFar);
+    m.m32 = -(2 * zFar * zNear) / (zNear - zFar);
     m.m33 = 0;
 
     
     return m;
 }
-
+*/
 //
 //Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
 //{

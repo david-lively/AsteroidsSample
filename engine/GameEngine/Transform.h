@@ -42,14 +42,6 @@ public:
     }
     
     
-    /// transformed Z axis
-    Vector3 Forward()
-    {
-        auto m = GetMatrix();
-        
-        
-        return Vector3(m.m20, m.m21, m.m22);
-    }
     
     void Push(const Vector3& dir)
     {
@@ -72,11 +64,13 @@ public:
     
     void OnUpdate(const GameTime& time) override
     {
-		//static float lastSeconds = 1.66e-3f;
+		/// 16ms = 60Hz
+		static float lastSeconds = 1.66e-2f;
+		float elapsed = time.ElapsedSeconds();
 
-        auto velocity = (Translation - m_previousTranslation) * (1 - Drag);
-        
-		//velocity *= time.ElapsedSeconds() / lastSeconds;
+		float timeScale = elapsed > 0 ? lastSeconds / elapsed : 1.f;
+
+        auto velocity = (Translation - m_previousTranslation) * (1 - Drag) * timeScale;
 
         m_previousTranslation = Translation;
         Translation += velocity;
@@ -85,7 +79,7 @@ public:
         m_previousRotation = Rotation;
         Rotation += spin;
 
-		//lastSeconds = time.ElapsedSeconds();
+		lastSeconds = elapsed;
     }
     
     /// move to the given coordinates maintaining current velocity.

@@ -58,6 +58,7 @@ namespace Log
     extern Handler Error;
     extern Handler Warning;
     extern Handler Info;
+	extern Handler Debug;
 
 }
 
