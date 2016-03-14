@@ -21,6 +21,7 @@ public:
     std::string Name;
     int Id;
     bool Enabled = true;
+	GameObject* Parent = nullptr;
     
     GameObject() : GameObject("unnamed-gameobject")
     {
@@ -50,6 +51,21 @@ public:
     virtual bool OnInitialize() { return true; }
     
     void Dispose();
+
+	template<typename T>
+	T* GetFirst()
+	{
+		for (auto it = begin(m_children); it != end(m_children); ++it)
+		{
+			T* ptr = dynamic_cast<T*>(*it);
+
+			if (nullptr != ptr)
+				return ptr;
+		}
+
+		return nullptr;
+
+	}
     
     /// create a new game object of the given type and add it as a child of this object.
     template<typename T>
@@ -59,6 +75,7 @@ public:
         object->Name = name + std::to_string(object->Id);
         m_children.push_back(object);
         
+		object->Parent = this;
         return *object;
     }
     
@@ -81,6 +98,7 @@ public:
             return *objectPtr;
         
     }
+
     
     /// If an object with the given name exists in this hierarchy, return a pointer to it.
     void* FindObject(const std::string& name)

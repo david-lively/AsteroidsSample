@@ -10,6 +10,7 @@
 #include "Common.h"
 
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -48,9 +49,10 @@ void GeometryProvider::LineGrid(vector<Vector3>& vertices, int cellCount = 4)
 {
     float scale = 1.f / cellCount;
     
-    for(auto i = 0; i <= cellCount; ++i)
+    for(int i = 0; i <= cellCount; ++i)
     {
         float vary = i * scale - 0.5f;
+        
         vertices.push_back(Vector3(vary,0.5f,0));
         vertices.push_back(Vector3(vary, -0.5f, 0));
         
@@ -62,7 +64,7 @@ void GeometryProvider::LineGrid(vector<Vector3>& vertices, int cellCount = 4)
     
 }
 
-void GeometryProvider::Sphere(vector<Vector3>& vertices, vector<GLushort>& indices)
+void GeometryProvider::Icosahedron(vector<Vector3>& vertices, vector<GLushort>& indices)
 {
     float X = 0.525731112119133606f;
     float Z = 0.850650808352039932f;
@@ -84,7 +86,7 @@ void GeometryProvider::Sphere(vector<Vector3>& vertices, vector<GLushort>& indic
     };
     
     vertices.insert(end(vertices),begin(icosahedronVerts),end(icosahedronVerts));
-
+    
     vector<GLushort> icosahedronIndices =
     {
         0,4,1,
@@ -113,56 +115,93 @@ void GeometryProvider::Sphere(vector<Vector3>& vertices, vector<GLushort>& indic
 }
 
 
-/*
- indices.AddRange(
- new int[]
- {
- 0,4,1,
- 0,9,4,
- 9,5,4,
- 4,5,8,
- 4,8,1,
- 8,10,1,
- 8,3,10,
- 5,3,8,
- 5,2,3,
- 2,7,3,
- 7,10,3,
- 7,6,10,
- 7,11,6,
- 11,0,6,
- 0,1,6,
- 6,1,10,
- 9,0,11,
- 9,11,2,
- 9,2,5,
- 7,2,11
- }
- .Select(i => i + vertices.Count)
- );
- 
- var X = 0.525731112119133606f;
- var Z = 0.850650808352039932f;
- 
- vertices.AddRange(
- new[]
- {
- new Vector3(-X, 0f, Z),
- new Vector3(X, 0f, Z),
- new Vector3(-X, 0f, -Z),
- new Vector3(X, 0f, -Z),
- new Vector3(0f, Z, X),
- new Vector3(0f, Z, -X),
- new Vector3(0f, -Z, X),
- new Vector3(0f, -Z, -X),
- new Vector3(Z, X, 0f),
- new Vector3(-Z, X, 0f),
- new Vector3(Z, -X, 0f),
- new Vector3(-Z, -X, 0f)
- }
- );
- */
 
+string GetMidpointName(int a, int b)
+{
+    return to_string(min(a,b)) + "-" + to_string(max(a,b));
+}
+
+map<string,int> midpointIndices;
+
+GLushort GetIndexOfMidpoint(int a, int b, std::vector<Vector3>& vertices, std::map<string,int>& edges)
+{
+    auto name = GetMidpointName(a, b);
+    
+    if (edges.count(name) == 0)
+    {
+        auto newIndex = vertices.size();
+        
+        auto newVertex = (vertices[a] + vertices[b]) * 0.5f;
+        
+        edges[name] = (GLushort)newIndex;
+        vertices.push_back(newVertex);
+    }
+    
+    return midpointIndices[name];
+}
+
+/*
+ v0
+ /\
+ /  \
+ /    \
+ /      \
+ /        \
+ m20- - - - m01
+ /  \      /   \
+ /    \    /     \
+ /      \  /       \
+ /        \/         \
+ v2 - - - -m12 - - -  v1
+ 
+ 
+ faces:
+ v01,m01,m20
+ m01,v1,m12
+ m20,m12,v2
+ m20,m01,m12
+ 
+ */
+void GeometryProvider::Tessellate(vector<Vector3>& sourceVertices, std::vector<GLushort>& sourceIndices, int levels)
+{
+    if (levels <= 0)
+        return;
+    
+    vector<Vector3> vertices(sourceVertices);
+    vector<GLushort> indices(sourceIndices);
+    map<string,int> edges;
+    
+    vector<Vector3> newVertices;
+    vector<GLushort> newIndices;
+    
+    
+    for(int i = 0; i < indices.size(); i += 3)
+    {
+        GLushort i0 = indices[i];
+        GLushort i1 = indices[i + 1];
+        GLushort i2 = indices[i + 2];
+        
+        auto m01 = GetIndexOfMidpoint(i0, i1, newVertices, edges);
+        auto m12 = GetIndexOfMidpoint(i1, i2, newVertices, edges);
+        auto m20 = GetIndexOfMidpoint(i2, i0, newVertices, edges);
+        
+        std::vector<GLushort> newFaces =
+        {
+            i0, m01, m20
+            ,
+            m01, i1, m12
+            ,
+            m20, m12, i2
+            ,
+            m20, m01, m12
+        };
+        
+        newIndices.insert(end(newIndices), begin(newFaces), end(newFaces));
+    }
+
+    /// wonder if the compiler does tail recursion
+    Tessellate(newVertices, newIndices, --levels);
+}
 
 
 

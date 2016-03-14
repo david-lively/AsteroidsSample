@@ -187,66 +187,21 @@ float cot(float radians)
     return 1.f / tan(radians);
 }
 
-
-void Matrix::CreatePerspectiveOffCenter(
-	float left
-	, float right
-	, float bottom
-	, float top
-	, float zNear
-	, float zFar
-	, Matrix &m
-	)
+Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
 {
-	if (zNear <= 0)
-		throw out_of_range("Near plane cannot be negative");
-	if (zFar <= 0)
-		throw new out_of_range("Far plane must be greater than the near plane");
-	if (zNear >= zFar)
-		throw new out_of_range("Near plane must be closer than the far plane");
+    Matrix m;
+    
+    auto f = cot(fov / 2);
+    
+    m.m00 = f / aspect;
+    m.m11 = f;
+    m.m22 = (zFar + zNear) / (zNear - zFar);
+    m.m23 = -1.f;
+    m.m32 = (2 * zFar * zNear) / (zNear - zFar);
+    m.m33 = 0;
 
-	float x = (2.0f * zNear) / (right - left);
-	float y = (2.0f * zNear) / (top - bottom);
-	float a = (right + left) / (right - left);
-	float b = (top + bottom) / (top - bottom);
-	float c = -(zFar + zNear) / (zFar - zNear);
-	float d = -(2.0f * zFar * zNear) / (zFar - zNear);
-
-	//m.m00 = x;
-	//m.m11 = y;
-	//m.m20 = a;
-	//m.m21 = b;
-	//m.m22 = c;
-	//m.m23 = -1;
-	//m.m32 = d;
-
-	m.m00 = x;
-	m.m11 = y;
-	m.m02 = a;
-	m.m12 = b;
-	m.m22 = c;
-	m.m32 = -1;
-	m.m23 = d;
-
-	//result.row0 = Vector4(x, 0, 0, 0);
-	//result.row1 = Vector4(0, y, 0, 0);
-	//result.row2 = Vector4(a, b, c, -1);
-	//result.row3 = Vector4(0, 0, d, 0);
-}
-
-
-Matrix Matrix::CreatePerspective(float fov, float  aspect, float zNear, float zFar)
-{
-	Matrix m;
-
-	float yMax = zNear * std::tan(0.5f * fov);
-	float yMin = -yMax;
-	float xMin = yMin * aspect;
-	float xMax = yMax * aspect;
-
-	CreatePerspectiveOffCenter(xMin, xMax, yMin, yMax, zNear, zFar, m);
-
-	return m;
+    
+    return m;
 }
 
 /*
@@ -254,40 +209,22 @@ Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFa
 {
     Matrix m;
     
-    auto f = tan(fov / 2);
+    auto halfHeight = zNear * tan(fov / 2.0f);
     
-    m.m00 = f / aspect;
-    m.m11 = f;
-    m.m22 = -(zFar + zNear) / (zNear - zFar);
-    m.m23 = -1.f;
-    m.m32 = -(2 * zFar * zNear) / (zNear - zFar);
+    auto halfWidth = halfHeight * aspect;
+    
+    auto depth = zFar - zNear;
+    
+    m.m00 = zNear / halfWidth;
+    m.m11 = zNear / halfHeight;
+    m.m22 = -(zFar + zNear) / depth;
+    m.m23 = -1;
+    m.m32 = -2 * zFar * zNear / depth;
     m.m33 = 0;
-
     
     return m;
 }
 */
-//
-//Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
-//{
-//    Matrix m;
-//    
-//    auto halfHeight = zNear * tan(fov / 2.0f);
-//    
-//    auto halfWidth = halfHeight * aspect;
-//    
-//    auto depth = zFar - zNear;
-//    
-//    m.m00 = zNear / halfHeight;
-//    m.m11 = zNear / halfWidth;
-//    m.m22 = -(zFar + zNear) / depth;
-//    m.m23 = -1;
-//    m.m32 = -2 * zFar * zNear / depth;
-//    m.m33 = 0;
-//    
-//    return m;
-//}
-
 
 #define ROW(r) Vector4(m ## r ## 0, m ## r ## 1, m ## r ## 2, m ## r ## 3)
 #define COL(r) Vector4(m ## 0 ## r, m ## 1 ## r, m ## 2 ## r, m ## 3 ## r)

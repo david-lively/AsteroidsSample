@@ -33,8 +33,10 @@ public:
     {
         
     }
-    
-    
+
+	void OnRender(const GameTime& time) override;
+
+   
 };
 
 

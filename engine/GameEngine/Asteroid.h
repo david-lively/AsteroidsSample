@@ -24,7 +24,6 @@ public:
     bool OnInitialize() override;
     
     void OnUpdate(const GameTime& time) override;
-    void OnRender(const GameTime& time) override;
     
 private:
     Mesh* m_mesh;

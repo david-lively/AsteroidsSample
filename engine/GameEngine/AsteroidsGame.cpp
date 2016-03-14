@@ -94,20 +94,7 @@ bool AsteroidsGame::OnCreateScene()
 
 void AsteroidsGame::OnUpdate(const GameTime& time)
 {
-    static bool previousIntersects = true;
-//    /// clip the ship to the grid.
-//    auto& cam = Game::Camera();
-//    
-//    auto view = cam.GetViewMatrix();
-//    
-//    auto m = m_ship->Transform->GetMatrix();// * view;
-//    
-//    auto shipTranslation = m_ship->Transform->Translation;
-//    
-//    auto viewPos = m.Transform(Vector4(0,0,0,1));
-//    
-//    Log::Info << "ship " << viewPos << endl;
-    
+    /// wrap ship to stay on the grid.
     auto shipBounds = m_ship->Transform->TransformAABB(m_ship->Bounds);
     auto gridBounds = m_grid->Transform->TransformAABB(m_grid->Bounds);
     
@@ -129,8 +116,6 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
         m_ship->Transform->Move(moveTo);
         
     }
-    
-    //Log::Info << "Ship::Grid intersection: " << intersects << " ship mn " << shipBounds.Min << " mx " << shipBounds.Max << " grid mn " << gridBounds.Min << " mx " << gridBounds.Max << endl;
     
     
 }
@@ -161,15 +146,7 @@ void AsteroidsGame::CreateAsteroids(int count)
     Log::Warning << "Ignoring asteroid count (" << count << ") - creating 1 for debug\n";
     
     auto& asteroid = Create<Asteroid>("asteroid");
-
-	auto dir = Vector3::RandomXY();           
-
-	asteroid.Transform->Push(dir * 0.025f);
-
-
-
-	//asteroid.Transform->Push
- //   asteroid.Transform->Scale = Vector3(2);
+    asteroid.Transform->Scale = Vector3(2);
 }
 
 

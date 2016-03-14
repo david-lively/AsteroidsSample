@@ -24,16 +24,16 @@ bool Asteroid::OnInitialize()
     auto& material = Create<class Material>("ship-material");
     m_material = &material;
     
-    material.FillType = PolygonMode::Line;
+    material.FillType = PolygonMode::Fill;
     
     auto& mesh = Create<Mesh>("ship-mesh");
     
     vector<Vector3> vertices;
     vector<GLushort> indices;
     
-    GeometryProvider::Sphere(vertices, indices);
+    GeometryProvider::Icosahedron(vertices, indices);
     
-    material.Build("Shaders/primitive");
+    material.Build("Shaders/lit");
     
     mesh.Material = &material;
     
@@ -44,6 +44,7 @@ bool Asteroid::OnInitialize()
     
     Transform->Drag = 0.f;
     Transform->Spin(Vector3(0.02f, 0.02f, 0));
+    Transform->Push(Vector3(0.02f, 0.02f, 0));
     
     return true;
     
@@ -74,16 +75,4 @@ void Asteroid::OnUpdate(const GameTime& time)
 }
 
 
-void Asteroid::OnRender(const GameTime& time)
-{
-    auto& cam = Game::Camera();
-    
-    cam.Transform->Translation.Z = 7;
-    
-    
-    m_material->Bind();
-    m_material->SetUniform("World", Transform->GetMatrix());
-    m_material->SetUniform("View",cam.GetViewMatrix());
-    m_material->SetUniform("Projection",cam.GetProjectionMatrix());
-}
 

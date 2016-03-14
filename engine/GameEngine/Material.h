@@ -15,6 +15,7 @@
 #include "GameObject.h"
 #include "Matrix.h"
 #include "Enums.h"
+#include "WorldEntity.h"
 
 
 class Material : public GameObject

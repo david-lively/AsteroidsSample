@@ -30,57 +30,19 @@ public:
         Scale.X = Scale.Y = Scale.Z = 1;
     }
     
-    Matrix GetMatrix()
-    {
-        auto mt = Matrix::CreateTranslation(Translation);
-        auto mr = Matrix::CreateRotation(Rotation);
-        auto ms = Matrix::CreateScale(Scale);
-        
-        auto result = mr * mt * ms;
-        
-        return result;
-    }
+	Matrix GetMatrix();
     
+    /// transformed Z axis
+	Vector3 Forward();
     
-    
-    void Push(const Vector3& dir)
-    {
-
-        Translation += dir;
-    }
+	void Push(const Vector3& dir);
     
     /// move to a new position, but do not add velocity.
-    void Move(const Vector3& newPosition)
-    {
-        auto velocity = Translation - m_previousTranslation;
-        Translation = newPosition;
-        m_previousTranslation = newPosition - velocity;
-    }
+	void Move(const Vector3& newPosition);
     
-    void Spin(const Vector3& theta)
-    {
-        Rotation += theta;
-    }
+	void Spin(const Vector3& theta);
     
-    void OnUpdate(const GameTime& time) override
-    {
-		/// 16ms = 60Hz
-		static float lastSeconds = 1.66e-2f;
-		float elapsed = time.ElapsedSeconds();
-
-		float timeScale = elapsed > 0 ? lastSeconds / elapsed : 1.f;
-
-        auto velocity = (Translation - m_previousTranslation) * (1 - Drag) * timeScale;
-
-        m_previousTranslation = Translation;
-        Translation += velocity;
-        
-        auto spin = (Rotation - m_previousRotation) * (1 - Drag);
-        m_previousRotation = Rotation;
-        Rotation += spin;
-
-		lastSeconds = elapsed;
-    }
+	void OnUpdate(const GameTime& time) override;
     
     /// move to the given coordinates maintaining current velocity.
     void Wrap(const Vector3& flags);
@@ -98,6 +60,8 @@ public:
 private:
     Vector3 m_previousTranslation;
     Vector3 m_previousRotation;
+
+	float m_previousFrameTime = 16.6e-3f;
     
     
     

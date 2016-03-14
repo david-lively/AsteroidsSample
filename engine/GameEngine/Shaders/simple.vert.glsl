@@ -15,12 +15,12 @@ out vec4 Color;
 vec4 rotate(vec4 pos, float theta)
 {
     float len = length(pos.xy);
-    float phi = atan(pos.y, pos.x);
+    float phi = atan(pos.Y, pos.X);
     
     phi += theta;
     
-    pos.x = cos(phi) * len;
-    pos.y = sin(phi) * len;
+    pos.X = cos(phi) * len;
+    pos.Y = sin(phi) * len;
     
     return pos;
 }

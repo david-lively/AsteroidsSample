@@ -9,6 +9,7 @@
 #include "Material.h"
 #include "Enums.h"
 #include "Files.h"
+#include "Game.h"
 
 #include <string>
 using namespace std;
@@ -18,7 +19,11 @@ using namespace std;
 void Material::SetUniforms(const GameTime& time)
 {
 	SetUniform("GameTimeTotalSeconds", time.TotalSeconds());
-	SetUniform("TimeScale", 0.5f);
+
+	auto& cam = Game::Camera();
+	
+	SetUniform("View", cam.GetViewMatrix());
+	SetUniform("Projection", cam.GetProjectionMatrix());
 }
 
 

@@ -43,14 +43,7 @@ public:
     
     /// transformed y axis
     Vector3 Up() { return Vector3(m10, m11, m12); }
-	/// transformed Z axis
-	Vector3 Forward()
-	{
-		return Vector3(m20, m21, m22);
-	}
-
-	
-	Vector3 Translation() { return Vector3(m30, m31, m32); }
+    Vector3 Translation() { return Vector3(m30, m31, m32); }
     
     Vector4 GetRow(int index)
     {
@@ -86,16 +79,6 @@ public:
     static Matrix CreateScale(float uniformScale);
     static Matrix CreateScale(const Vector3& scale);
     
-	static void Matrix::CreatePerspectiveOffCenter(float left
-		, float right
-		, float bottom
-		, float top
-		, float zNear
-		, float zFar
-		, Matrix &result
-		);
-
-
     static Matrix CreatePerspective(float fov, float aspect, float zNear, float zFar);
   
     

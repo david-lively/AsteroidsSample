@@ -22,7 +22,8 @@ public:
     
     static void FitToUnitCube(std::vector<Vector3>& vectors);
     static void LineGrid(std::vector<Vector3>& vertices, int cellCount);
-    static void Sphere(std::vector<Vector3>& vertices, std::vector<GLushort>& indices);
+    static void Icosahedron(std::vector<Vector3>& vertices, std::vector<GLushort>& indices);
+    static void Tessellate(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, int levels);
     
 private:
     

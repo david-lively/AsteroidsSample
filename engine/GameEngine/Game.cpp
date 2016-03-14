@@ -45,24 +45,18 @@ bool Game::OnInitialize()
     
     
     /// specify some window and OpenGL API parameters
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1); // ,GL_TRUE);
-//
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//
-//    glfwWindowHint(GLFW_DEPTH_BITS, 16);
-    
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    //
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1); // ,GL_TRUE);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     /// enable multisampling on a 4x4 grid (for full-screen anti-aliasing)
     glfwWindowHint(GLFW_SAMPLES, 4);
-
-	int windowScale = 2;
     
     /* Create a windowed mode window and its OpenGL context */
-    m_window = glfwCreateWindow(1280 * windowScale, 720 * windowScale, "Hello World", NULL, NULL);
-    
+    m_window = glfwCreateWindow(1280 * 2, 720 * 2, "Hello World", NULL, NULL);
+     
     if (!m_window)
     {
         Log::Error << "Could not create GLFW window\n";
@@ -121,7 +115,7 @@ bool Game::Run()
         
         
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-        
+                      
         Render(time);
         
         /* Render here */
