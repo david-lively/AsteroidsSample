@@ -50,6 +50,10 @@ public:
     bool Initialize();
     virtual bool OnInitialize() { return true; }
     
+
+	void WindowResize(int width, int height);
+	virtual void OnWindowResize(int width, int height);
+
     void Dispose();
 
 	template<typename T>

@@ -14,6 +14,13 @@ Game* Game::m_instance = nullptr;
 Camera* Game::m_camera = nullptr;
 using namespace std;
 
+
+void framebufferSizeChanged(GLFWwindow* window, int width, int height)
+{
+	Game::Instance().WindowResize(width, height);
+}
+
+
 Game::Game() : m_window(nullptr), m_isInitialized(false)
 {
     if (nullptr != m_instance)
@@ -33,8 +40,6 @@ bool Game::OnInitialize()
         Log::Warning << "Game is already initialized.";
         return false;
     }
-
-    
     
     /* Initialize the library */
     if (!glfwInit())
@@ -43,14 +48,7 @@ bool Game::OnInitialize()
         return false;
     }
     
-    
     /// specify some window and OpenGL API parameters
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    //
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1); // ,GL_TRUE);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
     /// enable multisampling on a 4x4 grid (for full-screen anti-aliasing)
     glfwWindowHint(GLFW_SAMPLES, 4);
     
@@ -82,12 +80,16 @@ bool Game::OnInitialize()
     Log::Info << "Renderer " << renderer << endl;
     Log::Info << "OpenGL version supported: " << version << endl;
 
+
+	glfwSetFramebufferSizeCallback(m_window, framebufferSizeChanged);
+
     if(!OnCreateScene())
         return false;
     
     gl::ClearColor(0,0,0,1);
     
-    m_camera = &Create<class Camera>("primary.camera");
+	if (nullptr == m_camera)
+		m_camera = &Create<class Camera>("primary.camera");
     
     m_isInitialized = true;
 
@@ -134,6 +136,9 @@ bool Game::Run()
     return true;
     
 }
+
+
+
 
 void Game::Shutdown()
 {

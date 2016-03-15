@@ -34,6 +34,8 @@ public:
     {
     }
 
+	void OnWindowResize(int width, int height) override;
+
     Matrix GetProjectionMatrix();
     Matrix GetViewMatrix();
     Matrix GetViewProjectionMatrix();
@@ -43,13 +45,9 @@ public:
     bool ContainsPoint(const Vector3& point);
     
 private:
-    
-    float m_previousAspectRatio = 0;
 
     Matrix m_projectionMatrix;
     Matrix m_viewMatrix;
-    
-    void OnUpdate(const GameTime& time) override;
     
     void BuildFrustumPlanes();
     

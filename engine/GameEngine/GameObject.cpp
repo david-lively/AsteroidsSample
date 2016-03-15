@@ -136,6 +136,24 @@ void GameObject::Dispose()
 }
 
 
+void GameObject::WindowResize(int width, int height)
+{
+	OnWindowResize(width, height);
+
+	for (auto it = begin(m_children); it != end(m_children); ++it)
+	{
+		(**it).WindowResize(width, height);
+
+	}
+}
+
+void GameObject::OnWindowResize(int width, int height)
+{
+
+}
+
+
+
 
 
 
