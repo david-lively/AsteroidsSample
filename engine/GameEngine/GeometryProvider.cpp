@@ -20,6 +20,18 @@ GeometryProvider::~GeometryProvider()
 }
 
 
+void GeometryProvider::Spherize(std::vector<Vector3>& vertices)
+{
+	FitToUnitCube(vertices);
+
+	for (auto it = begin(vertices); it != end(vertices);  ++it)
+		it->Normalize();
+
+
+}
+
+
+
 void GeometryProvider::FitToUnitCube(std::vector<Vector3>& vectors)
 {
     /// bounds
@@ -121,23 +133,25 @@ string GetMidpointName(int a, int b)
     return to_string(min(a,b)) + "-" + to_string(max(a,b));
 }
 
-map<string,int> midpointIndices;
-
 GLushort GetIndexOfMidpoint(int a, int b, std::vector<Vector3>& vertices, std::map<string,int>& edges)
 {
     auto name = GetMidpointName(a, b);
     
-    if (edges.count(name) == 0)
-    {
-        auto newIndex = vertices.size();
-        
-        auto newVertex = (vertices[a] + vertices[b]) * 0.5f;
-        
-        edges[name] = (GLushort)newIndex;
-        vertices.push_back(newVertex);
-    }
-    
-    return midpointIndices[name];
+	int midpointIndex = -1;
+
+	if (edges.count(name) == 0)
+	{
+		midpointIndex = (int)vertices.size();
+
+		auto newVertex = (vertices[a] + vertices[b]) * 0.5f;
+
+		edges[name] = (GLushort)midpointIndex;
+		vertices.push_back(newVertex);
+	}
+	else
+		midpointIndex = edges[name];
+
+	return midpointIndex;
 }
 
 /*
@@ -162,18 +176,15 @@ GLushort GetIndexOfMidpoint(int a, int b, std::vector<Vector3>& vertices, std::m
  m20,m01,m12
  
  */
-void GeometryProvider::Tessellate(vector<Vector3>& sourceVertices, std::vector<GLushort>& sourceIndices, int levels)
+void GeometryProvider::Tessellate(vector<Vector3>& vertices, std::vector<GLushort>& sourceIndices, int levels)
 {
     if (levels <= 0)
         return;
     
-    vector<Vector3> vertices(sourceVertices);
     vector<GLushort> indices(sourceIndices);
     map<string,int> edges;
     
-    vector<Vector3> newVertices;
     vector<GLushort> newIndices;
-    
     
     for(int i = 0; i < indices.size(); i += 3)
     {
@@ -181,9 +192,9 @@ void GeometryProvider::Tessellate(vector<Vector3>& sourceVertices, std::vector<G
         GLushort i1 = indices[i + 1];
         GLushort i2 = indices[i + 2];
         
-        auto m01 = GetIndexOfMidpoint(i0, i1, newVertices, edges);
-        auto m12 = GetIndexOfMidpoint(i1, i2, newVertices, edges);
-        auto m20 = GetIndexOfMidpoint(i2, i0, newVertices, edges);
+        auto m01 = GetIndexOfMidpoint(i0, i1, vertices, edges);
+		auto m12 = GetIndexOfMidpoint(i1, i2, vertices, edges);
+		auto m20 = GetIndexOfMidpoint(i2, i0, vertices, edges);
         
         std::vector<GLushort> newFaces =
         {
@@ -200,7 +211,9 @@ void GeometryProvider::Tessellate(vector<Vector3>& sourceVertices, std::vector<G
     }
 
     /// wonder if the compiler does tail recursion
-    Tessellate(newVertices, newIndices, --levels);
+    Tessellate(vertices, newIndices, --levels);
+
+	sourceIndices = newIndices;
 }
 
 

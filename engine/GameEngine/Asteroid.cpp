@@ -32,6 +32,10 @@ bool Asteroid::OnInitialize()
     vector<GLushort> indices;
     
     GeometryProvider::Icosahedron(vertices, indices);
+
+	GeometryProvider::Tessellate(vertices, indices, 2);
+
+	GeometryProvider::Spherize(vertices);
     
     material.Build("Shaders/lit");
     

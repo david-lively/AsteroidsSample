@@ -109,7 +109,6 @@ void Transform::OnUpdate(const GameTime& time)
 {
 	//float timeScale = m_prev time.ElapsedSeconds() / m_previousFrameTime;
 	float timeScale = 1;
-	Log::Debug << "Scale " << timeScale << "\n";
 	auto velocity = (Translation - m_previousTranslation) * (1 - Drag) * timeScale;
 
 	m_previousTranslation = Translation;
