@@ -15,7 +15,6 @@ in vec3 Pos;
 
 
 out vec4 Color;
-out vec3 ViewPosition;
 out vec3 WorldPosition;
 
 

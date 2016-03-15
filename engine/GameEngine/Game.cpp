@@ -55,7 +55,7 @@ bool Game::OnInitialize()
     glfwWindowHint(GLFW_SAMPLES, 4);
     
     /* Create a windowed mode window and its OpenGL context */
-    m_window = glfwCreateWindow(1280 * 2, 720, "Hello World", NULL, NULL);
+    m_window = glfwCreateWindow(1280 * 2, 720 * 2, "Hello World", NULL, NULL);
      
     if (!m_window)
     {
@@ -85,7 +85,7 @@ bool Game::OnInitialize()
     if(!OnCreateScene())
         return false;
     
-    gl::ClearColor(0,0,0.2f,1);
+    gl::ClearColor(0,0,0,1);
     
     m_camera = &Create<class Camera>("primary.camera");
     

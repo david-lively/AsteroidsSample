@@ -47,8 +47,8 @@ bool Asteroid::OnInitialize()
     m_mesh = &mesh;
     
     Transform->Drag = 0.f;
-    Transform->Spin(Vector3(0.02f, 0.02f, 0));
-    Transform->Push(Vector3(0.02f, 0.02f, 0));
+    Transform->Spin(Vector3(0.01f, 0.01f, 0));
+	//Transform->Push(Vector3(0.01f, 0, 0));
     
     return true;
     
