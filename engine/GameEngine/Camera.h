@@ -34,7 +34,12 @@ public:
     {
     }
 
-	void OnWindowResize(int width, int height) override;
+	void OnWindowResize(int w, int h) override;
+	bool OnInitialize() override;
+
+	void OnPreUpdate(const GameTime& time);
+
+	void SetFieldOfView(float newFov);
 
     Matrix GetProjectionMatrix();
     Matrix GetViewMatrix();
@@ -43,7 +48,7 @@ public:
     bool ContainsSphere(const Vector3& center, const float radius);
     bool ContainsSphere(const Vector3& center, const float radius, Vector3& containment);
     bool ContainsPoint(const Vector3& point);
-    
+	void UpdateProjectionMatrix(int width = 1280, int height = 720);
 private:
 
     Matrix m_projectionMatrix;

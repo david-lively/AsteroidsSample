@@ -92,6 +92,13 @@ void Transform::Push(const Vector3& dir)
 	Translation += dir;
 }
 
+void Transform::Move(const float x, const float y, const float z)
+{
+	auto velocity = Translation - m_previousTranslation;
+	Translation = Vector3(x, y, z);
+	m_previousTranslation = Translation - velocity;
+}
+
 /// move to a new position, but do not add velocity.
 void Transform::Move(const Vector3& newPosition)
 {

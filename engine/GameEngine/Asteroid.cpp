@@ -36,6 +36,8 @@ bool Asteroid::OnInitialize()
 	GeometryProvider::Tessellate(vertices, indices, 2);
 
 	GeometryProvider::Spherize(vertices);
+
+	Bounds = BoundingBox::FromVectors(vertices);
     
     material.Build("Shaders/lit");
     
@@ -47,8 +49,6 @@ bool Asteroid::OnInitialize()
     m_mesh = &mesh;
     
     Transform->Drag = 0.f;
-    Transform->Spin(Vector3(0.01f, 0.01f, 0));
-	//Transform->Push(Vector3(0.01f, 0, 0));
     
     return true;
     
@@ -68,13 +68,6 @@ void Asteroid::OnUpdate(const GameTime& time)
     pos = mvp.Transform(pos);
     bounds = mvp.Transform(bounds);
     float radius = (bounds - pos).Length() / 2.f;
-    
-    Vector4 containment;
-    
-    auto contains = Game::Camera().ContainsSphere(pos, radius, containment);
-    
-    if(!contains)
-        Transform->Wrap(containment);
     
 }
 

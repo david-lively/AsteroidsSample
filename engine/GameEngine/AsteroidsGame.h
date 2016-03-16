@@ -9,8 +9,11 @@
 #ifndef ASTEROIDS_H
 #define ASTEROIDS_H
 
+#include <vector>
+
 #include "Game.h"
 #include "Ship.h"
+#include "WorldEntity.h"
 #include "Asteroid.h"
 #include "Grid.h"
 
@@ -31,12 +34,14 @@ public:
     Ship& CreateShip();
     Grid& CreateGrid();
     
-    void CreateAsteroids(int count);
+	void CreateAsteroids(int count, std::vector<WorldEntity*>& entities);
 
     
 private:
     Grid* m_grid;
     Ship* m_ship;
+	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
+	std::vector<WorldEntity*> m_itemsToWrap;
     
 };
 

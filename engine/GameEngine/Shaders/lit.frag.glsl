@@ -4,6 +4,8 @@ in vec3 WorldPosition;
 in vec4 Color;
 out vec4 fragmentColor;
 
+
+
 void main() {
     
     vec3 dx = normalize(dFdx(WorldPosition));

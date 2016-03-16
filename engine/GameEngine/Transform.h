@@ -39,6 +39,8 @@ public:
     
     /// move to a new position, but do not add velocity.
 	void Move(const Vector3& newPosition);
+	void Move(const float x, const float y, const float z);
+
     
 	void Spin(const Vector3& theta);
     

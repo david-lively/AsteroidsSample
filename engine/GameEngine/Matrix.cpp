@@ -182,16 +182,16 @@ void Matrix::Multiply(const Matrix& left, const Matrix& right, Matrix& result)
     result.m33 = (((lm41 * rm14) + (lm42 * rm24)) + (lm43 * rm34)) + (lm44 * rm44);
 }
 
-float cot(float radians)
+float cotf(float radians)
 {
-    return 1.f / tan(radians);
+    return 1.f / tanf(radians);
 }
 
 Matrix Matrix::CreatePerspective(float fov, float aspect, float zNear, float zFar)
 {
     Matrix m;
     
-    auto f = cot(fov / 2);
+    auto f = cotf(fov / 2);
     
     m.m00 = f / aspect;
     m.m11 = f;

@@ -18,9 +18,13 @@
 class Game : public GameObject
 {
 public:
-    Game();
     GameTime Time;
-    static Camera& Camera()
+	bool IsPlaying = false;
+	Vector4 ClearColor;
+	
+	
+	Game();
+	static Camera& Camera()
     {
         if (nullptr == m_camera)
             m_camera = &m_instance->Create<class Camera>("primary.camera");
@@ -44,6 +48,7 @@ public:
     static Game& Instance() { return *m_instance; }
     
     GLFWwindow* Window() const { return m_window; }
+
 
 private:
     GLFWwindow* m_window;

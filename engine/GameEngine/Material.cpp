@@ -18,13 +18,71 @@ using namespace std;
 
 void Material::SetUniforms(const GameTime& time)
 {
+	Bind();
 	SetUniform("GameTimeTotalSeconds", time.TotalSeconds());
 
 	auto& cam = Game::Camera();
-	
+
 	SetUniform("View", cam.GetViewMatrix());
 	SetUniform("Projection", cam.GetProjectionMatrix());
+
+	SetAllUniforms(time);
+
+
 }
+
+void Material::SetAllUniforms(const GameTime& time)
+{
+	{
+		auto& uniformMap = UNIFORM_MAP_NAME(int);
+
+		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
+		{
+			gl::Uniform1i(it->first, it->second);
+		}
+	}
+
+	{
+	auto& uniformMap = UNIFORM_MAP_NAME(float);
+
+	for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
+	{
+		gl::Uniform1f(it->first, it->second);
+	}
+}
+
+	{
+		auto& uniformMap = UNIFORM_MAP_NAME(Vector3);
+
+		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
+		{
+			Vector3& v = it->second;
+			gl::Uniform3f(it->first, v.X, v.Y, v.Z);
+		}
+	}
+
+	{
+		auto& uniformMap = UNIFORM_MAP_NAME(Vector4);
+
+		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
+		{
+			Vector4& v = it->second;
+			gl::Uniform4f(it->first, v.X, v.Y, v.Z, v.W);
+		}
+	}
+
+	{
+		auto& uniformMap = UNIFORM_MAP_NAME(Matrix);
+
+		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
+		{
+			Matrix& m = it->second;
+			gl::UniformMatrix4fv(it->first, 1, false, &m.m00);
+		}
+	}
+
+}
+
 
 
 bool Material::Build(string vertexShaderSource, string fragmentShaderSource)
@@ -161,43 +219,43 @@ bool Material::CompileSuccessful(GLint program)
 
 bool Material::Build(const std::string& path)
 {
-    auto vertFilename = path + ".vert.glsl";
-    auto fragFilename = path + ".frag.glsl";
-    
-    if(!Files::Exists(vertFilename))
-    {
-        Log::Error << "Could not find vertex shader \"" << vertFilename << "\"\n";
-        return false;
-    }
-    
-    if(!Files::Exists(fragFilename))
-    {
-        Log::Error << "Could not find fragment shader \"" << fragFilename << "\"\n";
-        return false;
-    }
-    
-    
-    bool success = true;
-    
-    do
-    {
-    
-        Log::Info << "Loading vertex shader \"" << vertFilename << "\"\n";
-        auto vertexShaderSource = Files::Read(vertFilename);
-        
-        Log::Info << "Loading fragment shader \"" << fragFilename << "\"\n";
-        auto fragmentShaderSource = Files::Read(fragFilename);
-        
-        success = Build(vertexShaderSource, fragmentShaderSource);
+	auto vertFilename = path + ".vert.glsl";
+	auto fragFilename = path + ".frag.glsl";
 
-        if(!success)
-        {
-            cout << "Press enter to retry." << endl;
-            getchar();
-        }
-        
-    } while(!success);
-    
-    return true;
-    
+	if (!Files::Exists(vertFilename))
+	{
+		Log::Error << "Could not find vertex shader \"" << vertFilename << "\"\n";
+		return false;
+	}
+
+	if (!Files::Exists(fragFilename))
+	{
+		Log::Error << "Could not find fragment shader \"" << fragFilename << "\"\n";
+		return false;
+	}
+
+
+	bool success = true;
+
+	do
+	{
+
+		Log::Info << "Loading vertex shader \"" << vertFilename << "\"\n";
+		auto vertexShaderSource = Files::Read(vertFilename);
+
+		Log::Info << "Loading fragment shader \"" << fragFilename << "\"\n";
+		auto fragmentShaderSource = Files::Read(fragFilename);
+
+		success = Build(vertexShaderSource, fragmentShaderSource);
+
+		if (!success)
+		{
+			cout << "Press enter to retry." << endl;
+			getchar();
+		}
+
+	} while (!success);
+
+	return true;
+
 }

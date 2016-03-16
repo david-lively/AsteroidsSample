@@ -10,6 +10,9 @@
 #include <vector>
 #include <vector>
 #include <iostream>
+#include <cmath>
+#include <random>
+
 
 using namespace std;
 
@@ -20,133 +23,187 @@ using namespace std;
 #include "InputHandler.h"
 #include "Grid.h"
 #include "Asteroid.h"
-
-#include <cmath>
-
+#include "Bounds.h"
 
 
 void QuitGame(const GameObject& sender, const GameTime& time)
 {
-    Log::Info << "Closing application\n";
-    glfwSetWindowShouldClose(Game::Instance().Window(), true);
+	Log::Info << "Closing application\n";
+	glfwSetWindowShouldClose(Game::Instance().Window(), true);
 }
 
 bool AsteroidsGame::OnCreateScene()
 {
-    m_ship = &CreateShip();
-    m_grid = &CreateGrid();
-    
-    CreateAsteroids(1);
+	m_ship = &CreateShip();
+	m_grid = &CreateGrid();
 
-    auto& input = Create<InputHandler>("asteroids-input");
-    
-   
-    input.Subscribe(GLFW_KEY_ESCAPE,
-                    DECL_KEYHANDLER
-                    {
-                        Log::Info << "Quit key received, closing.\n";
-                        glfwSetWindowShouldClose(Game::Instance().Window(), true);
-                    }
-                    
-                    );
-    
-    input.Subscribe(GLFW_KEY_F1,
-                    DECL_KEYHANDLER
-                    {
-                        if (nullptr != m_grid)
-                            m_grid->Enabled = !m_grid->Enabled;
-                    }
-                    
-                    );
-    
-    input.Subscribe(GLFW_KEY_W,
-                    DECL_KEYHANDLER
-                    {
-                        auto& camera = Game::Camera();
-                        
-                        camera.Transform->Spin(Vector3(0.01f, 0, 0));
-                    }
-                    );
+	CreateAsteroids(1, m_itemsToWrap);
 
-    input.Subscribe(GLFW_KEY_S,
-                    DECL_KEYHANDLER
-                    {
-                        auto& camera = Game::Camera();
-                        
-                        camera.Transform->Spin(Vector3(-0.01f, 0, 0));
-                    }
-                    );
-    
+	m_itemsToWrap.push_back(m_ship);
 
-    input.Subscribe(GLFW_KEY_E,
-                    DECL_KEYHANDLER
-                    {
-                        auto& camera = Game::Camera();
-                        
-                        camera.Transform->Reset();
-                    }
-                    );
-    
-    
-    return true;
+	auto& camera = Camera();
+
+
+	auto& input = Create<InputHandler>("asteroids-input");
+
+
+	input.Subscribe(GLFW_KEY_ESCAPE,
+		DECL_KEYHANDLER
+	{
+		Log::Info << "Quit key received, closing.\n";
+		glfwSetWindowShouldClose(Game::Instance().Window(), true);
+	}
+
+	);
+
+	input.Subscribe(GLFW_KEY_F1,
+		DECL_KEYHANDLER
+	{
+		if (nullptr != m_grid)
+		m_grid->Enabled = !m_grid->Enabled;
+	}
+
+	);
+
+	input.Subscribe(GLFW_KEY_W,
+		DECL_KEYHANDLER
+	{
+		auto& camera = Game::Camera();
+
+		camera.Transform->Spin(Vector3(0.01f, 0, 0));
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_S,
+		DECL_KEYHANDLER
+	{
+		auto& camera = Game::Camera();
+
+		camera.Transform->Spin(Vector3(-0.01f, 0, 0));
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_E,
+		DECL_KEYHANDLER
+	{
+		auto& camera = Game::Camera();
+
+		camera.Transform->Reset();
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_F2,
+		DECL_KEYHANDLER
+	{
+		static bool evenOdd = true;
+		float fov = evenOdd ? TO_RADIANS(45.f) : TO_RADIANS(120.f);
+
+		Game::Camera().SetFieldOfView(fov);
+
+		evenOdd = !evenOdd;
+
+	}
+	);
+
+
+	return true;
 }
 
 
 void AsteroidsGame::OnUpdate(const GameTime& time)
 {
-    /// wrap ship to stay on the grid.
-    auto shipBounds = m_ship->Transform->TransformAABB(m_ship->Bounds);
-    auto gridBounds = m_grid->Transform->TransformAABB(m_grid->Bounds);
-    
-    auto intersects = shipBounds.Intersects(gridBounds) != IntersectionType::Disjoint;
-    
-    if(!intersects)
-    {
-        auto moveTo = m_ship->Transform->Translation;
-        if (shipBounds.Max.X < gridBounds.Min.X || shipBounds.Min.X > gridBounds.Max.X)
-        {
-            moveTo.X = -1.f * moveTo.X;
-        }
+	/// wrap moving items to view frustum
 
-        if (shipBounds.Max.Y < gridBounds.Min.Y || shipBounds.Min.Y > gridBounds.Max.Y)
-        {
-            moveTo.Y = -1.f * moveTo.Y;
-        }
-        
-        m_ship->Transform->Move(moveTo);
-        
-    }
-    
-    
+	auto clipBounds = m_grid->Transform->TransformAABB(m_grid->Bounds);
+	auto& camera = Game::Instance().Camera();
+	auto& viewMatrix = camera.GetViewMatrix();
+
+	
+	for (auto entityPtr : m_itemsToWrap)
+	{
+		auto& entity = *entityPtr;
+		auto& worldView = entity.Transform->GetMatrix() * viewMatrix;
+
+		Vector3 center(0);
+		Vector3 bound(0.5f, 0, 0);
+
+		center = worldView.Transform(center);
+		bound = worldView.Transform(bound);
+		float radius = (bound - center).Length();
+
+		auto material = entity.GetFirst<Material>();
+
+		if (nullptr != material)
+		{
+			Vector3 containment;
+
+			if (camera.ContainsSphere(center, radius, containment))
+			{
+				material->SetUniform("Color", Vector4(0, 1.f, 0, 1));
+			}
+			else
+			{
+				Vector3 newPosition = entity.Transform->Translation;
+			
+				if (containment.X < 1)
+					newPosition.X *= -0.99f;
+
+				if (containment.Y < 1)
+					newPosition.Y *= -0.99f;
+
+				entity.Transform->Move(newPosition);
+
+				Vector4 color(containment.X, containment.Y, containment.Z, 1);
+				material->SetUniform("Color", color);
+			}
+		}
+
+	}
+
 }
 
 
 
 Ship& AsteroidsGame::CreateShip()
 {
-    auto& ship = Create<Ship>("ship");
+	auto& ship = Create<Ship>("ship");
 
-    ship.Transform->Scale = Vector3(1.5f);
-    
-    return ship;
+	ship.Transform->Scale = Vector3(1.5f);
+
+	return ship;
 }
 
 Grid& AsteroidsGame::CreateGrid()
 {
-    auto& grid = Create<Grid>("grid");
-    
-    grid.Transform->Scale = Vector3(20);
-    
-    return grid;
-    
+	auto& grid = Create<Grid>("grid");
+
+	grid.Transform->Scale = Vector3(20);
+
+	return grid;
+
 }
 
-void AsteroidsGame::CreateAsteroids(int count)
+void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 {
-    Log::Warning << "Ignoring asteroid count (" << count << ") - creating 1 for debug\n";
-    
-    auto& asteroid = Create<Asteroid>("asteroid");
-    asteroid.Transform->Scale = Vector3(2);
+
+	Log::Warning << "Ignoring asteroid count (" << count << ") - creating 1 for debug\n";
+
+	auto& asteroid = Create<Asteroid>("asteroid");
+	entities.push_back(&asteroid);
+
+	auto& transform = *asteroid.Transform;
+
+	transform.Scale = Vector3(1);
+
+	/// start the asteroid moving...
+	float radians = TO_RADIANS(rand() % 360);
+
+	Vector3 dir(cosf(radians), sinf(radians), 0);
+
+	transform.Push(dir * 0.05f);
+
+	/// and make it spin
+	Vector3 spinSpeed((rand() % 10) / 10.f, (rand() % 10) / 10.f, 0);
 }
 
 

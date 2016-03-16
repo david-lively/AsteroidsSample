@@ -18,15 +18,17 @@ Matrix Camera::GetProjectionMatrix()
 	return m_projectionMatrix;
 }
 
-Matrix Camera::GetViewMatrix()
+void Camera::OnPreUpdate(const GameTime& time)
 {
 	auto t = Transform->Translation * -1.f;
 	auto r = Transform->Rotation * -1.f;
 
 	m_viewMatrix = Matrix::CreateRotation(r) * Matrix::CreateTranslation(t);
+}
 
+Matrix Camera::GetViewMatrix()
+{
 	return m_viewMatrix;
-
 }
 
 Matrix Camera::GetViewProjectionMatrix()
@@ -41,66 +43,83 @@ Matrix Camera::GetViewProjectionMatrix()
 
 void Camera::BuildFrustumPlanes()
 {
-	auto viewProj = m_viewMatrix * m_projectionMatrix;
+	int w, h;
 
-	auto rows = viewProj.GetAllCols();
+	Game::GetFramebufferSize(&w, &h);
+	const float aspect = w * 1.f / h;
 
-	auto vl = rows[3] + rows[0];
-	vl /= vl.W;
-	Left = (Vector3)vl.Normalized();
+	const float halfHeight = ZNear * tan(FieldOfView / 2.f);
+	const float halfWidth = halfHeight * aspect;
 
-	auto vr = rows[3] - rows[0];
-	vr /= vr.W;
-	Right = (Vector3)vr.Normalized();
+	/// corners of the viewport
+	Vector3 tr(halfWidth, halfHeight, ZNear);
+	Vector3 br(halfWidth, -halfHeight, ZNear);
+	Vector3 bl(-halfWidth, -halfHeight, ZNear);
+	Vector3 tl(-halfWidth, halfHeight, ZNear);
 
-	auto vt = rows[3] - rows[1];
-	vt /= vt.W;
-	Top = (Vector3)vt.Normalized();
-
-	auto vb = rows[3] + rows[1];
-	vb /= vb.W;
-	Bottom = (Vector3)vb.Normalized();
-
-	auto vn = rows[3] - rows[2];
-	vn /= vn.W;
-	Near = (Vector3)vn.Normalized();
-
-	auto vf = rows[3] + rows[2];
-	vf /= vf.W;
-	Far = (Vector3)vf.Normalized();
+	/// frustum plane normals
+	Top = Vector3::Cross(tl, tr).Normalized();
+	Right = Vector3::Cross(tr, br).Normalized();
+	Bottom = Vector3::Cross(br, bl).Normalized();
+	Left = Vector3::Cross(bl, tl).Normalized();
 
 }
 
 bool Camera::ContainsSphere(const Vector3& center, const float radius, Vector3& containment)
 {
-	float dl = Left.Dot(center);
-	float dr = Right.Dot(center);
-	float dt = Top.Dot(center);
-	float db = Bottom.Dot(center);
-	float dn = Near.Dot(center);
-	float df = Far.Dot(center);
+	float dt = center.Dot(Top);
+	float dr = center.Dot(Right);
+	float db = center.Dot(Bottom);
+	float dl = center.Dot(Left);
 
+	float dn = center.Z - ZNear;
+	float df = ZFar - center.Z;
 
-	bool containsX = dl >= -radius && dr >= -radius;
-	bool containsZ = 1;//dn >= -radius && df >= -radius;
-	bool containsY = dt >= -radius && db >= -radius;
+	float r = radius;
+	bool contains = dl > -r && dr > -r && dt > -r && db > -r;
 
-	bool containsAll = containsX && containsY && containsZ;
+	Log::Debug << "contains " << contains << " radius " << radius << " dl " << dl << " dt " << dt << " dr " << dr << " db " << db << "\r";
 
-	containment.X = containsX;
-	containment.Y = containsY;
-	containment.Z = containsZ;
+	containment.X = dl > -r && dr > -r;
+	containment.Y = dt > -r && db > -r;
+	containment.Z = 1;// dn > -r && db > -r;
 
-	return containsAll;
+	return contains;
 }
 
 
-bool Camera::ContainsSphere(const Vector3& center, float radius)
+bool Camera::ContainsSphere(const Vector3& center, const float radius)
 {
-	Vector4 containsBounds;
+	float dt = center.Dot(Top);
+	float dr = center.Dot(Right);
+	float db = center.Dot(Bottom);
+	float dl = center.Dot(Left);
 
-	return ContainsSphere(center, radius, containsBounds);
+	float dn = center.Z - ZNear;
+	float df = ZFar - center.Z;
+
+	float scale = 0.2f;
+	dl *= scale;
+	dr *= scale;
+	dt *= scale;
+	db *= scale;
+
+	float r = radius;
+	bool contains = dl > -r && dr > -r && dt > -r && db > -r;
+
+	Log::Debug << "contains " << contains << " radius " << radius << " dl " << dl << " dt " << dt << " dr " << dr << " db " << db << "\r";
+
+
+	return contains;
+
 }
+
+//bool Camera::ContainsSphere(const Vector3& center, float radius)
+//{
+//	Vector4 containsBounds;
+//
+//	return ContainsSphere(center, radius, containsBounds);
+//}
 
 bool Camera::ContainsPoint(const Vector3& point)
 {
@@ -123,18 +142,46 @@ Update projection matrix when the window size changes.
 */
 void Camera::OnWindowResize(int width, int height)
 {
-	/// check aspect
-	int w, h;
+	UpdateProjectionMatrix(width, height);
+}
 
-	
-	Game::GetFramebufferSize(&w, &h);
+bool Camera::OnInitialize()
+{
+	/// calculate initial projection matrix
+	int w, h;
+	GLFWwindow* window = Game::Instance().Window();
+
+	glfwGetWindowSize(window, &w, &h);
+
+
+	UpdateProjectionMatrix(w, h);
+
+	return true;
+}
+
+void Camera::SetFieldOfView(float newFov)
+{ 
+	FieldOfView = newFov;
+
+	UpdateProjectionMatrix();
+}
+
+void Camera::UpdateProjectionMatrix(int w, int h)
+{
+	if (0 == w || 0 == h)
+	{
+		Game::GetFramebufferSize(&w, &h);
+	}
 
 	float aspect = w * 1.f / h;
-	
+
 	m_projectionMatrix = Matrix::CreatePerspective(FieldOfView, aspect, ZNear, ZFar);
 
 	BuildFrustumPlanes();
 }
+
+
+
 
 
 

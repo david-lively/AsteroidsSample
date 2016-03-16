@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <map>
+#include <cassert>
 
 using namespace std;
 
@@ -20,8 +21,44 @@ GeometryProvider::~GeometryProvider()
 }
 
 
+
+void GeometryProvider::FindExtents(const std::vector<Vector3>& vertices, Vector3& boxMin, Vector3& boxMax)
+{
+	if (vertices.size() == 0)
+	{
+		boxMin = Vector3(0);
+		boxMax = Vector3(0);
+
+		return;
+
+	}
+
+
+	boxMin = vertices[0];
+	boxMax = vertices[0];
+
+	for (int i = 1; i < vertices.size(); ++i)
+	{
+		boxMin = Vector3::Min(boxMin, vertices[i]);
+		boxMax = Vector3::Max(boxMax, vertices[i]);
+	}
+
+}
+
+const Vector3 GeometryProvider::FindCenter(std::vector<Vector3>& vertices)
+{
+	Vector3 boxMin, boxMax;
+
+	FindExtents(vertices, boxMin, boxMax);
+
+	return (boxMin + boxMax)  * 0.5f;
+}
+
+
 void GeometryProvider::Spherize(std::vector<Vector3>& vertices)
 {
+	auto center = FindCenter(vertices);
+
 	FitToUnitCube(vertices);
 
 	for (auto it = begin(vertices); it != end(vertices);  ++it)
@@ -217,4 +254,44 @@ void GeometryProvider::Tessellate(vector<Vector3>& vertices, std::vector<GLushor
 }
 
 
+vector<Vector3> GeometryProvider::ToVectors(std::vector<float>& coordinates)
+{
+	vector<Vector3> vertices;
 
+	for (int i = 0; i < coordinates.size(); i += 3)
+	{
+		vertices.push_back(Vector3(coordinates[i], coordinates[i + 1], coordinates[i + 2]));
+	}
+
+	return vertices;
+}
+
+
+void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments)
+{
+	GLushort firstIndex = (GLushort)vertices.size();
+
+	float dTheta = TO_RADIANS(360.f / segments);
+
+	for (float theta = 0; theta <= TO_RADIANS(360); theta += dTheta)
+	{
+		
+		float x = cosf(theta) * radius;
+		float y = sinf(theta) * radius;
+
+		vertices.push_back(Vector3(x, y, 0) + center);
+	}
+
+	GLushort lastIndex = (GLushort)(vertices.size() - 1);
+
+	for (int i = firstIndex; i < lastIndex; ++i)
+	{
+		indices.push_back(i);
+		indices.push_back(i + 1);
+	}
+
+	indices.push_back(lastIndex);
+	indices.push_back(firstIndex);
+
+
+}

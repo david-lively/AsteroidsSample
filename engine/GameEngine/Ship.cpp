@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "Camera.h"
 #include "InputHandler.h"
+#include "GeometryProvider.h"
 
 #include <vector>
 #include <cmath>
@@ -29,7 +30,7 @@ bool Ship::OnInitialize()
     
     auto& mesh = Create<Mesh>("ship-mesh");
     
-    vector<float> vertices =
+    vector<float> coordinates =
     {
         0,0.5f, 0
         ,
@@ -42,8 +43,9 @@ bool Ship::OnInitialize()
         +1/4.f, -0.25f, 0
         
     };
-    
-    
+
+	auto vertices = GeometryProvider::ToVectors(coordinates);
+
     vector<GLushort> indices =
     {
         0, 1
@@ -53,7 +55,9 @@ bool Ship::OnInitialize()
         3, 4
     };
     
-    Bounds = BoundingBox::FromFloats(vertices);
+	//GeometryProvider::Circle(vertices, indices, Vector3(0), 0.6f, 12);
+
+    Bounds = BoundingBox::FromVectors(vertices);
     
     material.Build("Shaders/primitive");
     
@@ -69,6 +73,7 @@ bool Ship::OnInitialize()
 
 void Ship::OnUpdate(const GameTime& time)
 {
+	WorldEntity::OnUpdate(time);
     
     
 }
@@ -78,7 +83,7 @@ void Ship::OnRender(const GameTime& time)
 {
 	auto& cam = Game::Camera();
 
-	cam.Transform->Translation.Z = 7;
+	cam.Transform->Translation.Z = 9;
 
 	WorldEntity::OnRender(time);
 }
@@ -91,15 +96,15 @@ void Ship::ConfigureInput()
 {
     auto& handler = Create<InputHandler>("ship.input.handler");
     
-    const float forwardSpeed = 0.09f;
-    const float spinSpeed = 0.01f;
+    const float forwardSpeed = 0.5f;
+    const float spinSpeed = 0.3f;
     
 #define xform (*this->Transform)
     handler.Subscribe(GLFW_KEY_UP,
                       DECL_KEYHANDLER
                       {
                           auto dir = Transform->GetMatrix().Up() * forwardSpeed;
-						  xform.Push(dir * forwardSpeed);
+						  xform.Push(dir * forwardSpeed * time.ElapsedSeconds());
                       }
                       );
     
@@ -107,7 +112,7 @@ void Ship::ConfigureInput()
                       DECL_KEYHANDLER
                       {
                           auto dir = Transform->GetMatrix().Up() * (-1.f * forwardSpeed);
-						  xform.Push(dir * forwardSpeed);
+						  xform.Push(dir * forwardSpeed * time.ElapsedSeconds());
                       }
                       );
     
@@ -116,7 +121,7 @@ void Ship::ConfigureInput()
                       DECL_KEYHANDLER
                       {
                           auto spin = Vector3(0,0,spinSpeed);
-                          xform.Spin(spin);
+						  xform.Spin(spin * time.ElapsedSeconds());
                       }
                       
                       );
@@ -125,7 +130,7 @@ void Ship::ConfigureInput()
                       DECL_KEYHANDLER
                       {
                           auto spin = Vector3(0,0,-1.f * spinSpeed);
-                          xform.Spin(spin);
+						  xform.Spin(spin * time.ElapsedSeconds());
                       }
                       
                       );

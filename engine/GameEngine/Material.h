@@ -10,6 +10,7 @@
 #define MATERIAL_H
 
 #include <string>
+#include <map>
 
 #include "Common.h"
 #include "GameObject.h"
@@ -21,28 +22,28 @@
 class Material : public GameObject
 {
 public:
-    PolygonMode FillType = PolygonMode::Fill;
-    
-    
-    bool Build(std::string vertexShaderSource, std::string fragmentShaderSource);
-    
-    bool Build(const std::string& path);
-    
-    void OnDispose() override;
-    
-    GLuint Program() const
-    {
-        return m_program;
-    }
-    
-    /// <summary>
-    /// Gets the shader information log.
-    /// </summary>
-    /// <param name="shader">The shader.</param>
-    /// <returns></returns>
-    std::string GetShaderLog(GLuint shader);
-    std::string GetProgramLog(GLuint program);
-    
+	PolygonMode FillType = PolygonMode::Fill;
+
+
+	bool Build(std::string vertexShaderSource, std::string fragmentShaderSource);
+
+	bool Build(const std::string& path);
+
+	void OnDispose() override;
+
+	GLuint Program() const
+	{
+		return m_program;
+	}
+
+	/// <summary>
+	/// Gets the shader information log.
+	/// </summary>
+	/// <param name="shader">The shader.</param>
+	/// <returns></returns>
+	std::string GetShaderLog(GLuint shader);
+	std::string GetProgramLog(GLuint program);
+
 	virtual void SetUniforms(const GameTime& time);
 
 	void Bind()
@@ -50,50 +51,64 @@ public:
 		gl::UseProgram(m_program);
 	}
 
-	/*
-	set a uniform shader value, if it exists
-
-	We use this method to check if a uniform is available before actually trying to set its value.
-	In some implementations, calling a gl::Uniform*() function with an invalid location parameter will
-	generate an OpenGL error.
-	*/
-	template<typename T>
-	void SetUniform(const std::string& name, const T& value)
-	{
-		auto location = gl::GetUniformLocation(m_program, name.c_str());
-
-		if (location >= 0)
-			SetUniform(location, value);
-	}
-
-	/*
-	set a FLOAT uniform shader value. Do not call this directly. Instead, use the templated
-	SetUniform<T> method, which ensures that a uniform exists before setting a value.
-	*/
-
-	inline void SetUniform(int location, float value)
-	{
-		gl::Uniform1f(location, value);
-	}
-
-	inline void SetUniform(int location, int value)
-	{
-		gl::Uniform1i(location, value);
-	}
-    
-    inline void SetUniform(int location, const Matrix& m)
-    {
-        gl::UniformMatrix4fv(location, 1, false, &m.m00);
-    }
-
-
-
 private:
-    GLuint m_program;
 
-	bool CompileSuccessful(GLint program);
-    
-    
-};
+
+#define UNIFORM_MAP_NAME(TYPENAME) m_uniformMap_ ## TYPENAME
+#define DECL_UNIFORM_SETTER(TYPENAME)								\
+	std::map<int, TYPENAME> UNIFORM_MAP_NAME(TYPENAME);				\
+	void SetUniform(int location, const TYPENAME& value)			\
+{																\
+	UNIFORM_MAP_NAME(TYPENAME)[location] = value;					\
+}
+
+
+
+#ifndef UNIFORM_SETTERS
+#define UNIFORM_SETTERS
+
+	DECL_UNIFORM_SETTER(int);
+	DECL_UNIFORM_SETTER(float);
+	DECL_UNIFORM_SETTER(Matrix);
+	DECL_UNIFORM_SETTER(Vector4);
+	DECL_UNIFORM_SETTER(Vector3);
+	DECL_UNIFORM_SETTER(Vector2);
+
+	void SetAllUniforms(const GameTime& time);
+
+
+
+#endif
+
+#undef DECL_UNIFORM_SETTER
+
+
+
+
+	public:
+		/*
+		set a uniform shader value, if it exists
+
+		We use this method to check if a uniform is available before actually trying to set its value.
+		In some implementations, calling a gl::Uniform*() function with an invalid location parameter will
+		generate an OpenGL error.
+		*/
+		template<typename T>
+		void SetUniform(const std::string& name, const T& value)
+		{
+			auto location = (int)gl::GetUniformLocation(m_program, name.c_str());
+
+			if (location >= 0)
+				SetUniform(location, value);
+		}
+
+
+
+	private:
+		GLuint m_program;
+
+		bool CompileSuccessful(GLint program);
+
+	};
 
 #endif /* Material_hpp */

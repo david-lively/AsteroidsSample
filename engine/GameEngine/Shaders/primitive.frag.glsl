@@ -1,8 +1,8 @@
 #version 150
 
-in vec4 Color;
+in vec4 vertexColor;
 out vec4 fragmentColor;
 
 void main() {
-    fragmentColor = Color;
+    fragmentColor = vertexColor;
 }

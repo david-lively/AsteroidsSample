@@ -12,17 +12,19 @@ uniform mat4 Projection;
 uniform float GameTimeTotalSeconds;
 uniform float TimeScale = 1;
 
+uniform vec4 Color = vec4(0.2f, 0.2f, 0.2f, 1);
+
 in vec3 Pos;
 
-out vec4 Color;
-
+out vec4 vertexColor;
 
 void main()
 {
     vec4 position = vec4(Pos,1);
     
     position = Projection * View * World * position;    
-    
-    Color = vec4(1);
+
+	vertexColor = Color;
+
     gl_Position = position;
 }

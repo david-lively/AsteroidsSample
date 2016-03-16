@@ -29,6 +29,7 @@ struct Vector2
     
 };
 
+
 struct Vector3 : public Vector2
 {
     float Z;
@@ -67,6 +68,16 @@ struct Vector3 : public Vector2
                        ,max(left.Z,right.Z)
                        );
     }
+
+	friend Vector3 operator*(const float lval, const Vector3& rval)
+	{
+		return Vector3(lval * rval.X, lval * rval.Y, lval * rval.Z);
+	}
+
+	friend Vector3 operator*(const Vector3& lval, const float rval)
+	{
+		return rval * lval;
+	}
     
     template<typename T>
     inline Vector3 operator* (const T& multiplier) const
@@ -174,6 +185,21 @@ struct Vector3 : public Vector2
     
     friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
 
+	Vector3 Cross(const Vector3& vec) const
+	{
+		Vector3 c;
+
+		c.X = Y * vec.Z - Z * vec.Y;
+		c.Y = Z * vec.X - X * vec.Z;
+		c.Z = X * vec.Y - Y * vec.X;
+
+		return c;
+	}
+
+	static Vector3 Cross(const Vector3& left, const Vector3& right)
+	{
+		return left.Cross(right);
+	}
     
     
     
@@ -239,6 +265,13 @@ struct Vector4 : public Vector3
     {
         return X * right.X + Y * right.Y + Z * right.Z + W * right.W;
     }
+
+	/// normalize XYZ, setting W to 1. 
+	inline Vector4 Normalized3()
+	{
+		float oneOverLength = 1.f / sqrt(X*X + Y*Y + Z*Z);
+		return Vector4(X * oneOverLength, Y * oneOverLength, Z * oneOverLength, 1);
+	}
     
     inline Vector3& Normalize()
     {

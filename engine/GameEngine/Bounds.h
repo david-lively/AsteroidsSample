@@ -29,6 +29,16 @@ struct BoundingBox
 {
     Vector3 Min;
     Vector3 Max;
+
+	BoundingBox()
+	{
+
+	}
+
+	BoundingBox(const Vector3& min, const Vector3& max) : Min(min), Max(max)
+	{
+
+	}
     
     static BoundingBox FromMinMax(const Vector3& min, const Vector3& max)
     {

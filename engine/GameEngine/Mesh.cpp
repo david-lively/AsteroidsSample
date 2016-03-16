@@ -36,7 +36,7 @@ void Mesh::OnRender(const GameTime& time)
 	Material->SetUniforms(time);
     
     gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
-    
+	gl::Enable(gl::DEPTH_TEST);
     gl::Enable(gl::CULL_FACE);
     gl::FrontFace(gl::CW);
 
