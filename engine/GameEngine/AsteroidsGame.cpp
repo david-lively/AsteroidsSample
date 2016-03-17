@@ -24,6 +24,7 @@ using namespace std;
 #include "Grid.h"
 #include "Asteroid.h"
 #include "Bounds.h"
+#include "Light.h"
 
 
 void QuitGame(const GameObject& sender, const GameTime& time)
@@ -34,6 +35,7 @@ void QuitGame(const GameObject& sender, const GameTime& time)
 
 bool AsteroidsGame::OnCreateScene()
 {
+	CreateLights(m_lights);
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
 
@@ -119,6 +121,7 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 	auto& viewMatrix = camera.GetViewMatrix();
 
 	
+
 	for (auto entityPtr : m_itemsToWrap)
 	{
 		auto& entity = *entityPtr;
@@ -129,6 +132,7 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 
 		center = worldView.Transform(center);
 		bound = worldView.Transform(bound);
+	
 		float radius = (bound - center).Length();
 
 		auto material = entity.GetFirst<Material>();
@@ -144,7 +148,7 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 			else
 			{
 				Vector3 newPosition = entity.Transform->Translation;
-			
+
 				if (containment.X < 1)
 					newPosition.X *= -0.99f;
 
@@ -161,8 +165,6 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 	}
 
 }
-
-
 
 Ship& AsteroidsGame::CreateShip()
 {
@@ -183,9 +185,26 @@ Grid& AsteroidsGame::CreateGrid()
 
 }
 
+void AsteroidsGame::OnPreRender(const GameTime& time)
+{
+	auto shipMaterial = m_ship->GetFirst<Material>();
+	if (nullptr != shipMaterial)
+		shipMaterial->SetLights(m_lights);
+
+	auto asteroid = GetFirst<Asteroid>();
+
+	if (nullptr != asteroid)
+	{
+		auto asteroidMaterial = asteroid->GetFirst<Material>();
+		if (nullptr != asteroidMaterial)
+			asteroidMaterial->SetLights(m_lights);
+	}
+
+}
+
+
 void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 {
-
 	Log::Warning << "Ignoring asteroid count (" << count << ") - creating 1 for debug\n";
 
 	auto& asteroid = Create<Asteroid>("asteroid");
@@ -204,6 +223,21 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 
 	/// and make it spin
 	Vector3 spinSpeed((rand() % 10) / 10.f, (rand() % 10) / 10.f, 0);
+
+
+}
+
+
+void AsteroidsGame::CreateLights(vector<Light*>& lights)
+{
+	auto& sun = Create<Light>("sun");
+
+	sun.Direction = Vector3(-1, -1, 0);
+	sun.Color = Vector4(1, 1, 0, 1);
+	sun.Intensity = 0.5f;
+
+	lights.push_back(&sun);
+
 }
 
 

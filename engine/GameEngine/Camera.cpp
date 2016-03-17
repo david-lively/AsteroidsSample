@@ -78,8 +78,6 @@ bool Camera::ContainsSphere(const Vector3& center, const float radius, Vector3& 
 	float r = radius;
 	bool contains = dl > -r && dr > -r && dt > -r && db > -r;
 
-	Log::Debug << "contains " << contains << " radius " << radius << " dl " << dl << " dt " << dt << " dr " << dr << " db " << db << "\r";
-
 	containment.X = dl > -r && dr > -r;
 	containment.Y = dt > -r && db > -r;
 	containment.Z = 1;// dn > -r && db > -r;
@@ -106,9 +104,6 @@ bool Camera::ContainsSphere(const Vector3& center, const float radius)
 
 	float r = radius;
 	bool contains = dl > -r && dr > -r && dt > -r && db > -r;
-
-	Log::Debug << "contains " << contains << " radius " << radius << " dl " << dl << " dt " << dt << " dr " << dr << " db " << db << "\r";
-
 
 	return contains;
 

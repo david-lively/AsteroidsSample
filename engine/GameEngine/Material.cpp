@@ -27,61 +27,106 @@ void Material::SetUniforms(const GameTime& time)
 	SetUniform("Projection", cam.GetProjectionMatrix());
 
 	SetAllUniforms(time);
-
-
 }
 
 void Material::SetAllUniforms(const GameTime& time)
 {
-	{
-		auto& uniformMap = UNIFORM_MAP_NAME(int);
+#define UNIFORM_SETTER_BEGIN(t) \
+	{ if (UNIFORM_MAP_NAME(t).size() > 0)								\
+	{																\
+	auto& uniformMap = UNIFORM_MAP_NAME(t);							\
+	for (auto u : uniformMap)									\
+	{																\
 
-		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
-		{
-			gl::Uniform1i(it->first, it->second);
-		}
-	}
+#define UNIFORM_SETTER_END	}}}
 
-	{
-	auto& uniformMap = UNIFORM_MAP_NAME(float);
+	UNIFORM_SETTER_BEGIN(int)
+		gl::Uniform1i(u.first, u.second);
+	UNIFORM_SETTER_END;
 
-	for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
-	{
-		gl::Uniform1f(it->first, it->second);
-	}
-}
+	UNIFORM_SETTER_BEGIN(float)
+		gl::Uniform1f(u.first, u.second);
+	UNIFORM_SETTER_END;
 
-	{
-		auto& uniformMap = UNIFORM_MAP_NAME(Vector3);
+	UNIFORM_SETTER_BEGIN(Vector3)
+		gl::Uniform3f(u.first, u.second.X, u.second.Y, u.second.Z);
+	UNIFORM_SETTER_END;
 
-		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
-		{
-			Vector3& v = it->second;
-			gl::Uniform3f(it->first, v.X, v.Y, v.Z);
-		}
-	}
+	UNIFORM_SETTER_BEGIN(Vector4)
+		gl::Uniform4f(u.first, u.second.X, u.second.Y, u.second.Z, u.second.W);
+	UNIFORM_SETTER_END;
 
-	{
-		auto& uniformMap = UNIFORM_MAP_NAME(Vector4);
+	UNIFORM_SETTER_BEGIN(Matrix)
+		gl::UniformMatrix4fv(u.first, 1, false, &u.second.m00);
+	UNIFORM_SETTER_END;
 
-		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
-		{
-			Vector4& v = it->second;
-			gl::Uniform4f(it->first, v.X, v.Y, v.Z, v.W);
-		}
-	}
+	SetAllUniformLights(time);
 
-	{
-		auto& uniformMap = UNIFORM_MAP_NAME(Matrix);
-
-		for (auto it = begin(uniformMap); it != end(uniformMap); ++it)
-		{
-			Matrix& m = it->second;
-			gl::UniformMatrix4fv(it->first, 1, false, &m.m00);
-		}
-	}
 
 }
+
+void Material::SetUniform(const Light& light)
+{
+	m_lights[light.Id] = &light;
+}
+
+void Material::SetLights(const std::vector<Light*>& lights)
+{
+	m_lights.clear();
+
+	for (auto lightPtr : lights)
+	{
+		m_lights[lightPtr->Id] = lightPtr;
+	}
+
+}
+
+
+
+void Material::SetAllUniformLights(const GameTime& time)
+{
+	auto countIndex = gl::GetUniformLocation(m_program, "LightCount");
+	if (countIndex < 0)
+		return;
+
+
+	std::vector<Vector4> lightColorIntensities;
+	lightColorIntensities.resize(m_lights.size());
+
+	std::vector<Vector3> lightDirections;
+	lightDirections.reserve(m_lights.size());
+
+	for (auto lightPtr : m_lights)
+	{
+		auto light = *lightPtr.second;
+		if (light.Enabled)
+		{
+			Vector4 colorIntensity;
+
+			colorIntensity.X = light.Color.X;
+			colorIntensity.Y = light.Color.Y;
+			colorIntensity.Z = light.Color.Z;
+			colorIntensity.W = light.Intensity;
+
+			lightColorIntensities.push_back(colorIntensity);
+			lightDirections.push_back(light.Direction);
+		}
+
+	}
+
+	auto lightCount = min(lightColorIntensities.size(), lightDirections.size());
+	gl::Uniform1i(countIndex, lightCount);
+
+	auto location = gl::GetUniformLocation(m_program, "LightColorIntensity");
+	if (location >= 0)
+		gl::Uniform4fv(location, lightCount, (const GLfloat*)lightColorIntensities.data());
+
+	location = gl::GetUniformLocation(m_program, "LightDirection");
+	if (location >= 0)
+		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightDirections.data());
+
+}
+
 
 
 

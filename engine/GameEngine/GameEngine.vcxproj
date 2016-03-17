@@ -125,6 +125,7 @@
     <ClInclude Include="glError.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix.h" />

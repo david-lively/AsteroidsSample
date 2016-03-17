@@ -17,6 +17,7 @@
 #include "Matrix.h"
 #include "Enums.h"
 #include "WorldEntity.h"
+#include "Light.h"
 
 
 class Material : public GameObject
@@ -58,7 +59,7 @@ private:
 #define DECL_UNIFORM_SETTER(TYPENAME)								\
 	std::map<int, TYPENAME> UNIFORM_MAP_NAME(TYPENAME);				\
 	void SetUniform(int location, const TYPENAME& value)			\
-{																\
+{																	\
 	UNIFORM_MAP_NAME(TYPENAME)[location] = value;					\
 }
 
@@ -74,8 +75,11 @@ private:
 	DECL_UNIFORM_SETTER(Vector3);
 	DECL_UNIFORM_SETTER(Vector2);
 
-	void SetAllUniforms(const GameTime& time);
+	std::map<int, const Light*> m_lights;
 
+	void SetUniform(const Light& light);
+	void SetAllUniforms(const GameTime& time);
+	void SetAllUniformLights(const GameTime& time);
 
 
 #endif
@@ -102,6 +106,7 @@ private:
 				SetUniform(location, value);
 		}
 
+		void SetLights(const std::vector<Light*>& lights);
 
 
 	private:

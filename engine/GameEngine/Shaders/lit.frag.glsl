@@ -1,9 +1,32 @@
 #version 150
 
+#define MAX_LIGHTS 16
+
+uniform int LightCount = 0;
+
+uniform vec4 LightColorIntensity[MAX_LIGHTS];
+uniform vec3 LightDirection[MAX_LIGHTS];
+
 in vec3 WorldPosition;
 in vec4 Color;
 out vec4 fragmentColor;
 
+vec3 ProcessLights(vec3 normal)
+{
+	vec4 color;
+
+	for (int i = 0; i < LightCount; ++i)
+	{
+		vec4 colorIntensity = LightColorIntensity[i];
+		vec3 direction = LightDirection[i];
+
+		float intensity = dot(normal, direction);
+		color += intensity * colorIntensity.rgb * colorIntensity.a;
+	}
+
+
+	return color;
+}
 
 
 void main() {
@@ -13,12 +36,7 @@ void main() {
 
 	vec3 normal = cross(dx,dy);
 
-	vec3 lightDirection = normalize(vec3(1,1,0));
-	vec3 lightColor = vec3(1,0,1);
+	vec3 color = ProcessLights(normal);
 
-	float intensity = dot(normal,lightDirection);
-
-	vec4 color = vec4(intensity  * lightColor,1);
-    
-    fragmentColor = color;
+    fragmentColor = vec4(color,1);
 }

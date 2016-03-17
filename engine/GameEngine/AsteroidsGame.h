@@ -16,6 +16,8 @@
 #include "WorldEntity.h"
 #include "Asteroid.h"
 #include "Grid.h"
+#include "Light.h"
+
 
 class AsteroidsGame : public Game
 {
@@ -27,22 +29,23 @@ public:
     bool OnCreateScene() override;
     
     void OnUpdate(const GameTime& time) override;
-    
+	void OnPreRender(const GameTime& time) override;
     /// location of shaders in the file system.
 	std::string ShaderFolder;
     
     Ship& CreateShip();
     Grid& CreateGrid();
-    
-	void CreateAsteroids(int count, std::vector<WorldEntity*>& entities);
+	void CreateLights(std::vector<Light*>& lights);
 
+	void CreateAsteroids(int count, std::vector<WorldEntity*>& entities);
     
 private:
     Grid* m_grid;
     Ship* m_ship;
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
 	std::vector<WorldEntity*> m_itemsToWrap;
-    
+	std::vector<Light*> m_lights;
+
 };
 
 
