@@ -28,8 +28,9 @@ public:
     
     bool OnCreateScene() override;
     
+	void OnPreUpdate(const GameTime& time) override;
     void OnUpdate(const GameTime& time) override;
-	void OnPreRender(const GameTime& time) override;
+	
     /// location of shaders in the file system.
 	std::string ShaderFolder;
     
@@ -45,6 +46,9 @@ private:
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
 	std::vector<WorldEntity*> m_itemsToWrap;
 	std::vector<Light*> m_lights;
+
+	std::vector<Asteroid*> m_asteroids;
+
 
 };
 

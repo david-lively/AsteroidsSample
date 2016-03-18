@@ -2,6 +2,10 @@
 #include "GameEnvironment.h"
 #include "Material.h"
 
+#include <vector>
+
+using namespace std;
+
 void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 {
 	const Material* mat = dynamic_cast<const Material*>(&sender);
@@ -22,11 +26,14 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 		return;
 
 
-	std::vector<Vector4> lightColorIntensities;
+	vector<Vector4> lightColorIntensities;
 	lightColorIntensities.reserve(m_lights.size());
 
-	std::vector<Vector3> lightDirections;
+	vector<Vector3> lightDirections;
 	lightDirections.reserve(m_lights.size());
+
+	vector<Vector3> lightPosition;
+	lightPosition.reserve(m_lights.size());
 
 	for (auto lightPtr : m_lights)
 	{
@@ -42,6 +49,7 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 
 			lightColorIntensities.push_back(colorIntensity);
 			lightDirections.push_back(light.Direction);
+			lightPosition.push_back(light.Position);
 		}
 
 	}
@@ -56,4 +64,8 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 	location = mat->GetUniformLocation("LightDirection");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightDirections.data());
+
+	location = mat->GetUniformLocation("LightPosition");
+	if (location >= 0)
+		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightPosition.data());
 }

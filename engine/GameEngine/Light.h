@@ -22,10 +22,12 @@ struct LightUniform
 class Light : public WorldEntity
 {
 public:
+	Vector3 Position;
 	Vector4 Color;
 	Vector3 Direction;
 	float Specularity;
 	float Intensity;
+
 
 	Light() : Color(1, 1, 1, 1)
 	{

@@ -6,6 +6,8 @@ uniform int LightCount = 0;
 
 uniform vec4 LightColorIntensity[MAX_LIGHTS];
 uniform vec3 LightDirection[MAX_LIGHTS];
+uniform vec3 LightPosition[MAX_LIGHTS];
+
 
 in vec3 WorldPosition;
 in vec4 Color;
@@ -18,7 +20,9 @@ vec3 ProcessLights(vec3 normal)
 	for (int i = 0; i < LightCount; ++i)
 	{
 		vec4 colorIntensity = LightColorIntensity[i];
-		vec3 direction = LightDirection[i];
+		vec3 position = LightPosition[i];
+		vec3 direction = -normalize(WorldPosition - position);
+
 
 		float intensity = dot(normal, direction);
 		color.rgb += intensity * colorIntensity.rgb;
@@ -26,9 +30,7 @@ vec3 ProcessLights(vec3 normal)
 
 	color.a = 1;
 
-
 	return color;
-	
 }
 
 

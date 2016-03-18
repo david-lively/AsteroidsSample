@@ -37,7 +37,7 @@ bool AsteroidsGame::OnCreateScene()
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
 
-	CreateAsteroids(1, m_itemsToWrap);
+	CreateAsteroids(4, m_itemsToWrap);
 
 	m_itemsToWrap.push_back(m_ship);
 
@@ -109,16 +109,30 @@ bool AsteroidsGame::OnCreateScene()
 	return true;
 }
 
-
 void AsteroidsGame::OnUpdate(const GameTime& time)
+{
+	auto& ship = *m_ship;
+	auto shipBounds = ship.Transform->TransformAABB(ship.Bounds);
+
+
+	for (auto asteroid : m_asteroids)
+	{
+		auto bounds = asteroid->Transform->TransformAABB(asteroid->Bounds);
+
+		if (shipBounds.Intersects(bounds) != IntersectionType::Disjoint)
+			Log::Info << "CRASH";
+
+
+	}
+
+}
+
+void AsteroidsGame::OnPreUpdate(const GameTime& time)
 {
 	/// wrap moving items to view frustum
 
-	auto clipBounds = m_grid->Transform->TransformAABB(m_grid->Bounds);
 	auto& camera = Game::Instance().Camera();
 	auto& viewMatrix = camera.GetViewMatrix();
-
-	
 
 	for (auto entityPtr : m_itemsToWrap)
 	{
@@ -183,23 +197,11 @@ Grid& AsteroidsGame::CreateGrid()
 
 }
 
-void AsteroidsGame::OnPreRender(const GameTime& time)
+float randFloat()
 {
-	//auto shipMaterial = m_ship->GetFirst<Material>();
-	//if (nullptr != shipMaterial)
-	//	shipMaterial->SetLights(m_lights);
-
-	//auto asteroid = GetFirst<Asteroid>();
-
-	//if (nullptr != asteroid)
-	//{
-	//	auto asteroidMaterial = asteroid->GetFirst<Material>();
-	//	if (nullptr != asteroidMaterial)
-	//		asteroidMaterial->SetLights(m_lights);
-	//}
+	return (rand() % 100) * 1.f / 100.f;
 
 }
-
 
 void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 {
@@ -207,19 +209,28 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 
 	auto& asteroid = Create<Asteroid>("asteroid");
 	entities.push_back(&asteroid);
+	m_asteroids.push_back(&asteroid);
+
 
 	auto& transform = *asteroid.Transform;
 
-	transform.Scale = Vector3(4);
+	transform.Scale = Vector3(1.5f);
+	transform.Move(randFloat() * 10, randFloat() * 10, 0);
 
 	/// start the asteroid moving...
 	float radians = TO_RADIANS(rand() % 360);
 
 	Vector3 dir(cosf(radians), sinf(radians), 0);
 
-	//transform.Push(dir * 0.05f);
+	transform.Push(dir * 0.01f);
 	/// and make it spin
 	transform.Spin(Vector3(0, 0.001f, 0));
+
+
+	--count;
+
+	if (count > 0)
+		CreateAsteroids(count, entities);
 }
 
 
@@ -260,6 +271,7 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 		l.Direction = dir;
 		l.Color = color;
 		l.Intensity = 1.f;
+		l.Position = Vector3(randFloat() * 10, randFloat() * 10, 0);
 		
 		lights.push_back(&l);
 	}
