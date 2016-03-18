@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include <sstream>
 
 using namespace std;
 
@@ -42,4 +43,7 @@ bool Files::Exists(const string& path)
 
 	return ifile.is_open();
 }
+
+
+
 

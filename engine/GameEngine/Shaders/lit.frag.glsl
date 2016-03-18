@@ -21,11 +21,14 @@ vec3 ProcessLights(vec3 normal)
 		vec3 direction = LightDirection[i];
 
 		float intensity = dot(normal, direction);
-		color += intensity * colorIntensity.rgb * colorIntensity.a;
+		color.rgb += intensity * colorIntensity.rgb;
 	}
+
+	color.a = 1;
 
 
 	return color;
+	
 }
 
 
@@ -35,8 +38,7 @@ void main() {
     vec3 dy = normalize(dFdy(WorldPosition));
 
 	vec3 normal = cross(dx,dy);
-
 	vec3 color = ProcessLights(normal);
-
+	
     fragmentColor = vec4(color,1);
 }

@@ -35,7 +35,7 @@ m_window(nullptr)
 
 	m_instance = this;
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 

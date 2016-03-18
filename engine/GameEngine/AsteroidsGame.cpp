@@ -8,7 +8,6 @@
 
 #include <map>
 #include <vector>
-#include <vector>
 #include <iostream>
 #include <cmath>
 #include <random>
@@ -25,7 +24,6 @@ using namespace std;
 #include "Asteroid.h"
 #include "Bounds.h"
 #include "Light.h"
-
 
 void QuitGame(const GameObject& sender, const GameTime& time)
 {
@@ -187,18 +185,18 @@ Grid& AsteroidsGame::CreateGrid()
 
 void AsteroidsGame::OnPreRender(const GameTime& time)
 {
-	auto shipMaterial = m_ship->GetFirst<Material>();
-	if (nullptr != shipMaterial)
-		shipMaterial->SetLights(m_lights);
+	//auto shipMaterial = m_ship->GetFirst<Material>();
+	//if (nullptr != shipMaterial)
+	//	shipMaterial->SetLights(m_lights);
 
-	auto asteroid = GetFirst<Asteroid>();
+	//auto asteroid = GetFirst<Asteroid>();
 
-	if (nullptr != asteroid)
-	{
-		auto asteroidMaterial = asteroid->GetFirst<Material>();
-		if (nullptr != asteroidMaterial)
-			asteroidMaterial->SetLights(m_lights);
-	}
+	//if (nullptr != asteroid)
+	//{
+	//	auto asteroidMaterial = asteroid->GetFirst<Material>();
+	//	if (nullptr != asteroidMaterial)
+	//		asteroidMaterial->SetLights(m_lights);
+	//}
 
 }
 
@@ -212,31 +210,59 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 
 	auto& transform = *asteroid.Transform;
 
-	transform.Scale = Vector3(1);
+	transform.Scale = Vector3(4);
 
 	/// start the asteroid moving...
 	float radians = TO_RADIANS(rand() % 360);
 
 	Vector3 dir(cosf(radians), sinf(radians), 0);
 
-	transform.Push(dir * 0.05f);
-
+	//transform.Push(dir * 0.05f);
 	/// and make it spin
-	Vector3 spinSpeed((rand() % 10) / 10.f, (rand() % 10) / 10.f, 0);
-
-
+	transform.Spin(Vector3(0, 0.001f, 0));
 }
 
 
 void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
-	auto& sun = Create<Light>("sun");
+	vector<float> directions =
+	{
+		0,1,0
+		,
+		1,0,0
+		,
+		0,-1,0
+		,
+		-1,0,0
+	};
 
-	sun.Direction = Vector3(-1, -1, 0);
-	sun.Color = Vector4(1, 1, 0, 1);
-	sun.Intensity = 0.5f;
+	vector<float> colors =
+	{
+		1, 0, 0
+		,
+		0, 1, 0
+		,
+		0, 0, 1
+		,
+		1, 0, 1
+	};
 
-	lights.push_back(&sun);
+	int lightCount = min(directions.size(), colors.size()) / 3;
+	auto& environment = Environment();
+
+	for (int i = 0; i < 3 * lightCount; i += 3)
+	{
+		Vector3 dir(directions[i], directions[i + 1], directions[i + 2]);
+		Vector4 color(colors[i], colors[i + 1], colors[i + 2], 1);
+
+		auto& l = environment.CreateLight();
+
+		l.Direction = dir;
+		l.Color = color;
+		l.Intensity = 1.f;
+		
+		lights.push_back(&l);
+	}
 
 }
 

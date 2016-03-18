@@ -57,7 +57,7 @@ public:
     void Dispose();
 
 	template<typename T>
-	T* GetFirst()
+	T* GetFirst() const
 	{
 		for (auto it = begin(m_children); it != end(m_children); ++it)
 		{

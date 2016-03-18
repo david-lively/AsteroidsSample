@@ -25,7 +25,6 @@ class Material : public GameObject
 public:
 	PolygonMode FillType = PolygonMode::Fill;
 
-
 	bool Build(std::string vertexShaderSource, std::string fragmentShaderSource);
 
 	bool Build(const std::string& path);
@@ -36,6 +35,7 @@ public:
 	{
 		return m_program;
 	}
+
 
 	/// <summary>
 	/// Gets the shader information log.
@@ -79,17 +79,14 @@ private:
 
 	void SetUniform(const Light& light);
 	void SetAllUniforms(const GameTime& time);
-	void SetAllUniformLights(const GameTime& time);
 
 
 #endif
 
 #undef DECL_UNIFORM_SETTER
 
-
-
-
 	public:
+		GLint GetUniformLocation(const std::string& name) const;
 		/*
 		set a uniform shader value, if it exists
 
@@ -113,6 +110,8 @@ private:
 		GLuint m_program;
 
 		bool CompileSuccessful(GLint program);
+		void Preprocess(std::string& source);
+
 
 	};
 

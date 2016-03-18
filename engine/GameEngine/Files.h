@@ -38,7 +38,10 @@ public:
         
         return std::string(cCurrentPath);
     }
-    
+
+	/// pre-process any macros (#include, etc.). This is mostly intended for GLSL #includes. 
+	std::string Preprocess(const std::string& source);
+
 
 };
 

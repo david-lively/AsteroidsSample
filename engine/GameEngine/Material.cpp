@@ -10,15 +10,25 @@
 #include "Enums.h"
 #include "Files.h"
 #include "Game.h"
+#include "Parser.h"
 
 #include <string>
 using namespace std;
 
+GLint Material::GetUniformLocation(const std::string& name) const
+{
+	GLint location = gl::GetUniformLocation(m_program, name.c_str());
+
+	return location;
+}
 
 
 void Material::SetUniforms(const GameTime& time)
 {
 	Bind();
+
+	Game::Instance().Environment().Apply(*this, time);
+
 	SetUniform("GameTimeTotalSeconds", time.TotalSeconds());
 
 	auto& cam = Game::Camera();
@@ -60,9 +70,6 @@ void Material::SetAllUniforms(const GameTime& time)
 		gl::UniformMatrix4fv(u.first, 1, false, &u.second.m00);
 	UNIFORM_SETTER_END;
 
-	SetAllUniformLights(time);
-
-
 }
 
 void Material::SetUniform(const Light& light)
@@ -83,60 +90,17 @@ void Material::SetLights(const std::vector<Light*>& lights)
 
 
 
-void Material::SetAllUniformLights(const GameTime& time)
-{
-	auto countIndex = gl::GetUniformLocation(m_program, "LightCount");
-	if (countIndex < 0)
-		return;
-
-
-	std::vector<Vector4> lightColorIntensities;
-	lightColorIntensities.resize(m_lights.size());
-
-	std::vector<Vector3> lightDirections;
-	lightDirections.reserve(m_lights.size());
-
-	for (auto lightPtr : m_lights)
-	{
-		auto light = *lightPtr.second;
-		if (light.Enabled)
-		{
-			Vector4 colorIntensity;
-
-			colorIntensity.X = light.Color.X;
-			colorIntensity.Y = light.Color.Y;
-			colorIntensity.Z = light.Color.Z;
-			colorIntensity.W = light.Intensity;
-
-			lightColorIntensities.push_back(colorIntensity);
-			lightDirections.push_back(light.Direction);
-		}
-
-	}
-
-	auto lightCount = min(lightColorIntensities.size(), lightDirections.size());
-	gl::Uniform1i(countIndex, lightCount);
-
-	auto location = gl::GetUniformLocation(m_program, "LightColorIntensity");
-	if (location >= 0)
-		gl::Uniform4fv(location, lightCount, (const GLfloat*)lightColorIntensities.data());
-
-	location = gl::GetUniformLocation(m_program, "LightDirection");
-	if (location >= 0)
-		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightDirections.data());
-
-}
-
-
-
-
 bool Material::Build(string vertexShaderSource, string fragmentShaderSource)
 {
 	check_gl_error();
 
+	Preprocess(vertexShaderSource);
+	Preprocess(fragmentShaderSource);
+
 	GLuint vertexShader = gl::CreateShader((GLenum)ShaderType::VertexShader);
 	GLint vertSourceLength = (GLint)vertexShaderSource.length();
 	GLchar* vertSourceStr = (GLchar*)vertexShaderSource.c_str();
+
 
 	gl::ShaderSource(vertexShader, 1, &vertSourceStr, &vertSourceLength);
 
@@ -304,3 +268,13 @@ bool Material::Build(const std::string& path)
 	return true;
 
 }
+
+
+void Material::Preprocess(std::string& source)
+{
+	Parser parser;
+
+	
+
+}
+
