@@ -94,13 +94,17 @@ bool Game::OnInitialize()
 	glfwGetFramebufferSize(m_window, &w, &h);
 	WindowResize(w, h);
 
+	if (nullptr == m_camera)
+		m_camera = &Create<class Camera>("primary.camera");
+
+	if (nullptr == m_environment)
+		m_environment = &Create<GameEnvironment>("game.environment");
+
 	if (!OnCreateScene())
 		return false;
 
 	gl::ClearColor(ClearColor.X, ClearColor.Y, ClearColor.Z, ClearColor.W);
 
-	if (nullptr == m_camera)
-		m_camera = &Create<class Camera>("primary.camera");
 
 	m_isInitialized = true;
 
@@ -120,6 +124,8 @@ bool Game::Run()
 	IsPlaying = true;
 
 	int prevPauseKeyState = false;
+
+	Log::Debug << "Starting main update/render loop." << endl;
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(m_window))
@@ -151,7 +157,7 @@ bool Game::Run()
 
 		auto title = "Time: " + std::to_string(time.TotalSeconds());
 
-		glfwSetWindowTitle(m_window, title.c_str());
+		//glfwSetWindowTitle(m_window, title.c_str());
 
 		if (IsPlaying)
 			time.Update();

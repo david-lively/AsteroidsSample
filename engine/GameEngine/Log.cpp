@@ -9,7 +9,7 @@
 using namespace std;
 using namespace Log;
 
-bool Log::StopOnErrors = false;
+bool Log::StopOnErrors = true;;
 
 Handler Log::Error(std::cerr, "ERROR");
 Handler Log::Warning(std::cerr, "WARNING");

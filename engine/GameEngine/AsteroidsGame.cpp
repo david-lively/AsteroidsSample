@@ -87,8 +87,11 @@ bool AsteroidsGame::OnCreateScene()
 		DECL_KEYHANDLER
 	{
 		auto& camera = Game::Camera();
+		auto& translation = camera.Transform->Translation;
 
 		camera.Transform->Reset();
+	
+		camera.Transform->Move(0, 0, 9);
 	}
 	);
 
@@ -105,6 +108,7 @@ bool AsteroidsGame::OnCreateScene()
 	}
 	);
 
+	Game::Camera().Transform->Move(0, 0, 9);
 
 	return true;
 }
@@ -115,12 +119,13 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 	auto shipBounds = ship.Transform->TransformAABB(ship.Bounds);
 
 
+
 	for (auto asteroid : m_asteroids)
 	{
 		auto bounds = asteroid->Transform->TransformAABB(asteroid->Bounds);
 
 		if (shipBounds.Intersects(bounds) != IntersectionType::Disjoint)
-			Log::Info << "CRASH";
+			;
 
 
 	}
@@ -236,15 +241,15 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 
 void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
-	vector<float> directions =
+	vector<float> positions =
 	{
-		0,1,0
+		-1,1,0
 		,
-		1,0,0
+		1,1,0
 		,
-		0,-1,0
+		1,-1,0
 		,
-		-1,0,0
+		-1,-1,0
 	};
 
 	vector<float> colors =
@@ -258,20 +263,21 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 		1, 0, 1
 	};
 
-	int lightCount = min(directions.size(), colors.size()) / 3;
+	int lightCount = min(positions.size(), colors.size()) / 3;
 	auto& environment = Environment();
 
 	for (int i = 0; i < 3 * lightCount; i += 3)
 	{
-		Vector3 dir(directions[i], directions[i + 1], directions[i + 2]);
+		Vector3 pos(positions[i], positions[i + 1], positions[i + 2]);
 		Vector4 color(colors[i], colors[i + 1], colors[i + 2], 1);
 
 		auto& l = environment.CreateLight();
 
-		l.Direction = dir;
+		l.Direction = -1.f * pos;
 		l.Color = color;
 		l.Intensity = 1.f;
-		l.Position = Vector3(randFloat() * 10, randFloat() * 10, 0);
+		l.Position = pos * 9.f;
+		l.Transform->Move(l.Position);
 		
 		lights.push_back(&l);
 	}

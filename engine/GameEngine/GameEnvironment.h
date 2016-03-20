@@ -26,7 +26,7 @@ public:
 
 	}
 
-	void SetUniform(int locationn, Light& light)
+	void SetUniform(int location, Light& light)
 	{
 		m_lights[light.Id] = &light;
 	}

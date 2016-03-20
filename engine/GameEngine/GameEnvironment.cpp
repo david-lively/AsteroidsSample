@@ -35,6 +35,9 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 	vector<Vector3> lightPosition;
 	lightPosition.reserve(m_lights.size());
 
+	vector<Matrix> lightTransform;
+	lightTransform.reserve(m_lights.size());
+
 	for (auto lightPtr : m_lights)
 	{
 		auto light = *lightPtr.second;
@@ -50,6 +53,7 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 			lightColorIntensities.push_back(colorIntensity);
 			lightDirections.push_back(light.Direction);
 			lightPosition.push_back(light.Position);
+			lightTransform.push_back(light.Transform->GetMatrix());
 		}
 
 	}
@@ -57,15 +61,28 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 	auto lightCount = min(lightColorIntensities.size(), lightDirections.size());
 	gl::Uniform1i(countIndex, lightCount);
 
+	check_gl_error();
+
 	auto location = mat->GetUniformLocation("LightColorIntensity");
 	if (location >= 0)
 		gl::Uniform4fv(location, lightCount, (const GLfloat*)lightColorIntensities.data());
+
+	check_gl_error();
 
 	location = mat->GetUniformLocation("LightDirection");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightDirections.data());
 
+	check_gl_error();
+
 	location = mat->GetUniformLocation("LightPosition");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightPosition.data());
+
+	check_gl_error();
+	
+	location = mat->GetUniformLocation("LightTransform");
+	if (location >= 0)
+		gl::UniformMatrix4fv(location, lightCount, false, (GLfloat*)lightTransform.data());
+
 }

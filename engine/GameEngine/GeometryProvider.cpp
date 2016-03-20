@@ -292,6 +292,35 @@ void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLusho
 
 	indices.push_back(lastIndex);
 	indices.push_back(firstIndex);
-
-
 }
+
+void GeometryProvider::Quad(vector<Vector3>& vertices, vector<GLushort>& indices, const float width, const float height)
+{
+	// half-space sizes
+	float hw = width * 0.5f;
+	float hh = height * 0.5f;
+
+	int startIndex = vertices.size();
+
+	vertices.reserve(vertices.size() + 4);
+
+	array<float,4 * 3> coordinates =
+	{
+		-hw, hh, 0
+		,
+		hw, hh, 0
+		,
+		hw, -hh, 0
+		,
+		-hw, -hh, 0
+	};
+
+	for (int i = 0; i < coordinates.size(); i += 3)
+		vertices.push_back(Vector3(coordinates[i], coordinates[i + 1], coordinates[i + 2]));
+
+	for (int i = 0; i <= coordinates.size(); ++i)
+	{
+		indices.push_back(startIndex + i);
+	}
+}
+

@@ -11,6 +11,7 @@
 
 #include <cmath>
 #include <ostream>
+#include <string>
 #include <minmax.h>
 
 struct Vector2
@@ -48,6 +49,13 @@ struct Vector3 : public Vector2
     {
         
     }
+
+	std::string toString()
+	{
+		return std::to_string(X) + " " + std::to_string(Y) + " " + std::to_string(Z);
+	}
+
+	
     
     /// return component-wise minimum of the two vectors.
     static Vector3 Min(const Vector3& left, const Vector3& right)

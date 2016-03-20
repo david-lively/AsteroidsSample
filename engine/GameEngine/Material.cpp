@@ -13,80 +13,38 @@
 #include "Parser.h"
 
 #include <string>
+#include <map>
+
 using namespace std;
 
-GLint Material::GetUniformLocation(const std::string& name) const
-{
-	GLint location = gl::GetUniformLocation(m_program, name.c_str());
-
-	return location;
-}
+std::map<std::string, GLint> Material::m_programs;
 
 
 void Material::SetUniforms(const GameTime& time)
 {
 	Bind();
 
+	check_gl_error();
+
 	Game::Instance().Environment().Apply(*this, time);
 
-	SetUniform("GameTimeTotalSeconds", time.TotalSeconds());
+	check_gl_error();
 
-	auto& cam = Game::Camera();
+	Uniforms.Apply(time);
 
-	SetUniform("View", cam.GetViewMatrix());
-	SetUniform("Projection", cam.GetProjectionMatrix());
+	check_gl_error();
 
-	SetAllUniforms(time);
 }
 
-void Material::SetAllUniforms(const GameTime& time)
+bool Material::OnInitialize()
 {
-#define UNIFORM_SETTER_BEGIN(t) \
-	{ if (UNIFORM_MAP_NAME(t).size() > 0)								\
-	{																\
-	auto& uniformMap = UNIFORM_MAP_NAME(t);							\
-	for (auto u : uniformMap)									\
-	{																\
+	Log::Debug << "Initializing material " << Name << endl;
+	Uniforms.Initialize(*this);
 
-#define UNIFORM_SETTER_END	}}}
-
-	UNIFORM_SETTER_BEGIN(int)
-		gl::Uniform1i(u.first, u.second);
-	UNIFORM_SETTER_END;
-
-	UNIFORM_SETTER_BEGIN(float)
-		gl::Uniform1f(u.first, u.second);
-	UNIFORM_SETTER_END;
-
-	UNIFORM_SETTER_BEGIN(Vector3)
-		gl::Uniform3f(u.first, u.second.X, u.second.Y, u.second.Z);
-	UNIFORM_SETTER_END;
-
-	UNIFORM_SETTER_BEGIN(Vector4)
-		gl::Uniform4f(u.first, u.second.X, u.second.Y, u.second.Z, u.second.W);
-	UNIFORM_SETTER_END;
-
-	UNIFORM_SETTER_BEGIN(Matrix)
-		gl::UniformMatrix4fv(u.first, 1, false, &u.second.m00);
-	UNIFORM_SETTER_END;
-
+	return true;
 }
 
-void Material::SetUniform(const Light& light)
-{
-	m_lights[light.Id] = &light;
-}
 
-void Material::SetLights(const std::vector<Light*>& lights)
-{
-	m_lights.clear();
-
-	for (auto lightPtr : lights)
-	{
-		m_lights[lightPtr->Id] = lightPtr;
-	}
-
-}
 
 
 
@@ -148,7 +106,6 @@ bool Material::Build(string vertexShaderSource, string fragmentShaderSource)
 	Log::Info << "Successfully built program.\n";
 
 	return true;
-
 }
 
 void Material::OnDispose()
@@ -225,9 +182,18 @@ bool Material::CompileSuccessful(GLint program)
 	return status != (GLint)false;
 }
 
-
 bool Material::Build(const std::string& path)
 {
+	if (m_programs.count(path) > 0)
+	{
+		m_program = m_programs[path];
+
+		Log::Info << "Using previously built program " << path << " (" << m_program << ")" << endl;
+
+		return true;;
+	}
+
+
 	auto vertFilename = path + ".vert.glsl";
 	auto fragFilename = path + ".frag.glsl";
 
@@ -265,8 +231,9 @@ bool Material::Build(const std::string& path)
 
 	} while (!success);
 
-	return true;
+	m_programs[path] = m_program;
 
+	return true;
 }
 
 

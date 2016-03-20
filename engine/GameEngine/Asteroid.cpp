@@ -26,14 +26,14 @@ bool Asteroid::OnInitialize()
     
     material.FillType = PolygonMode::Fill;
     
-    auto& mesh = Create<Mesh>("ship-mesh");
+    auto& mesh = Create<Mesh>("asteroid-mesh");
     
     vector<Vector3> vertices;
     vector<GLushort> indices;
     
     GeometryProvider::Icosahedron(vertices, indices);
 
-	GeometryProvider::Tessellate(vertices, indices, 2);
+	GeometryProvider::Tessellate(vertices, indices, 3);
 
 	GeometryProvider::Spherize(vertices);
 

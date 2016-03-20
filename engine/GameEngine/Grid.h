@@ -23,8 +23,6 @@ public:
     
     bool OnInitialize() override;
     
-    void OnRender(const GameTime& time) override;
-    
 private:
     Mesh* m_mesh;
     Material* m_material;

@@ -15,7 +15,7 @@ in vec3 Pos;
 
 
 out vec4 Color;
-out vec3 WorldPosition;
+out vec4 ViewPosition;
 
 
 void main()
@@ -23,7 +23,7 @@ void main()
     vec4 position = vec4(Pos,1);
     
     gl_Position = Projection * View * World * position;
-    WorldPosition = (World * position).xyz;
+    ViewPosition = View * World * position;
     
     Color = vec4(Pos,1);
 }

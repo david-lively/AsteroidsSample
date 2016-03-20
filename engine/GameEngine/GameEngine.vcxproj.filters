@@ -93,6 +93,15 @@
     <ClCompile Include="Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -180,6 +189,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

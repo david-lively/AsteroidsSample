@@ -40,7 +40,7 @@ public:
 
 	GameEnvironment& Environment()
 	{
-		return m_environment;
+		return *m_environment;
 
 	}
     
@@ -58,10 +58,10 @@ public:
 
 
 private:
-    GLFWwindow* m_window;
+	GLFWwindow* m_window = nullptr;
     static Game* m_instance;
     static class Camera* m_camera;
-	GameEnvironment m_environment;
+	GameEnvironment *m_environment = nullptr;;
     
     bool m_isInitialized;
 

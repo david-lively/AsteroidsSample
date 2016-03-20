@@ -81,9 +81,6 @@ void Ship::OnUpdate(const GameTime& time)
 
 void Ship::OnRender(const GameTime& time)
 {
-	auto& cam = Game::Camera();
-
-	cam.Transform->Translation.Z = 9;
 
 	WorldEntity::OnRender(time);
 }

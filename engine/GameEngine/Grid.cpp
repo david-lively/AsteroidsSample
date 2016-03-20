@@ -47,13 +47,3 @@ bool Grid::OnInitialize()
     
 }
 
-void Grid::OnRender(const GameTime& time)
-{
-    auto& cam = Game::Camera();
-    
-    m_material->Bind();
-    m_material->SetUniform("World", Transform->GetMatrix());
-    m_material->SetUniform("View",cam.GetViewMatrix());
-    m_material->SetUniform("Projection",cam.GetProjectionMatrix());
-}
-
