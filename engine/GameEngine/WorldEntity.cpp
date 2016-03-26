@@ -9,15 +9,5 @@
 #include "WorldEntity.h"
 
 #include "Material.h"
+#include "Game.h"
 
-
-void WorldEntity::OnRender(const GameTime& time)
-{
-	auto mat = GetFirst<Material>();
-
-	if (nullptr == mat)
-		return;
-
-	mat->Bind();
-	mat->SetUniform("World", Transform->GetMatrix());
-}

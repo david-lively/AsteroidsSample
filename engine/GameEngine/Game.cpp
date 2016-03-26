@@ -119,8 +119,6 @@ bool Game::Run()
 		return false;
 	}
 
-	GameTime time;
-
 	IsPlaying = true;
 
 	int prevPauseKeyState = false;
@@ -130,6 +128,8 @@ bool Game::Run()
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(m_window))
 	{
+		ProcessNewObjects();
+
 		/* Poll for and process events */
 		glfwPollEvents();
 
@@ -143,24 +143,21 @@ bool Game::Run()
 		prevPauseKeyState = pauseKeyState;
 
 		if (IsPlaying)
-			Update(time);
-
+		{
+			Update(Time);
+		}
 
 		gl::ClearColor(ClearColor.X, ClearColor.Y, ClearColor.Z, ClearColor.W);
 		gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
-		Render(time);
+		Render(Time);
 
 		/* Render here */
 		/* Swap front and back buffers */
 		glfwSwapBuffers(m_window);
 
-		auto title = "Time: " + std::to_string(time.TotalSeconds());
-
-		//glfwSetWindowTitle(m_window, title.c_str());
-
 		if (IsPlaying)
-			time.Update();
+			Time.Update();
 	}
 
 	Dispose();

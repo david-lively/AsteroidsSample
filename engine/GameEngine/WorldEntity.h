@@ -16,17 +16,28 @@
 
 #include <string>
 
+enum class FrustumAction
+{
+	None
+	,
+	Wrap
+	,
+	Recycle
+	,
+	Delete
+};
 
 class WorldEntity : public GameObject
 {
 public:
     Transform* Transform;
     BoundingBox Bounds;
+	FrustumAction OnExitFrustum = FrustumAction::Wrap;
     
     
     WorldEntity(const std::string& name) : GameObject(name)
     {
-        Transform = &Create<class Transform>("asdf");
+        Transform = &Create<class Transform>(name + "-transform");
     }
     
     WorldEntity() : WorldEntity("unknown.worldentity")
@@ -34,10 +45,8 @@ public:
         
     }
 
-	void OnRender(const GameTime& time) override;
-
    
 };
 
 
-#endif /* WorldEntity_hpp */
+#endif /* WorldEntity_h */

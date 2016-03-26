@@ -99,6 +99,11 @@ public:
     {
         return Multiply(*this, right);
     }
+
+	static friend Matrix operator*(const Matrix& left, const Matrix& right)
+	{
+		return Multiply(left, right);
+	}
     
     
 private:

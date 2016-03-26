@@ -14,13 +14,13 @@ uniform float TimeScale = 1;
 
 uniform vec4 Color = vec4(0.2f, 0.2f, 0.2f, 1);
 
-in vec3 Pos;
+in vec3 Position;
 
 out vec4 vertexColor;
 
 void main()
 {
-    vec4 position = vec4(Pos,1);
+	vec4 position = vec4(Position, 1);
     
     position = Projection * View * World * position;    
 

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cstdio>
 #include <cmath>
+#include "Game.h"
 
 using namespace std;
 using namespace Log;
@@ -22,10 +23,11 @@ Prints an [hh:mm:ss.ms] time stamp. Surely there is an easier way to do this. :(
 */
 string Log::GetTimeStamp()
 {
-	float total = (float)glfwGetTime();
-	int ms = (int)truncf(total * 1000.f) % 1000;
+	const float totalSeconds = Game::Instance().Time.TotalSeconds();
+	
+	int ms = (int)truncf(totalSeconds * 1000.f) % 1000;
 
-	int ss = (int)floor(total);
+	int ss = (int)floor(totalSeconds);
 
 	int sec = ss % 60;
 	int hours = ss / 3600;

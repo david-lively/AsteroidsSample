@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "Common.h"
 #include "Log.h"
+#include "Game.h"
 
 #include <iostream>
 
@@ -39,7 +40,18 @@ void Mesh::OnRender(const GameTime& time)
 	Material->SetUniforms(time);
 	check_gl_error();
 
-    gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
+	auto& env = Game::Instance().Environment();
+
+	Material->SetUniform("ForceWireframe", env.ForceWireframe);
+	if (env.ForceWireframe)
+	{
+		gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)PolygonMode::Line);
+	}
+	else
+	{
+		gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
+	}
+
 	gl::Enable(gl::DEPTH_TEST);
     gl::Enable(gl::CULL_FACE);
     gl::FrontFace(gl::CW);
@@ -58,6 +70,9 @@ void Mesh::OnRender(const GameTime& time)
     
     check_gl_error();
 }
+
+void Initialize(const std::vector<Vector3>& vertices, const std::vector<Vector4>& colors, const std::vector<GLushort>& indices);
+
 
 
 

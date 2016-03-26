@@ -7,6 +7,7 @@
 //
 
 #include "Transform.h"
+#include "Game.h"
 
 
 void Transform::Wrap(const Vector3& flags)
@@ -68,13 +69,23 @@ BoundingBox Transform::TransformAABB(const BoundingBox& bounds)
 
 Matrix Transform::GetMatrix()
 {
-	auto mt = Matrix::CreateTranslation(Translation);
-	auto mr = Matrix::CreateRotation(Rotation);
-	auto ms = Matrix::CreateScale(Scale);
+	//static int lastFrame = 0;
+	//static Matrix lastMatrix;
 
-	auto result = mr * mt * ms;
+	//auto& time = Game::Instance().Time;
 
-	return result;
+	//if (time.FrameNumber() != lastFrame)
+	//{
+	//	lastFrame = time.FrameNumber();
+	
+		auto mt = Matrix::CreateTranslation(Translation);
+		auto mr = Matrix::CreateRotation(Rotation);
+		auto ms = Matrix::CreateScale(Scale);
+
+		auto lastMatrix = ms * mr * mt;
+	//}
+
+	return lastMatrix;
 }
 
 
@@ -90,6 +101,11 @@ Vector3 Transform::Forward()
 void Transform::Push(const Vector3& dir)
 {
 	Translation += dir;
+}
+
+void Transform::Push(const float x, const float y, const float z)
+{
+	Push(Vector3(x, y, z));
 }
 
 void Transform::Move(const float x, const float y, const float z)
@@ -124,6 +140,9 @@ void Transform::OnUpdate(const GameTime& time)
 	auto spin = (Rotation - m_previousRotation) * (1 - Drag);
 	m_previousRotation = Rotation;
 	Rotation += spin;
+
+	if (Scale.X != Scale.Y || Scale.Y != Scale.Z || Scale.Z != Scale.X)
+		Log::Error << "Nonuniform scale detected: " << Scale << "\n";
 }
 
 

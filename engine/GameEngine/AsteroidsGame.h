@@ -10,6 +10,7 @@
 #define ASTEROIDS_H
 
 #include <vector>
+#include <queue>
 
 #include "Game.h"
 #include "Ship.h"
@@ -17,13 +18,14 @@
 #include "Asteroid.h"
 #include "Grid.h"
 #include "Light.h"
-
+#include "Missile.h"
 
 class AsteroidsGame : public Game
 {
 public:
-	AsteroidsGame() : ShaderFolder("Shaders/")
+	AsteroidsGame() :  ShaderFolder("Shaders/")
     {
+		Name = "ASTEROIDS";
     }
     
     bool OnCreateScene() override;
@@ -43,12 +45,18 @@ public:
 private:
     Grid* m_grid;
     Ship* m_ship;
+	
+	std::vector<Missile*> m_allMissiles; 
+	std::queue<Missile*> m_inactiveMissiles;
+
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
 	std::vector<WorldEntity*> m_itemsToWrap;
 	std::vector<Light*> m_lights;
 
 	std::vector<Asteroid*> m_asteroids;
 
+	void Fire(Ship& ship);
+	Missile& GetAMissile();
 
 };
 

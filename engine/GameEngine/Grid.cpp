@@ -21,12 +21,12 @@ using namespace std;
 
 bool Grid::OnInitialize()
 {
-    auto& material = Create<class Material>("ship-material");
+    auto& material = Create<class Material>("grid-material");
     m_material = &material;
     
     material.FillType = PolygonMode::Line;
     
-    auto& mesh = Create<Mesh>("ship-mesh");
+    auto& mesh = Create<Mesh>("grid-mesh");
 
     vector<Vector3> vertices;
     
@@ -46,4 +46,10 @@ bool Grid::OnInitialize()
     return true;
     
 }
+
+void Grid::OnUpdate(const GameTime& time)
+{
+	WorldEntity::OnUpdate(time);
+}
+
 

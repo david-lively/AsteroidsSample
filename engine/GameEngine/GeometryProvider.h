@@ -33,6 +33,9 @@ public:
 	static void Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments);
 	static std::vector<Vector3> ToVectors(std::vector<float>& coordinates);
 
+	static void Arrow(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float width, const float height);
+	/// offset all vertices along their direction from the object center.
+	static void Noisify(std::vector<Vector3>& vertices, float noiseScale);
 
 private:
     

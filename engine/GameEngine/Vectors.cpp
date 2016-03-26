@@ -23,3 +23,5 @@ std::ostream& operator<<(std::ostream& os, const Vector3& vec)
     return os;
 }
 
+const Vector3 Vector3::Zero(0,0,0);
+

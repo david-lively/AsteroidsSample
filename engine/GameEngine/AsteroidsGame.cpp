@@ -33,9 +33,9 @@ void QuitGame(const GameObject& sender, const GameTime& time)
 
 bool AsteroidsGame::OnCreateScene()
 {
-	CreateLights(m_lights);
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
+	CreateLights(m_lights);
 
 	CreateAsteroids(4, m_itemsToWrap);
 
@@ -60,37 +60,69 @@ bool AsteroidsGame::OnCreateScene()
 		DECL_KEYHANDLER
 	{
 		if (nullptr != m_grid)
-		m_grid->Enabled = !m_grid->Enabled;
+			m_grid->Enabled = !m_grid->Enabled;
 	}
 
+	);
+
+	input.Subscribe(GLFW_KEY_E,
+		DECL_KEYHANDLER
+	{
+		auto& camTransform = *Game::Instance().Camera().Transform;
+		camTransform.Push(0.f, 0.1f, 0);
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_X,
+		DECL_KEYHANDLER
+	{
+		auto& camTransform = *Game::Instance().Camera().Transform;
+		camTransform.Push(0.f, -0.1f, 0);
+	}
+	);
+
+
+	input.Subscribe(GLFW_KEY_D,
+		DECL_KEYHANDLER
+	{
+		auto& camTransform = *Game::Instance().Camera().Transform;
+		camTransform.Push(0.1f, 0, 0);
+	}
+	);
+
+
+	input.Subscribe(GLFW_KEY_A,
+		DECL_KEYHANDLER
+	{
+		auto& camTransform = *Game::Instance().Camera().Transform;
+		camTransform.Push(-0.1f, 0, 0);
+	}
 	);
 
 	input.Subscribe(GLFW_KEY_W,
 		DECL_KEYHANDLER
 	{
-		auto& camera = Game::Camera();
-
-		camera.Transform->Spin(Vector3(0.01f, 0, 0));
+		auto& camTransform = *Game::Instance().Camera().Transform;
+		camTransform.Push(0, 0, 0.1f);
 	}
 	);
 
 	input.Subscribe(GLFW_KEY_S,
 		DECL_KEYHANDLER
 	{
-		auto& camera = Game::Camera();
-
-		camera.Transform->Spin(Vector3(-0.01f, 0, 0));
+		auto& camTransform = *Game::Instance().Camera().Transform;
+		camTransform.Push(0, 0, -0.1f);
 	}
 	);
 
-	input.Subscribe(GLFW_KEY_E,
+	input.Subscribe(GLFW_KEY_R,
 		DECL_KEYHANDLER
 	{
 		auto& camera = Game::Camera();
 		auto& translation = camera.Transform->Translation;
 
 		camera.Transform->Reset();
-	
+
 		camera.Transform->Move(0, 0, 9);
 	}
 	);
@@ -101,12 +133,42 @@ bool AsteroidsGame::OnCreateScene()
 		static bool evenOdd = true;
 		float fov = evenOdd ? TO_RADIANS(45.f) : TO_RADIANS(120.f);
 
-		Game::Camera().SetFieldOfView(fov);
+		Camera().SetFieldOfView(fov);
 
 		evenOdd = !evenOdd;
 
 	}
 	);
+
+	input.Subscribe(GLFW_KEY_F3,
+		DECL_KEYHANDLER
+	{
+		bool forceWireframe = Environment().ForceWireframe = !Environment().ForceWireframe;
+
+		Log::Debug << "Wireframe: " << forceWireframe << endl;
+
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_SPACE,
+		DECL_KEYHANDLER
+	{
+		Fire(*m_ship);
+	}
+
+	);
+
+	input.Subscribe(GLFW_KEY_CAPS_LOCK,
+		DECL_KEYHANDLER
+	{
+		Log::Debug << "Triggering soft breakpoint...\n";
+		DEBUG_BREAK;
+	}
+
+	);
+
+
+
 
 	Game::Camera().Transform->Move(0, 0, 9);
 
@@ -141,6 +203,9 @@ void AsteroidsGame::OnPreUpdate(const GameTime& time)
 
 	for (auto entityPtr : m_itemsToWrap)
 	{
+		if (!entityPtr->Enabled)
+			continue;
+
 		auto& entity = *entityPtr;
 		auto& worldView = entity.Transform->GetMatrix() * viewMatrix;
 
@@ -149,20 +214,14 @@ void AsteroidsGame::OnPreUpdate(const GameTime& time)
 
 		center = worldView.Transform(center);
 		bound = worldView.Transform(bound);
-	
+
 		float radius = (bound - center).Length();
 
-		auto material = entity.GetFirst<Material>();
+		Vector3 containment;
 
-		if (nullptr != material)
+		if (!camera.ContainsSphere(center, radius, containment))
 		{
-			Vector3 containment;
-
-			if (camera.ContainsSphere(center, radius, containment))
-			{
-				material->SetUniform("Color", Vector4(0, 1.f, 0, 1));
-			}
-			else
+			if (FrustumAction::Wrap == entityPtr->OnExitFrustum)
 			{
 				Vector3 newPosition = entity.Transform->Translation;
 
@@ -173,9 +232,16 @@ void AsteroidsGame::OnPreUpdate(const GameTime& time)
 					newPosition.Y *= -0.99f;
 
 				entity.Transform->Move(newPosition);
+			}
+			else if (FrustumAction::Recycle == entityPtr->OnExitFrustum)
+			{
+				entityPtr->Enabled = false;
+				
+				Missile* ptr = dynamic_cast<Missile*>(entityPtr);
+				
+				if (nullptr != ptr)
+					m_inactiveMissiles.push(ptr);
 
-				Vector4 color(containment.X, containment.Y, containment.Z, 1);
-				material->SetUniform("Color", color);
 			}
 		}
 
@@ -210,16 +276,16 @@ float randFloat()
 
 void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 {
-	Log::Warning << "Ignoring asteroid count (" << count << ") - creating 1 for debug\n";
-
 	auto& asteroid = Create<Asteroid>("asteroid");
+	asteroid.TwoD = false;
+
+
 	entities.push_back(&asteroid);
 	m_asteroids.push_back(&asteroid);
 
-
 	auto& transform = *asteroid.Transform;
 
-	transform.Scale = Vector3(1.5f);
+	transform.Scale = Vector3(4.f);
 	transform.Move(randFloat() * 10, randFloat() * 10, 0);
 
 	/// start the asteroid moving...
@@ -227,14 +293,11 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 
 	Vector3 dir(cosf(radians), sinf(radians), 0);
 
-	transform.Push(dir * 0.01f);
+	transform.Push(dir * 0.005f);
 	/// and make it spin
-	transform.Spin(Vector3(0, 0.001f, 0));
+	transform.Spin(Vector3(0.01f, 0.005f, 0));
 
-
-	--count;
-
-	if (count > 0)
+	if (--count > 0)
 		CreateAsteroids(count, entities);
 }
 
@@ -243,13 +306,13 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
 	vector<float> positions =
 	{
-		-1,1,0
+		-1, 1, 0
 		,
-		1,1,0
+		1, 1, 0
 		,
-		1,-1,0
+		1, -1, 0
 		,
-		-1,-1,0
+		-1, -1, 0
 	};
 
 	vector<float> colors =
@@ -278,11 +341,52 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 		l.Intensity = 1.f;
 		l.Position = pos * 9.f;
 		l.Transform->Move(l.Position);
-		
+
 		lights.push_back(&l);
 	}
 
 }
+
+Missile& AsteroidsGame::GetAMissile()
+{
+	Missile* missile = nullptr;
+
+	if (m_inactiveMissiles.size() > 0)
+	{
+		/// do we have any reusable missiles that have already been created?
+		missile = m_inactiveMissiles.front();
+		missile->Enabled = true;
+		m_inactiveMissiles.pop();
+	}
+	else
+	{
+		missile = &Create<Missile>("missile");
+		m_itemsToWrap.push_back(missile);
+		m_allMissiles.push_back(missile);
+	}
+
+	return *missile;
+}
+
+
+void AsteroidsGame::Fire(Ship& ship)
+{
+	if (!ship.CanFire())
+		return;
+
+	Log::Debug << Time.FrameNumber() << " Fire!\n";
+
+	auto& missile = GetAMissile();
+
+	auto initialPosition = m_ship->Transform->Translation;
+
+	*(missile.Transform) = *(m_ship->Transform);
+	missile.Transform->SetParent(&missile);
+
+	//missile.Transform->Reset();
+	//missile.Transform->Move(initialPosition);
+}
+
 
 
 

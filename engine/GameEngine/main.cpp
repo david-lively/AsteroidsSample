@@ -17,7 +17,7 @@ using namespace std;
 
 int main(void)
 {
-    AsteroidsGame game;
+	AsteroidsGame game;
     
     Log::Info << "Running game.\n";
     

@@ -25,22 +25,23 @@ void Material::SetUniforms(const GameTime& time)
 	Bind();
 
 	check_gl_error();
+	auto& environment = Game::Instance().Environment();
 
-	Game::Instance().Environment().Apply(*this, time);
+	SetUniform("World", environment.CurrentMatrix());
 
+	environment.Apply(*this, time);
+
+	
 	check_gl_error();
 
 	Uniforms.Apply(time);
 
 	check_gl_error();
-
 }
 
 bool Material::OnInitialize()
 {
-	Log::Debug << "Initializing material " << Name << endl;
 	Uniforms.Initialize(*this);
-
 	return true;
 }
 
@@ -56,6 +57,7 @@ bool Material::Build(string vertexShaderSource, string fragmentShaderSource)
 	Preprocess(fragmentShaderSource);
 
 	GLuint vertexShader = gl::CreateShader((GLenum)ShaderType::VertexShader);
+	
 	GLint vertSourceLength = (GLint)vertexShaderSource.length();
 	GLchar* vertSourceStr = (GLchar*)vertexShaderSource.c_str();
 

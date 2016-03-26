@@ -41,8 +41,8 @@ bool Light::OnInitialize()
 
 void Light::OnRender(const GameTime& time)
 {
-	WorldEntity::OnRender(time);
 	m_material->SetUniform("Color", this->Color);
+	WorldEntity::OnRender(time);
 }
 
 

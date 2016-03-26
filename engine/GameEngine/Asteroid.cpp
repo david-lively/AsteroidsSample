@@ -1,5 +1,5 @@
 //
-//  Ship.cpp
+//  Asteroid.cpp
 //  GameEngine
 //
 //  Created by David Lively on 2/22/16.
@@ -13,6 +13,8 @@
 #include "Camera.h"
 #include "InputHandler.h"
 #include "GeometryProvider.h"
+#include "SimplexNoise.h"
+#include "Material.h"
 
 #include <vector>
 #include <cmath>
@@ -21,55 +23,90 @@ using namespace std;
 
 bool Asteroid::OnInitialize()
 {
-    auto& material = Create<class Material>("ship-material");
-    m_material = &material;
-    
-    material.FillType = PolygonMode::Fill;
-    
-    auto& mesh = Create<Mesh>("asteroid-mesh");
-    
-    vector<Vector3> vertices;
-    vector<GLushort> indices;
-    
-    GeometryProvider::Icosahedron(vertices, indices);
+	auto& material = Create<class Material>("asteroid-material");
+	m_material = &material;
 
-	GeometryProvider::Tessellate(vertices, indices, 3);
 
-	GeometryProvider::Spherize(vertices);
+	auto& mesh = Create<Mesh>("asteroid-mesh");
+
+	vector<Vector3> vertices;
+	vector<GLushort> indices;
+
+	Vector3 noiseCenter((rand() % 10) / 10.f, (rand() % 10) / 10.f, (rand() % 10) / 10.f);;
+
+
+	if (TwoD)
+	{
+		material.FillType = PolygonMode::Line;
+		mesh.Type = BeginMode::Lines;
+		material.Build("Shaders/primitive");
+
+		GeometryProvider::Circle(vertices, indices, Vector3::Zero, 0.5f, 12);
+
+	}
+	else
+	{
+		material.FillType = PolygonMode::Fill;
+		mesh.Type = BeginMode::Triangles;
+		material.Build("Shaders/lit");
+		GeometryProvider::Icosahedron(vertices, indices);
+		GeometryProvider::Tessellate(vertices, indices, 4);
+		GeometryProvider::Spherize(vertices);
+	}
+	
+	GeometryProvider::FitToUnitCube(vertices);
+
+	GeometryProvider::Noisify(vertices, 0.1f);
 
 	Bounds = BoundingBox::FromVectors(vertices);
-    
-    material.Build("Shaders/lit");
-    
-    mesh.Material = &material;
-    
-    mesh.Initialize(vertices, indices);
-    mesh.Type = BeginMode::Triangles;
 
-    m_mesh = &mesh;
-    
-    Transform->Drag = 0.f;
-    
-    return true;
-    
+
+	mesh.Material = &material;
+	mesh.Initialize(vertices, indices);
+
+	m_mesh = &mesh;
+
+	Transform->Drag = 0.f;
+
+	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
+	return WorldEntity::OnInitialize();
+
 }
+
+void Asteroid::OnPreRender(const GameTime& time)
+{
+	WorldEntity::OnPreRender(time);
+}
+
 
 void Asteroid::OnUpdate(const GameTime& time)
 {
-    auto world = Transform->GetMatrix();
-    auto view = Game::Camera().GetViewMatrix();
-    
-    auto mvp = world * view;
-    
-    Vector4 pos(0,0,0,1);
-    Vector3 bounds = pos;
-    bounds.Y += 0.5f;
-    
-    pos = mvp.Transform(pos);
-    bounds = mvp.Transform(bounds);
-    float radius = (bounds - pos).Length() / 2.f;
-    
+	auto world = Transform->GetMatrix();
+	auto view = Game::Camera().GetViewMatrix();
+
+	auto mvp = world * view;
+
+	Vector4 pos(0, 0, 0, 1);
+	Vector3 bounds = pos;
+	bounds.Y += 0.5f;
+
+	pos = mvp.Transform(pos);
+	bounds = mvp.Transform(bounds);
+	float radius = (bounds - pos).Length() / 2.f;
+
+	WorldEntity::OnUpdate(time);
 }
+
+void Asteroid::OnRender(const GameTime& time)
+{
+	m_material->Bind();
+	m_material->SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 1.f));
+
+	WorldEntity::OnRender(time);
+
+
+}
+
 
 
 

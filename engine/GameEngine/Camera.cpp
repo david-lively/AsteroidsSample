@@ -67,20 +67,20 @@ void Camera::BuildFrustumPlanes()
 
 bool Camera::ContainsSphere(const Vector3& center, const float radius, Vector3& containment)
 {
-	float dt = center.Dot(Top);
-	float dr = center.Dot(Right);
-	float db = center.Dot(Bottom);
-	float dl = center.Dot(Left);
+	float dt = -center.Dot(Top);
+	float dr = -center.Dot(Right);
+	float db = -center.Dot(Bottom);
+	float dl = -center.Dot(Left);
 
-	float dn = center.Z - ZNear;
-	float df = ZFar - center.Z;
+	float dn = -center.Dot(Vector3(0, 0, -1)) - ZNear;
+	float df = -center.Dot(Vector3(0, 0,  1)) - ZFar;
 
 	float r = radius;
-	bool contains = dl > -r && dr > -r && dt > -r && db > -r;
+	bool contains = dl < r && dr < r && dt < r && db < r;
 
-	containment.X = dl > -r && dr > -r;
-	containment.Y = dt > -r && db > -r;
-	containment.Z = 1;// dn > -r && db > -r;
+	containment.X = dl < r && dr < r;
+	containment.Y = dt < r && db < r;
+	containment.Z = dn < r && df < r;
 
 	return contains;
 }

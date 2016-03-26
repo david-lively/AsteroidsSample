@@ -15,7 +15,7 @@
 
 using namespace std;
 
-void InputHandler::OnUpdate(const GameTime& time)
+void InputHandler::OnPostUpdate(const GameTime& time)
 {
     UpdateKeyStates();
     //    auto* window = Game::Instance().Window();
@@ -41,6 +41,8 @@ void InputHandler::OnUpdate(const GameTime& time)
         }
         
     }
+
+	GameObject::OnPostUpdate(time);
     
     
 }

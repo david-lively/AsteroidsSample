@@ -13,8 +13,15 @@ class GameTime
 public:
 	GameTime();
 
-	const float ElapsedSeconds() const { return m_elapsedSeconds; }
-	const float TotalSeconds() const { return m_totalSeconds; }
+	const float ElapsedSeconds() const 
+	{ 
+		return m_elapsedSeconds; 
+	}
+	
+	const float TotalSeconds() const 
+	{ 
+		return m_totalSeconds; 
+	}
 
 	const GameTime& Update();
 

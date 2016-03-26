@@ -23,7 +23,6 @@ public:
 	bool IsPlaying = false;
 	Vector4 ClearColor;
 	
-	
 	Game();
 	
 	static Camera& Camera()

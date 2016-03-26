@@ -16,21 +16,29 @@
 class Ship : public WorldEntity
 {
 public:
+
+	float TimeUntilCanFire = 0.f;
+	const float FireIntervalSec = 0.2f;
+
     Ship()
     {
         
     }
     
     bool OnInitialize() override;
-    
-    void OnUpdate(const GameTime& time) override;
-    void OnRender(const GameTime& time) override;
+	void OnPreUpdate(const  GameTime& time) override;
+	bool CanFire();
+	void Fire();
+
     
 private:
     Mesh* m_mesh;
     Material* m_material;
     
     void ConfigureInput();
+
+	void CreateShipMesh();
+	void CreateHelpers();
     
 };
 

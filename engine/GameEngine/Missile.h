@@ -1,36 +1,34 @@
 //
-//  Ship.hpp
+//  Missile.h
 //  GameEngine
 //
 //  Created by David Lively on 2/22/16.
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
-#ifndef GRID_H
-#define GRID_H
+#ifndef MISSILE_H
+#define MISSILE_H
 
 #include "Common.h"
 #include "WorldEntity.h"
 #include "Mesh.h"
 
-class Grid : public WorldEntity
+class Missile : public WorldEntity
 {
 public:
-    Grid()
+	Missile()
     {
-        
+		OnExitFrustum = FrustumAction::Recycle;
     }
-    
+
     bool OnInitialize() override;
 
-	void OnUpdate(const GameTime& time)  override;
     
 private:
     Mesh* m_mesh;
     Material* m_material;
-    
-    
 };
 
 
-#endif /* Ship_hpp */
+#endif /* Missile_h */
+

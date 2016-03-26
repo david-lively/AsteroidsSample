@@ -8,7 +8,7 @@ uniform float GameTimeTotalSeconds;
 uniform float TimeScale = 1;
 uniform vec2 WindowSize;
 
-in vec3 Pos;
+in vec3 Position;
 
 out vec4 Color;
 

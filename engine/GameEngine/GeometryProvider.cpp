@@ -8,10 +8,13 @@
 
 #include "GeometryProvider.h"
 #include "Common.h"
+#include "Bounds.h"
+#include "SimplexNoise.h"
 
 #include <vector>
 #include <map>
 #include <cassert>
+#include <random>
 
 using namespace std;
 
@@ -323,4 +326,66 @@ void GeometryProvider::Quad(vector<Vector3>& vertices, vector<GLushort>& indices
 		indices.push_back(startIndex + i);
 	}
 }
+
+void GeometryProvider::Arrow(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float width, const float height)
+{
+	int startIndex = (int)vertices.size();
+
+
+	float halfWidth = width * 0.5f;
+	float headHeight = height * 0.25f;
+
+	vector<float> coordinates =
+	{
+		0,0,0
+		,
+		0,height,0
+		,
+		halfWidth, height - headHeight, 0
+		,
+		-halfWidth, height - headHeight,0
+	};
+
+	vertices.reserve(vertices.size() + coordinates.size() / 3);
+
+	for (int i = 0; i < coordinates.size(); i += 3)
+	{
+		vertices.push_back(Vector3(coordinates[i], coordinates[i + 1], coordinates[i + 2]));
+	}
+
+	vector<GLushort> newIndices =
+	{
+		0, 1
+		,
+		1, 2
+		,
+		1, 3
+	};
+
+	indices.reserve(indices.size() + newIndices.size());
+	
+	for (int i = 0; i < newIndices.size(); ++i)
+	{
+		indices.push_back(newIndices[i] + startIndex);
+	}
+
+}
+
+
+/// offset all vertices along their direction from the object center.
+void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float noiseScale)
+{
+	FitToUnitCube(vertices);
+
+
+	for (auto& vertex : vertices)
+	{
+		float noise = SimplexNoise::noise(vertex.X, vertex.Y);
+
+		vertex += vertex.Normalized() * noise *noiseScale;
+	}
+}
+
+
+
 

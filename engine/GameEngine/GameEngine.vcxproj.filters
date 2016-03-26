@@ -102,6 +102,15 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AxisHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimplexNoise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Missile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -197,6 +206,18 @@
     <ClInclude Include="UniformCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AxisHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimplexNoise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Missile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag.glsl">
@@ -221,6 +242,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\primitive.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\simpleLight.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\simpleLight.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

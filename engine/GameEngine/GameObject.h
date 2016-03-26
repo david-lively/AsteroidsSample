@@ -14,10 +14,12 @@
 #include <map>
 
 #include "Common.h"
+#include "Matrix.h"
 
 class GameObject
 {
 public:
+	bool Break = false;
     std::string Name;
     int Id;
     bool Enabled = true;
@@ -32,8 +34,15 @@ public:
     {
         Id = ++m_nextId;
     }
+
+
+	void PrintHierarchy(int indent);
     
-    
+	void BuildCombinedMatrix(Matrix& target);
+	void Add(const GameObject& item);
+	void SetParent(GameObject* newParent);
+
+
     virtual void OnPreUpdate(const GameTime& time) {}
     virtual void OnUpdate(const GameTime& time) {}
     virtual void OnPostUpdate(const GameTime& time) {}
@@ -57,6 +66,24 @@ public:
     void Dispose();
 
 	template<typename T>
+	bool Is()  
+	{
+		const T* ptr = dynamic_cast<T*>(this);
+		return nullptr != ptr;
+	}
+
+	template<typename T>
+	T& As()
+	{
+		T* ptr = dynamic_cast<T*>(this);
+
+		if (nullptr == ptr)
+			throw;
+
+		return *ptr;
+	}
+
+	template<typename T>
 	T* GetFirst() const
 	{
 		for (auto it = begin(m_children); it != end(m_children); ++it)
@@ -77,50 +104,52 @@ public:
     {
         auto* object = new T();
         object->Name = name + std::to_string(object->Id);
-        m_children.push_back(object);
+
+		m_newObjects.push_back(object);
         
 		object->Parent = this;
         return *object;
     }
     
     /// Find an object of type T in the current hierarchy. If not found, create a new one.
-    template<typename T>
-    T& GetObject(const std::string& name)
-    {
-        auto* objectPtr = FindObject(name);
-        
-        if (nullptr == objectPtr)
-        {
-            T* ptr = new T();
-            ptr->Name = name;
-            
-            m_children.push_back(ptr);
-            
-            return ptr;
-        }
-        else
-            return *objectPtr;
-        
-    }
+    //template<typename T>
+    //T& GetObject(const std::string& name)
+    //{
+    //    auto* objectPtr = FindObject(name);
+    //    
+    //    if (nullptr == objectPtr)
+    //    {
+    //        T* ptr = new T();
+    //        ptr->Name = name;
+    //        
+    //        m_children.push_back(ptr);
+    //        
+    //        return ptr;
+    //    }
+    //    else
+    //        return *objectPtr;
+    //    
+    //}
 
     
     /// If an object with the given name exists in this hierarchy, return a pointer to it.
-    void* FindObject(const std::string& name)
-    {
-        if (name == Name)
-            return this;
-        
-        for(auto it = begin(m_children); it != end(m_children); ++it)
-        {
-            auto* item = (*it)->FindObject(name);
-            if (nullptr != item)
-                return item;
-        }
-        
-        return nullptr;
-    }
+    //void* FindObject(const std::string& name)
+    //{
+    //    if (name == Name)
+    //        return this;
+    //    
+    //    for(auto it = begin(m_children); it != end(m_children); ++it)
+    //    {
+    //        auto* item = (*it)->FindObject(name);
+    //        if (nullptr != item)
+    //            return item;
+    //    }
+    //    
+    //    return nullptr;
+    //}
     
 private:
+	bool m_isInitialized = false;
     std::vector<GameObject*> m_children;
 
     void DoPreRender(const GameTime& time);
@@ -133,10 +162,16 @@ private:
     void DoUpdate(const GameTime& time);
     
     static int m_nextId;
+
+	// objects created this frame to be moved to m_children at the start of the next frame
+	std::vector<GameObject*> m_newObjects;
+
+
     
     
 protected:
-    
+	void ProcessNewObjects();
+
     
 };
 

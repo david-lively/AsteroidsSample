@@ -33,7 +33,7 @@ enum class KeyState
 class InputHandler : public GameObject
 {
 public:
-    void OnUpdate(const GameTime& time) override;
+    void OnPostUpdate(const GameTime& time) override;
     void Subscribe(int keyCode, KeyHandler handler);
     
 private:

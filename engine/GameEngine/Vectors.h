@@ -208,6 +208,8 @@ struct Vector3 : public Vector2
 	{
 		return left.Cross(right);
 	}
+
+	static const Vector3 Zero;
     
     
     

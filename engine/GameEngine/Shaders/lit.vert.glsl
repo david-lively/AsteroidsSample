@@ -11,19 +11,18 @@ uniform mat4 Projection;
 uniform float GameTimeTotalSeconds;
 uniform float TimeScale = 1;
 
-in vec3 Pos;
+in vec3 Position;
 
 
 out vec4 Color;
-out vec4 ViewPosition;
+out vec4 WorldPosition;
 
 
 void main()
 {
-    vec4 position = vec4(Pos,1);
+	vec4 position = vec4(Position, 1);
+	WorldPosition = World * position;
+	gl_Position = Projection * View * WorldPosition;
     
-    gl_Position = Projection * View * World * position;
-    ViewPosition = View * World * position;
-    
-    Color = vec4(Pos,1);
+	Color = vec4(Position, 1);
 }

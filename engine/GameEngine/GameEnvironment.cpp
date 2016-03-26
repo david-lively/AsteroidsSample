@@ -52,8 +52,10 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 
 			lightColorIntensities.push_back(colorIntensity);
 			lightDirections.push_back(light.Direction);
-			lightPosition.push_back(light.Position);
-			lightTransform.push_back(light.Transform->GetMatrix());
+
+			Matrix lightMatrix;
+			light.BuildCombinedMatrix(lightMatrix);
+			lightTransform.push_back(lightMatrix);
 		}
 
 	}
@@ -86,3 +88,24 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 		gl::UniformMatrix4fv(location, lightCount, false, (GLfloat*)lightTransform.data());
 
 }
+
+void GameEnvironment::PushMatrix(const Matrix& m)
+{
+	if (m_matrixStack.size() > 0)
+		m_matrixStack.push(m * m_matrixStack.top());
+	else
+		m_matrixStack.push(m);
+}
+
+void GameEnvironment::PopMatrix()
+{
+	m_matrixStack.pop();
+}
+
+const Matrix& GameEnvironment::CurrentMatrix()
+{
+
+	return m_matrixStack.top();
+}
+
+
