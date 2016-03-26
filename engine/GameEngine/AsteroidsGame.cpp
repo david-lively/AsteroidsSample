@@ -127,18 +127,6 @@ bool AsteroidsGame::OnCreateScene()
 	}
 	);
 
-	input.Subscribe(GLFW_KEY_F2,
-		DECL_KEYHANDLER
-	{
-		static bool evenOdd = true;
-		float fov = evenOdd ? TO_RADIANS(45.f) : TO_RADIANS(120.f);
-
-		Camera().SetFieldOfView(fov);
-
-		evenOdd = !evenOdd;
-
-	}
-	);
 
 	input.Subscribe(GLFW_KEY_F3,
 		DECL_KEYHANDLER

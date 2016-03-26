@@ -100,7 +100,11 @@ void Asteroid::OnUpdate(const GameTime& time)
 void Asteroid::OnRender(const GameTime& time)
 {
 	m_material->Bind();
-	m_material->SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 1.f));
+
+	Vector4 orange(1, 165.f / 255.f, 0, 0.25f);
+
+
+	m_material->SetUniform("EmissiveColorIntensity", orange);
 
 	WorldEntity::OnRender(time);
 

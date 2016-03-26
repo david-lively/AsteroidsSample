@@ -61,8 +61,6 @@ public:
     
 	void OnUpdate(const GameTime& time) override;
     
-    /// move to the given coordinates maintaining current velocity.
-    void Wrap(const Vector3& flags);
     void SetRotation(const Vector3& rotation);
 
     /// stop all motion and rotation
@@ -78,7 +76,7 @@ private:
     Vector3 m_previousTranslation;
     Vector3 m_previousRotation;
 
-	float m_previousFrameTime = 16.6e-3f;
+	float m_previousFrameTime = -1;
     
     
     

@@ -270,7 +270,7 @@ vector<Vector3> GeometryProvider::ToVectors(std::vector<float>& coordinates)
 }
 
 
-void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments)
+void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments, bool inXZ)
 {
 	GLushort firstIndex = (GLushort)vertices.size();
 
@@ -282,7 +282,15 @@ void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLusho
 		float x = cosf(theta) * radius;
 		float y = sinf(theta) * radius;
 
-		vertices.push_back(Vector3(x, y, 0) + center);
+		Vector3 v(x, y, 0);
+
+		if (inXZ)
+		{
+			v.Z = v.Y;
+			v.Y = 0;
+		}
+
+		vertices.push_back(v + center);
 	}
 
 	GLushort lastIndex = (GLushort)(vertices.size() - 1);
@@ -377,7 +385,6 @@ void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float noiseScale)
 {
 	FitToUnitCube(vertices);
 
-
 	for (auto& vertex : vertices)
 	{
 		float noise = SimplexNoise::noise(vertex.X, vertex.Y);
@@ -386,6 +393,23 @@ void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float noiseScale)
 	}
 }
 
+void GeometryProvider::Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float height, const float radius, const int sides)
+{
+	vertices.push_back(Vector3(0, height / 2.f, 0));
+
+	Circle(vertices, indices, Vector3(0, -height / 2.f, 0), radius, sides, true);
+	
+	indices.clear();
+
+
+	for (int i = 1; i < vertices.size(); ++i)
+	{
+		indices.push_back(0);
+		indices.push_back(i);
+		indices.push_back((i + 1) % vertices.size());
+	}
+
+}
 
 
 

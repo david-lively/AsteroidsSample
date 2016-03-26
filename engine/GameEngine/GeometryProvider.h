@@ -30,12 +30,15 @@ public:
 
 	static void FindExtents(const std::vector<Vector3>& vertices, Vector3& boxMin, Vector3& boxMax);
 	static const Vector3 FindCenter(std::vector<Vector3>& vertices);
-	static void Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments);
+	static void Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments, bool inXZ=false);
 	static std::vector<Vector3> ToVectors(std::vector<float>& coordinates);
 
 	static void Arrow(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float width, const float height);
 	/// offset all vertices along their direction from the object center.
 	static void Noisify(std::vector<Vector3>& vertices, float noiseScale);
+
+	static void Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float  height, const float radius, const int sides);
+
 
 private:
     

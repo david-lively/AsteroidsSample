@@ -15,6 +15,21 @@ in vec4 WorldPosition;
 in vec4 Color;
 out vec4 fragmentColor;
 
+float saturate(float val)
+{
+	return max(min(val, 1), 0);
+}
+
+vec3 saturate(vec3 val)
+{
+	return vec3(saturate(val.x), saturate(val.y), saturate(val.z));
+}
+
+vec4 saturate(vec4 val)
+{
+	return vec4(saturate(val.xyz), saturate(val.w));
+}
+
 vec3 ProcessLights(vec3 normal)
 {
 	vec4 color;
@@ -28,7 +43,7 @@ vec3 ProcessLights(vec3 normal)
 
 		vec3 direction = normalize(position.xyz - WorldPosition.xyz);
 
-		float intensity = dot(normal, direction);
+		float intensity = saturate(dot(normal, direction));
 		color.rgb += intensity * colorIntensity.rgb;
 	}
 
@@ -47,10 +62,11 @@ void main() {
 	vec3 normal = cross(dx,dy);
 
 	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
+	//vec3 color = vec3(1) * 0.2f + ProcessLights(normal);
 	
 	float force = clamp(ForceWireframe, 0, 1);
 
-	color.rgb = (1 - force) * color + force * vec3(1);
+	//color.rgb = (1 - force) * color + force * vec3(1);
 
 	fragmentColor = vec4(color,1);
 }

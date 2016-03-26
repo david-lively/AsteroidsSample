@@ -10,60 +10,40 @@
 #include "Game.h"
 
 
-void Transform::Wrap(const Vector3& flags)
-{
-    float scale = 0.99f;
-    
-    auto velocity = Translation - m_previousTranslation;
-    
-    if (flags.X < 1)
-    {
-        Translation.X = -Translation.X * scale;
-    }
-    
-    if (flags.Y < 1)
-    {
-        Translation.Y = -Translation.Y * scale;
-    }
-    
-    m_previousTranslation = Translation - velocity;
-}
-
 void Transform::SetRotation(const Vector3& rotation)
 {
-    m_previousRotation = (m_previousRotation - Rotation) + rotation;
-    Rotation = rotation;
+	m_previousRotation = (m_previousRotation - Rotation) + rotation;
+	Rotation = rotation;
 }
 
 void Transform::Stop()
 {
-    m_previousTranslation = Translation;
-    m_previousRotation = Rotation;
-    
+	m_previousTranslation = Translation;
+	m_previousRotation = Rotation;
+
 }
 
 void Transform::Reset()
 {
-    Translation = Vector3(0);
-    m_previousTranslation = Translation;
-    
-    Rotation = Vector3(0);
-    m_previousRotation = Rotation;
+	Translation = Vector3(0);
+	Rotation = Vector3(0);
+
+	Stop();
 }
 
 BoundingBox Transform::TransformAABB(const BoundingBox& bounds)
 {
-    BoundingBox bb;
-    
-    auto m = GetMatrix();
-    
-    
-    auto mn = m.Transform(bounds.Min);
-    auto mx = m.Transform(bounds.Max);
-    
-    bb = BoundingBox::FromMinMax(mn, mx);
-    
-    return bb;
+	BoundingBox bb;
+
+	auto m = GetMatrix();
+
+
+	auto mn = m.Transform(bounds.Min);
+	auto mx = m.Transform(bounds.Max);
+
+	bb = BoundingBox::FromMinMax(mn, mx);
+
+	return bb;
 }
 
 
@@ -77,12 +57,12 @@ Matrix Transform::GetMatrix()
 	//if (time.FrameNumber() != lastFrame)
 	//{
 	//	lastFrame = time.FrameNumber();
-	
-		auto mt = Matrix::CreateTranslation(Translation);
-		auto mr = Matrix::CreateRotation(Rotation);
-		auto ms = Matrix::CreateScale(Scale);
 
-		auto lastMatrix = ms * mr * mt;
+	auto mt = Matrix::CreateTranslation(Translation);
+	auto mr = Matrix::CreateRotation(Rotation);
+	auto ms = Matrix::CreateScale(Scale);
+
+	auto lastMatrix = ms * mr * mt;
 	//}
 
 	return lastMatrix;
@@ -110,9 +90,7 @@ void Transform::Push(const float x, const float y, const float z)
 
 void Transform::Move(const float x, const float y, const float z)
 {
-	auto velocity = Translation - m_previousTranslation;
-	Translation = Vector3(x, y, z);
-	m_previousTranslation = Translation - velocity;
+	Move(Vector3(x, y, z));
 }
 
 /// move to a new position, but do not add velocity.
@@ -128,10 +106,17 @@ void Transform::Spin(const Vector3& theta)
 	Rotation += theta;
 }
 
-void Transform::OnUpdate(const GameTime& time) 
+void Transform::OnUpdate(const GameTime& time)
 {
-	//float timeScale = m_prev time.ElapsedSeconds() / m_previousFrameTime;
-	float timeScale = 1;
+	float timeScale = 1.f;
+
+	if (Game::Instance().Time.FrameNumber() > 10)
+	{
+		timeScale = time.ElapsedSeconds() / m_previousFrameTime;
+	}
+
+	m_previousFrameTime = time.ElapsedSeconds();
+
 	auto velocity = (Translation - m_previousTranslation) * (1 - Drag) * timeScale;
 
 	m_previousTranslation = Translation;

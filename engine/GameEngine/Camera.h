@@ -30,7 +30,7 @@ public:
     Vector3 Near;
     Vector3 Far;
     
-    Camera() : FieldOfView(TO_RADIANS(90)), ZNear(1), ZFar(1000)
+    Camera() : FieldOfView(TO_RADIANS(45)), ZNear(1), ZFar(1000)
     {
     }
 
