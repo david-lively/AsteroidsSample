@@ -35,9 +35,12 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
+
+	m_grid->Enabled = false;
+
 	CreateLights(m_lights);
 
-	CreateAsteroids(4, m_itemsToWrap);
+	CreateAsteroids(4, 4, m_itemsToWrap);
 
 	m_itemsToWrap.push_back(m_ship);
 
@@ -123,7 +126,7 @@ bool AsteroidsGame::OnCreateScene()
 
 		camera.Transform->Reset();
 
-		camera.Transform->Move(0, 0, 9);
+		camera.Transform->Move(0, 0, 20);
 	}
 	);
 
@@ -158,7 +161,7 @@ bool AsteroidsGame::OnCreateScene()
 
 
 
-	Game::Camera().Transform->Move(0, 0, 9);
+	Game::Camera().Transform->Move(0, 0, 20);
 
 	return true;
 }
@@ -169,14 +172,12 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 	auto shipBounds = ship.Transform->TransformAABB(ship.Bounds);
 
 
-
 	for (auto asteroid : m_asteroids)
 	{
 		auto bounds = asteroid->Transform->TransformAABB(asteroid->Bounds);
 
 		if (shipBounds.Intersects(bounds) != IntersectionType::Disjoint)
 			;
-
 
 	}
 
@@ -262,11 +263,18 @@ float randFloat()
 
 }
 
-void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
+void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
 {
+
+	float spread = 8.f;
+
+	float theta =  (count + 1) * 1.f / total * TO_RADIANS(360);
+	theta += TO_RADIANS(45.f);
+	Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
+
+
 	auto& asteroid = Create<Asteroid>("asteroid");
 	asteroid.TwoD = false;
-
 
 	entities.push_back(&asteroid);
 	m_asteroids.push_back(&asteroid);
@@ -274,7 +282,7 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 	auto& transform = *asteroid.Transform;
 
 	transform.Scale = Vector3(4.f);
-	transform.Move(randFloat() * 10, randFloat() * 10, 0);
+	transform.Move(center);
 
 	/// start the asteroid moving...
 	float radians = TO_RADIANS(rand() % 360);
@@ -285,8 +293,8 @@ void AsteroidsGame::CreateAsteroids(int count, vector<WorldEntity*>& entities)
 	/// and make it spin
 	transform.Spin(Vector3(0.01f, 0.005f, 0));
 
-	if (--count > 0)
-		CreateAsteroids(count, entities);
+	if (count > 1)
+		CreateAsteroids(count-1, total, entities);
 }
 
 
@@ -369,7 +377,7 @@ void AsteroidsGame::Fire(Ship& ship)
 	auto initialPosition = m_ship->Transform->Translation;
 
 	*(missile.Transform) = *(m_ship->Transform);
-	missile.Transform->SetParent(&missile);
+	//missile.Transform->SetParent(&missile);
 
 	//missile.Transform->Reset();
 	//missile.Transform->Move(initialPosition);

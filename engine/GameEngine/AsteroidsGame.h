@@ -40,7 +40,7 @@ public:
     Grid& CreateGrid();
 	void CreateLights(std::vector<Light*>& lights);
 
-	void CreateAsteroids(int count, std::vector<WorldEntity*>& entities);
+	void CreateAsteroids(const int count, const int total, std::vector<WorldEntity*>& entities);
     
 private:
     Grid* m_grid;

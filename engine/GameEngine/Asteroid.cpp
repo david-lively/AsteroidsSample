@@ -32,7 +32,6 @@ bool Asteroid::OnInitialize()
 	vector<Vector3> vertices;
 	vector<GLushort> indices;
 
-	Vector3 noiseCenter((rand() % 10) / 10.f, (rand() % 10) / 10.f, (rand() % 10) / 10.f);;
 
 
 	if (TwoD)
@@ -101,8 +100,7 @@ void Asteroid::OnRender(const GameTime& time)
 {
 	m_material->Bind();
 
-	Vector4 orange(1, 165.f / 255.f, 0, 0.25f);
-
+	Vector4 orange(1, 165.f / 255.f, 0, 0.125f);
 
 	m_material->SetUniform("EmissiveColorIntensity", orange);
 

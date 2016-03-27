@@ -5,6 +5,7 @@
 uniform mat4 View;
 uniform int LightCount = 0;
 
+uniform vec3 LightDirection[MAX_LIGHTS];
 uniform vec4 LightColorIntensity[MAX_LIGHTS];
 uniform mat4 LightTransform[MAX_LIGHTS];
 uniform float ForceWireframe = 0;
@@ -13,6 +14,7 @@ uniform vec4 EmissiveColorIntensity;
 
 in vec4 WorldPosition;
 in vec4 Color;
+
 out vec4 fragmentColor;
 
 float saturate(float val)
@@ -41,7 +43,8 @@ vec3 ProcessLights(vec3 normal)
 
 		position = View * LightTransform[i] * position;
 
-		vec3 direction = normalize(position.xyz - WorldPosition.xyz);
+		//vec3 direction = normalize(position.xyz - WorldPosition.xyz);
+		vec3 direction = LightDirection[i];
 
 		float intensity = saturate(dot(normal, direction));
 		color.rgb += intensity * colorIntensity.rgb;

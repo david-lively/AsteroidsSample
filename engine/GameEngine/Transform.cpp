@@ -122,7 +122,7 @@ void Transform::OnUpdate(const GameTime& time)
 	m_previousTranslation = Translation;
 	Translation += velocity;
 
-	auto spin = (Rotation - m_previousRotation) * (1 - Drag);
+	auto spin = (Rotation - m_previousRotation) * (1 - Drag) * timeScale;
 	m_previousRotation = Rotation;
 	Rotation += spin;
 

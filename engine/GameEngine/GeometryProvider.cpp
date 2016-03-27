@@ -383,7 +383,7 @@ void GeometryProvider::Arrow(std::vector<Vector3>& vertices, std::vector<GLushor
 /// offset all vertices along their direction from the object center.
 void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float noiseScale)
 {
-	FitToUnitCube(vertices);
+	Vector3 noiseCenter((rand() % 1000) / 10.f, (rand() % 1000) / 10.f, (rand() % 1000) / 10.f);;
 
 	for (auto& vertex : vertices)
 	{
