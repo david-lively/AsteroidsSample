@@ -15,6 +15,7 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "GameEnvironment.h"
+#include "PerlinNoise.h"
 
 class Game : public GameObject
 {
@@ -22,6 +23,7 @@ public:
     GameTime Time;
 	bool IsPlaying = false;
 	Vector4 ClearColor;
+	PerlinNoise Noise;
 	
 	Game();
 	

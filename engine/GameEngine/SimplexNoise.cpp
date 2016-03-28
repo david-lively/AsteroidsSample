@@ -319,3 +319,5 @@ float SimplexNoise::fractal(size_t octaves, float x, float y) const {
 
 	return output;
 }
+
+

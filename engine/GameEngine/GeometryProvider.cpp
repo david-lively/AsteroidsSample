@@ -9,7 +9,7 @@
 #include "GeometryProvider.h"
 #include "Common.h"
 #include "Bounds.h"
-#include "SimplexNoise.h"
+#include "Game.h"
 
 #include <vector>
 #include <map>
@@ -381,15 +381,21 @@ void GeometryProvider::Arrow(std::vector<Vector3>& vertices, std::vector<GLushor
 
 
 /// offset all vertices along their direction from the object center.
-void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float noiseScale)
+void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float scale, float amplitude)
 {
+	PerlinNoise& noise = Game::Instance().Noise;
 	Vector3 noiseCenter((rand() % 1000) / 10.f, (rand() % 1000) / 10.f, (rand() % 1000) / 10.f);;
 
 	for (auto& vertex : vertices)
 	{
-		float noise = SimplexNoise::noise(vertex.X, vertex.Y);
+		Vector3 v = (vertex + noiseCenter) * scale;
+		float n = noise.noise(v.X, v.Y, v.Z);
 
-		vertex += vertex.Normalized() * noise *noiseScale;
+		n = 2 * n - 1;
+
+		n = (n < 0) ? n : n * 0.05f;
+
+		vertex += vertex.Normalized() * n * amplitude;
 	}
 }
 

@@ -30,19 +30,26 @@ enum class KeyState
     ,Release    
 };
 
+
 class InputHandler : public GameObject
 {
 public:
+	InputHandler()
+	{
+	}
+
+
     void OnPostUpdate(const GameTime& time) override;
     void Subscribe(int keyCode, KeyHandler handler);
     
 private:
+
+
     std::map<int, std::vector<KeyHandler>> m_keyHandlers;
     /// previous key states from GLFW 
     std::map<int,KeyState>  m_keyStates;
     
     void UpdateKeyStates();
-    
 };
 
 

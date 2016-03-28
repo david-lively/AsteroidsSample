@@ -28,7 +28,7 @@ public:
     bool OnInitialize() override;
 	void OnPreUpdate(const  GameTime& time) override;
 	bool CanFire();
-	void Fire();
+	bool Fire();
 
     
 private:

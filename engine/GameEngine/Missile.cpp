@@ -34,8 +34,11 @@ bool Missile::OnInitialize()
 	
 	material.Build("Shaders/primitive");
 
-	GeometryProvider::Circle(vertices, indices, Vector3::Zero, 0.5f, 12);
-	GeometryProvider::FitToUnitCube(vertices);
+
+	vertices.push_back(Vector3(0, -0.5f, 0));
+	vertices.push_back(Vector3(0, +0.5f, 0));
+	indices.push_back(0);
+	indices.push_back(1);
 
 	Bounds = BoundingBox::FromVectors(vertices);
 

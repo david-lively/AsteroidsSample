@@ -187,6 +187,11 @@ void AsteroidsGame::OnPreUpdate(const GameTime& time)
 {
 	/// wrap moving items to view frustum
 
+
+	auto title = "Missiles: active " + to_string(m_allMissiles.size()) + " inactive " + to_string(m_inactiveMissiles.size());
+
+
+	glfwSetWindowTitle(Game::Instance().Window(), title.c_str());
 	auto& camera = Game::Instance().Camera();
 	auto& viewMatrix = camera.GetViewMatrix();
 
@@ -270,6 +275,7 @@ void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<Wor
 
 	float theta =  (count + 1) * 1.f / total * TO_RADIANS(360);
 	theta += TO_RADIANS(45.f);
+
 	Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
 
 
@@ -291,7 +297,7 @@ void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<Wor
 
 	transform.Push(dir * 0.005f);
 	/// and make it spin
-	transform.Spin(Vector3(0.01f, 0.005f, 0));
+	transform.Spin(Vector3(0, 0, 0.005f));
 
 	if (count > 1)
 		CreateAsteroids(count-1, total, entities);
@@ -367,7 +373,7 @@ Missile& AsteroidsGame::GetAMissile()
 
 void AsteroidsGame::Fire(Ship& ship)
 {
-	if (!ship.CanFire())
+	if (!ship.Fire())
 		return;
 
 	Log::Debug << Time.FrameNumber() << " Fire!\n";
@@ -376,11 +382,14 @@ void AsteroidsGame::Fire(Ship& ship)
 
 	auto initialPosition = m_ship->Transform->Translation;
 
-	*(missile.Transform) = *(m_ship->Transform);
-	//missile.Transform->SetParent(&missile);
-
-	//missile.Transform->Reset();
-	//missile.Transform->Move(initialPosition);
+	auto up = m_ship->Transform->GetMatrix().Up();
+	missile.Transform->SetRotation(m_ship->Transform->Rotation);
+	missile.Transform->Move(m_ship->Transform->Translation);
+	missile.Transform->Stop();
+	missile.Transform->Drag = 0.f;
+	
+	float missileSpeed = 0.075f;
+	missile.Transform->Push(up * missileSpeed);
 }
 
 

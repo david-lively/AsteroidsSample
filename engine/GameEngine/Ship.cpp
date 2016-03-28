@@ -159,7 +159,7 @@ void Ship::ConfigureInput()
 void Ship::OnPreUpdate(const  GameTime& time)
 {
 	TimeUntilCanFire -= time.ElapsedSeconds();
-	
+
 	if (TimeUntilCanFire < 0)
 		TimeUntilCanFire = 0;
 
@@ -172,10 +172,15 @@ bool Ship::CanFire()
 	return TimeUntilCanFire <= 0;
 }
 
-void Ship::Fire()
+bool Ship::Fire()
 {
-	if (CanFire())
-		TimeUntilCanFire = FireIntervalSec;
+
+	if (!CanFire())
+		return false;
+
+	TimeUntilCanFire = FireIntervalSec;
+
+	return true;
 }
 
 

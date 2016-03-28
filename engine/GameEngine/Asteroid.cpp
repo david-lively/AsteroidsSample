@@ -49,13 +49,13 @@ bool Asteroid::OnInitialize()
 		mesh.Type = BeginMode::Triangles;
 		material.Build("Shaders/lit");
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 4);
+		GeometryProvider::Tessellate(vertices, indices, 5);
 		GeometryProvider::Spherize(vertices);
 	}
 	
 	GeometryProvider::FitToUnitCube(vertices);
 
-	GeometryProvider::Noisify(vertices, 0.1f);
+	GeometryProvider::Noisify(vertices, 4, 0.3f);
 
 	Bounds = BoundingBox::FromVectors(vertices);
 

@@ -49,21 +49,11 @@ BoundingBox Transform::TransformAABB(const BoundingBox& bounds)
 
 Matrix Transform::GetMatrix()
 {
-	//static int lastFrame = 0;
-	//static Matrix lastMatrix;
-
-	//auto& time = Game::Instance().Time;
-
-	//if (time.FrameNumber() != lastFrame)
-	//{
-	//	lastFrame = time.FrameNumber();
-
 	auto mt = Matrix::CreateTranslation(Translation);
 	auto mr = Matrix::CreateRotation(Rotation);
 	auto ms = Matrix::CreateScale(Scale);
 
 	auto lastMatrix = ms * mr * mt;
-	//}
 
 	return lastMatrix;
 }
@@ -110,10 +100,10 @@ void Transform::OnUpdate(const GameTime& time)
 {
 	float timeScale = 1.f;
 
-	if (Game::Instance().Time.FrameNumber() > 10)
-	{
-		timeScale = time.ElapsedSeconds() / m_previousFrameTime;
-	}
+	//if (Game::Instance().Time.FrameNumber() > 10)
+	//{
+	//	timeScale = time.ElapsedSeconds() / m_previousFrameTime;
+	//}
 
 	m_previousFrameTime = time.ElapsedSeconds();
 

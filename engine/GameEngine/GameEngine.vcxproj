@@ -107,6 +107,7 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Missile.h" />
+    <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SimplexNoise.h" />
