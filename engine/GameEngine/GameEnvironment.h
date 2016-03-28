@@ -26,6 +26,8 @@ public:
 
 	}
 
+	float Contrast = 1.f;
+
 	// top-most world matrix from object hierarchy
 	const Matrix& CurrentMatrix();
 	// add a new matrix to the stack. value is multiplied by top value if available.

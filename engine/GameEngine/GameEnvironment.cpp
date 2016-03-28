@@ -60,12 +60,12 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 
 	}
 
-	auto lightCount = min(lightColorIntensities.size(), lightDirections.size());
+	GLint lightCount = (GLint)min(lightColorIntensities.size(), lightDirections.size());
 	gl::Uniform1i(countIndex, lightCount);
 
 	check_gl_error();
 
-	auto location = mat->GetUniformLocation("LightColorIntensity");
+	GLint location = mat->GetUniformLocation("LightColorIntensity");
 	if (location >= 0)
 		gl::Uniform4fv(location, lightCount, (const GLfloat*)lightColorIntensities.data());
 

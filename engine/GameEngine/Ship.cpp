@@ -44,13 +44,15 @@ void Ship::CreateShipMesh()
 	auto& mesh = Create<Mesh>("ship-mesh");
 
 #ifdef CONE_SHIP
+	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 5);
+	
+	
 	material.FillType = PolygonMode::Fill;
 	mesh.Type = BeginMode::Triangles;
-	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 5);
+	
 	material.Build("Shaders/lit");
 
 #else 
-#ifndef SPHERE_SHIP
 	material.FillType = PolygonMode::Line;
 	mesh.Type = BeginMode::Lines;
 	material.Build("Shaders/primitive");
@@ -80,18 +82,8 @@ void Ship::CreateShipMesh()
 		,
 		3, 4
 	};
-
-#else
-	GeometryProvider::Icosahedron(vertices, indices);
-	GeometryProvider::Tessellate(vertices, indices, 2);
-	GeometryProvider::Spherize(vertices);
-	material.FillType = PolygonMode::Fill;
-	mesh.Type = BeginMode::Triangles;
-
-	material.Build("Shaders/lit");
-
 #endif
-#endif
+
 	GeometryProvider::FitToUnitCube(vertices);
 	Bounds = BoundingBox::FromVectors(vertices);
 

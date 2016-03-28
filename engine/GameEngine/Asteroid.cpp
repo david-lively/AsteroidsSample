@@ -33,7 +33,6 @@ bool Asteroid::OnInitialize()
 	vector<GLushort> indices;
 
 
-
 	if (TwoD)
 	{
 		material.FillType = PolygonMode::Line;
@@ -47,7 +46,7 @@ bool Asteroid::OnInitialize()
 	{
 		material.FillType = PolygonMode::Fill;
 		mesh.Type = BeginMode::Triangles;
-		material.Build("Shaders/lit");
+		material.Build("Shaders/edgeDetection");
 		GeometryProvider::Icosahedron(vertices, indices);
 		GeometryProvider::Tessellate(vertices, indices, 5);
 		GeometryProvider::Spherize(vertices);
@@ -59,7 +58,6 @@ bool Asteroid::OnInitialize()
 
 	Bounds = BoundingBox::FromVectors(vertices);
 
-
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
 
@@ -68,12 +66,15 @@ bool Asteroid::OnInitialize()
 	Transform->Drag = 0.f;
 
 	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
-	return WorldEntity::OnInitialize();
 
+	return WorldEntity::OnInitialize();
 }
 
 void Asteroid::OnPreRender(const GameTime& time)
 {
+	m_material->Bind();
+	m_material->SetUniform("ColorByDepth", 1.f);
+	m_material->SetUniform("Contrast", Game::Instance().Environment().Contrast);
 	WorldEntity::OnPreRender(time);
 }
 

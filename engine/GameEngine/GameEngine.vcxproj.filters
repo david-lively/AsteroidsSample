@@ -256,5 +256,11 @@
     <None Include="Shaders\simpleLight.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\edgeDetection.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\edgeDetection.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

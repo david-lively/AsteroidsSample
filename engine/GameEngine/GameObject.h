@@ -24,6 +24,8 @@ public:
     int Id;
     bool Enabled = true;
 	GameObject* Parent = nullptr;
+
+	int ReferenceCount = 0;
     
     GameObject() : GameObject("unnamed-gameobject")
     {
@@ -32,9 +34,9 @@ public:
     
     GameObject(const std::string& name) : Name(name)
     {
-        Id = ++m_nextId;
+		++ReferenceCount;
+		Id = ++m_nextId;
     }
-
 
 	void PrintHierarchy(int indent);
     
@@ -64,6 +66,7 @@ public:
 	virtual void OnWindowResize(int width, int height);
 
     void Dispose();
+
 
 	template<typename T>
 	bool Is()  

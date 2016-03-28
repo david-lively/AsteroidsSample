@@ -11,7 +11,7 @@
 #include <iostream>
 #include <cmath>
 #include <random>
-
+#include <thread>
 
 using namespace std;
 
@@ -25,11 +25,6 @@ using namespace std;
 #include "Bounds.h"
 #include "Light.h"
 
-void QuitGame(const GameObject& sender, const GameTime& time)
-{
-	Log::Info << "Closing application\n";
-	glfwSetWindowShouldClose(Game::Instance().Window(), true);
-}
 
 bool AsteroidsGame::OnCreateScene()
 {
@@ -63,7 +58,7 @@ bool AsteroidsGame::OnCreateScene()
 		DECL_KEYHANDLER
 	{
 		if (nullptr != m_grid)
-			m_grid->Enabled = !m_grid->Enabled;
+		m_grid->Enabled = !m_grid->Enabled;
 	}
 
 	);
@@ -158,6 +153,26 @@ bool AsteroidsGame::OnCreateScene()
 
 	);
 
+	input.Subscribe(GLFW_KEY_0,
+		DECL_KEYHANDLER
+	{
+		float& contrast = Environment().Contrast;
+
+		contrast += 0.1f;
+
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_9,
+		DECL_KEYHANDLER
+	{
+		float& contrast = Environment().Contrast;
+
+		contrast -= 0.1f;
+
+		Log::Info << "Contrast: " << contrast << endl;
+	}
+	);
 
 
 
@@ -230,9 +245,9 @@ void AsteroidsGame::OnPreUpdate(const GameTime& time)
 			else if (FrustumAction::Recycle == entityPtr->OnExitFrustum)
 			{
 				entityPtr->Enabled = false;
-				
+
 				Missile* ptr = dynamic_cast<Missile*>(entityPtr);
-				
+
 				if (nullptr != ptr)
 					m_inactiveMissiles.push(ptr);
 
@@ -268,22 +283,21 @@ float randFloat()
 
 }
 
-void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
-{
 
+void createAsteroids(AsteroidsGame& game, const int count, const int total, vector<WorldEntity*>& entities)
+{
+	Log::Info << "createAsteroids count " << count << " total " << total << " have " << entities.size() << " items " << endl;
 	float spread = 8.f;
 
-	float theta =  (count + 1) * 1.f / total * TO_RADIANS(360);
+	float theta = (count + 1) * 1.f / total * TO_RADIANS(360);
 	theta += TO_RADIANS(45.f);
 
 	Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
 
-
-	auto& asteroid = Create<Asteroid>("asteroid");
+	auto& asteroid = game.Create<Asteroid>("asteroid");
 	asteroid.TwoD = false;
 
 	entities.push_back(&asteroid);
-	m_asteroids.push_back(&asteroid);
 
 	auto& transform = *asteroid.Transform;
 
@@ -300,7 +314,17 @@ void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<Wor
 	transform.Spin(Vector3(0, 0, 0.005f));
 
 	if (count > 1)
-		CreateAsteroids(count-1, total, entities);
+		createAsteroids(game, count - 1, total, entities);
+}
+
+
+void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
+{
+	createAsteroids(*this, count, total, entities);
+	//thread t1(createAsteroids,*this,count,total,entities);
+	//
+	//t1.join();
+
 }
 
 
@@ -387,7 +411,7 @@ void AsteroidsGame::Fire(Ship& ship)
 	missile.Transform->Move(m_ship->Transform->Translation);
 	missile.Transform->Stop();
 	missile.Transform->Drag = 0.f;
-	
+
 	float missileSpeed = 0.075f;
 	missile.Transform->Push(up * missileSpeed);
 }

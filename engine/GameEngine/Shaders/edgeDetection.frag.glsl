@@ -14,9 +14,7 @@ uniform mat4 LightTransform[MAX_LIGHTS];
 uniform float ForceWireframe = 0;
 uniform vec4 EmissiveColorIntensity;
 uniform float ColorByDepth = 0;
-uniform float Contrast = 1.f;
 
-in vec4 ObjectPosition;
 in vec4 WorldPosition;
 in vec4 Color;
 
@@ -65,9 +63,6 @@ float Luminosity(vec3 color)
 	return 0.2126f * color.r + 0.7152f * color.g + 0.0722 * color.b;
 }
 
-//  pixelColor.rgb = ((pixelColor.rgb - 0.5f) * max(Contrast, 0)) + 0.5f;
-
-
 
 void main() {
 	vec3 fragmentPosition = WorldPosition.xyz;
@@ -79,16 +74,23 @@ void main() {
 
 	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
 	
-	if (ColorByDepth > 0.5f)
+	//if (ColorByDepth < 0.5f)
+	//{
+	//	color.rgb = vec3(Luminosity(color));
+	//}
+	//else
 	{
-		float c = length(ObjectPosition) / 5.f;
-		color = vec3(c);
+		/// edge detection
+
+		if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
+			discard;
+		else
+			color = vec3(1);
+
 	}
 
 	if (ForceWireframe > 0.5f)
 		color = vec3(1);
-
-	color.rgb = (color.rgb - 0.5f) * max(Contrast, 0) + 0.5f;
 
 	fragmentColor = vec4(color,1);
 }

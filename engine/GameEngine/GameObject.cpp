@@ -231,15 +231,15 @@ void GameObject::Dispose()
 {
 	for (auto it = begin(m_children); it != end(m_children); ++it)
 	{
-		(*it)->Dispose();
-		delete *it;
-		*it = nullptr;
+		auto refCount = --((*it)->ReferenceCount);
+		if (refCount <= 0)
+		{
+			(*it)->Dispose();
+			delete *it;
+		}
 	}
 
-	m_children.clear();
-
 	OnDispose();
-
 }
 
 

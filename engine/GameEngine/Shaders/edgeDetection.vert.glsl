@@ -16,13 +16,11 @@ in vec3 Position;
 
 out vec4 Color;
 out vec4 WorldPosition;
-out vec4 ObjectPosition;
+
 
 void main()
 {
 	vec4 position = vec4(Position, 1);
-	ObjectPosition = position;
-
 	WorldPosition = World * position;
 	gl_Position = Projection * View * WorldPosition;
     

@@ -158,6 +158,8 @@
     <ClInclude Include="WorldEntity.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\edgeDetection.frag.glsl" />
+    <None Include="Shaders\edgeDetection.vert.glsl" />
     <None Include="Shaders\lit.frag.glsl" />
     <None Include="Shaders\lit.vert.glsl" />
     <None Include="Shaders\matrix.frag.glsl" />
