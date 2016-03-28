@@ -25,6 +25,7 @@ using namespace std;
 
 bool Ship::OnInitialize()
 {
+	Transform->Drag = 0.02f;
 	ConfigureInput();
 	//CreateHelpers();
 	CreateShipMesh();
