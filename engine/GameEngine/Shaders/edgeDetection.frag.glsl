@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 #define PI (3.141592f)
 #define TO_RADIANS(x) (x * PI / 180)
@@ -16,6 +16,7 @@ uniform vec4 EmissiveColorIntensity;
 uniform float ColorByDepth = 0;
 
 in vec4 WorldPosition;
+in vec4 ModelPosition;
 in vec4 Color;
 
 out vec4 fragmentColor;
@@ -65,6 +66,7 @@ float Luminosity(vec3 color)
 
 
 void main() {
+
 	vec3 fragmentPosition = WorldPosition.xyz;
 
     vec3 dx = normalize(dFdx(fragmentPosition));

@@ -8,7 +8,7 @@
 
 #include "Transform.h"
 #include "Game.h"
-
+#include "Bounds.h"
 
 void Transform::SetRotation(const Vector3& rotation)
 {
@@ -119,6 +119,22 @@ void Transform::OnUpdate(const GameTime& time)
 	if (Scale.X != Scale.Y || Scale.Y != Scale.Z || Scale.Z != Scale.X)
 		Log::Error << "Nonuniform scale detected: " << Scale << "\n";
 }
+
+BoundingSphere Transform::TransformSphere(const BoundingSphere& bounds)
+{
+	auto matrix = GetMatrix();
+
+	Vector3 c = bounds.Center;
+	Vector3 o = bounds.Center + Vector3(bounds.Radius, 0, 0);
+
+	Vector3 c1 = matrix.Transform(c);
+	Vector3 o1 = matrix.Transform(o);
+
+	float newRadius = (o1 - c1).Length();
+
+	return BoundingSphere(c1, newRadius);
+}
+
 
 
 

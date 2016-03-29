@@ -14,6 +14,7 @@
 class Resource : public GameObject
 {
 public:
+	/// OpenGL ID for this resource
     GLint Handle;
     
     Resource(const std::string& name) : GameObject(name), Handle(-1)
@@ -23,7 +24,7 @@ public:
     
     virtual ~Resource() = 0;
     
-    
+
     virtual void Bind()
     {
         

@@ -57,25 +57,7 @@ bool SimpleGame::OnCreateScene()
     string fragmentShaderSource;
 
     auto& material = Create<Material>("simple-material");
-    auto success = true;
-    do
-    {
-
-		if(!LoadShaders("simple", vertexShaderSource, fragmentShaderSource))
-		{
-			Log::Error << "Could not load shader source. Exiting\n";
-			return false;
-		}
-
-        success = material.Build(vertexShaderSource, fragmentShaderSource);
-        
-        if(!success)
-        {
-            cout << "Press enter to retry." << endl;
-            getchar();
-        }
-        
-    } while(!success);
+	bool success = material.Build("simple");
     
 	cube.Material = &material;
     

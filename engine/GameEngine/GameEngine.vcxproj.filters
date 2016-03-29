@@ -114,6 +114,12 @@
     <ClCompile Include="PerlinNoise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Identity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -224,6 +230,12 @@
     <ClInclude Include="PerlinNoise.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Identity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag.glsl">
@@ -260,6 +272,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\edgeDetection.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\particle.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -90,6 +90,8 @@ void Ship::CreateShipMesh()
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
 
+	Sphere = BoundingSphere::FromVectors(vertices);
+
 	m_mesh = &mesh;
 }
 

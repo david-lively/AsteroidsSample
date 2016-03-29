@@ -13,7 +13,6 @@
 #include "GeometryProvider.h"
 #include "Game.h"
 
-
 #include <vector>
 #include <cmath>
 
@@ -34,16 +33,17 @@ bool Missile::OnInitialize()
 	
 	material.Build("Shaders/primitive");
 
+	vertices.push_back(Vector3(0, 0, 0));
+	vertices.push_back(Vector3(0, +1.f, 0));
 
-	vertices.push_back(Vector3(0, -0.5f, 0));
-	vertices.push_back(Vector3(0, +0.5f, 0));
 	indices.push_back(0);
 	indices.push_back(1);
 
 	Bounds = BoundingBox::FromVectors(vertices);
-
+	Sphere = BoundingSphere::FromVectors(vertices);
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
+
 
 	m_mesh = &mesh;
 

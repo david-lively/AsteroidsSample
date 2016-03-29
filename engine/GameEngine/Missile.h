@@ -22,7 +22,6 @@ public:
     }
 
     bool OnInitialize() override;
-
     
 private:
     Mesh* m_mesh;

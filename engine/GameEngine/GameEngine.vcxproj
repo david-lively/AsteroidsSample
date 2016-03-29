@@ -98,6 +98,7 @@
     <ClCompile Include="GeometryProvider.cpp" />
     <ClCompile Include="glError.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Identity.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="UniformCollection.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -135,6 +137,7 @@
     <ClInclude Include="GeometryProvider.h" />
     <ClInclude Include="glError.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Identity.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Log.h" />
@@ -146,6 +149,7 @@
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="UniformCollection.h" />
     <ClInclude Include="Ship.h" />
@@ -164,6 +168,8 @@
     <None Include="Shaders\lit.vert.glsl" />
     <None Include="Shaders\matrix.frag.glsl" />
     <None Include="Shaders\matrix.vert.glsl" />
+    <None Include="Shaders\particle.frag.glsl" />
+    <None Include="Shaders\particle.vert.glsl" />
     <None Include="Shaders\primitive.frag.glsl" />
     <None Include="Shaders\primitive.vert.glsl" />
     <None Include="Shaders\simple.frag.glsl" />

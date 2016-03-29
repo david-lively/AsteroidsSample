@@ -9,7 +9,7 @@
 #ifndef ASTEROID_H
 #define ASTEROID_H
 
-#include "Common.h"
+//#include "Common.h"
 #include "WorldEntity.h"
 #include "Mesh.h"
 

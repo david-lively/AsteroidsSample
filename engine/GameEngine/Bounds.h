@@ -114,5 +114,49 @@ struct BoundingBox
     
 };
 
+class BoundingSphere
+{
+public:
+	BoundingSphere(const Vector3& center, const float radius) : 
+		Center(center), Radius(radius)
+	{
+		
+	}
+
+	BoundingSphere()
+	{
+
+	}
+
+	Vector3 Center;
+	float Radius;
+
+	bool Intersects(const BoundingSphere& other)
+	{
+		Vector3 delta = (other.Center - Center);
+
+		//float distanceSquared = delta.X * delta.X + delta.Y *  delta.Y + delta.Z * delta.Z;
+
+		float distanceSquared = delta.Dot(delta);
+		float radiusSumSquared = (Radius + other.Radius) * (Radius + other.Radius);
+		return radiusSumSquared > distanceSquared;
+	}
+
+	static BoundingSphere FromVectors(const std::vector<Vector3>& vectors)
+	{
+		float maxRadiusSquared = 0.f;
+
+		for (Vector3 v : vectors)
+		{
+			auto lengthSquared = v.Dot(v);
+
+			maxRadiusSquared = max(maxRadiusSquared, lengthSquared);
+		}
+
+		return BoundingSphere(Vector3::Zero, sqrt(maxRadiusSquared));
+	}
+
+};
+
 
 #endif /* BoundingBox_h */

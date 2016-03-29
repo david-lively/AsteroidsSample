@@ -10,10 +10,6 @@
 
 using namespace std;
 
-int GameObject::m_nextId = 0;
-
-
-
 void GameObject::SetParent(GameObject* newParent)
 {
 	if (nullptr != Parent)
@@ -21,7 +17,7 @@ void GameObject::SetParent(GameObject* newParent)
 		std::vector<GameObject*>& pc = Parent->m_children;
 		pc.erase(std::remove(begin(pc), end(pc), this), end(pc));
 	}
-	
+
 	Parent = newParent;
 
 	if (nullptr != Parent)
@@ -268,8 +264,7 @@ void GameObject::PrintHierarchy(int indent)
 
 void GameObject::ProcessNewObjects()
 {
-	if (!m_isInitialized)
-	if (!Initialize())
+	if (!m_isInitialized && !Initialize())
 	{
 		Log::Error << "Initialization failed for " << Name << endl;
 	}
@@ -283,6 +278,21 @@ void GameObject::ProcessNewObjects()
 	m_newObjects.clear();
 
 }
+
+int GameObject::CountObjects()
+{
+	int result = 1;
+
+	for (auto child : m_children)
+	{
+		result += child->CountObjects();
+	}
+
+	return result;
+}
+
+
+
 
 
 

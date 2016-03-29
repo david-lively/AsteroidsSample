@@ -33,17 +33,14 @@ bool AsteroidsGame::OnCreateScene()
 
 	m_grid->Enabled = false;
 
-	CreateLights(m_lights);
+	//CreateLights(m_lights);
 
 	CreateAsteroids(4, 4, m_itemsToWrap);
 
 	m_itemsToWrap.push_back(m_ship);
 
 	auto& camera = Camera();
-
-
 	auto& input = Create<InputHandler>("asteroids-input");
-
 
 	input.Subscribe(GLFW_KEY_ESCAPE,
 		DECL_KEYHANDLER
@@ -60,7 +57,6 @@ bool AsteroidsGame::OnCreateScene()
 		if (nullptr != m_grid)
 		m_grid->Enabled = !m_grid->Enabled;
 	}
-
 	);
 
 	input.Subscribe(GLFW_KEY_E,
@@ -174,6 +170,12 @@ bool AsteroidsGame::OnCreateScene()
 	}
 	);
 
+	input.Subscribe(GLFW_KEY_F11,
+		DECL_KEYHANDLER
+	{
+		Log::Info << "There are " << CountObjects() << " objects in the hierarchy." << endl;
+	});
+		
 
 
 	Game::Camera().Transform->Move(0, 0, 20);
@@ -183,25 +185,13 @@ bool AsteroidsGame::OnCreateScene()
 
 void AsteroidsGame::OnUpdate(const GameTime& time)
 {
-	auto& ship = *m_ship;
-	auto shipBounds = ship.Transform->TransformAABB(ship.Bounds);
-
-
-	for (auto asteroid : m_asteroids)
-	{
-		auto bounds = asteroid->Transform->TransformAABB(asteroid->Bounds);
-
-		if (shipBounds.Intersects(bounds) != IntersectionType::Disjoint)
-			;
-
-	}
 
 }
 
 void AsteroidsGame::OnPreUpdate(const GameTime& time)
 {
 	/// wrap moving items to view frustum
-
+	DoCollisionCheck();
 
 	auto title = "Missiles: active " + to_string(m_allMissiles.size()) + " inactive " + to_string(m_inactiveMissiles.size());
 
@@ -284,7 +274,7 @@ float randFloat()
 }
 
 
-void createAsteroids(AsteroidsGame& game, const int count, const int total, vector<WorldEntity*>& entities)
+void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
 {
 	Log::Info << "createAsteroids count " << count << " total " << total << " have " << entities.size() << " items " << endl;
 	float spread = 8.f;
@@ -294,7 +284,9 @@ void createAsteroids(AsteroidsGame& game, const int count, const int total, vect
 
 	Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
 
-	auto& asteroid = game.Create<Asteroid>("asteroid");
+	auto& asteroid = Create<Asteroid>("asteroid");
+	m_asteroids.push_back(&asteroid);
+	
 	asteroid.TwoD = false;
 
 	entities.push_back(&asteroid);
@@ -314,19 +306,19 @@ void createAsteroids(AsteroidsGame& game, const int count, const int total, vect
 	transform.Spin(Vector3(0, 0, 0.005f));
 
 	if (count > 1)
-		createAsteroids(game, count - 1, total, entities);
+		CreateAsteroids(count - 1, total, entities);
 }
 
 
-void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
-{
-	createAsteroids(*this, count, total, entities);
-	//thread t1(createAsteroids,*this,count,total,entities);
-	//
-	//t1.join();
-
-}
-
+//void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
+//{
+//	createAsteroids(*this, count, total, entities);
+//	//thread t1(createAsteroids,*this,count,total,entities);
+//	//
+//	//t1.join();
+//
+//}
+//
 
 void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
@@ -416,7 +408,34 @@ void AsteroidsGame::Fire(Ship& ship)
 	missile.Transform->Push(up * missileSpeed);
 }
 
+void AsteroidsGame::DoCollisionCheck()
+{
+	Ship& s = *m_ship;
+	auto shipBounds = s.Sphere;
 
+	shipBounds = s.Transform->TransformSphere(shipBounds);
+
+	for (Asteroid* asteroid : m_asteroids)
+	{
+		auto asteroidBounds = asteroid->Sphere;
+		asteroidBounds = asteroid->Transform->TransformSphere(asteroidBounds);
+
+		if (asteroidBounds.Intersects(shipBounds))
+		{
+			Log::Info << "Ship hit asteroid " << asteroid->Name << endl;
+
+			m_ship->Transform->Stop();
+			m_ship->Transform->Move(0, 0, 0);
+		}
+
+
+	}
+
+
+
+
+
+}
 
 
 

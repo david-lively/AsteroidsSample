@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 #define PI (3.141592f)
 #define TO_RADIANS(degrees) (degrees * PI / 180.f)

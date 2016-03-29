@@ -19,6 +19,7 @@
 #include "WorldEntity.h"
 #include "Light.h"
 #include "UniformCollection.h"
+#include "Shader.h"
 
 
 class Material : public GameObject
@@ -26,33 +27,27 @@ class Material : public GameObject
 public:
 	PolygonMode FillType = PolygonMode::Fill;
 
-	bool Build(std::string vertexShaderSource, std::string fragmentShaderSource);
 	bool Build(const std::string& path);
-
-	void OnDispose() override;
 
 	GLuint Program() const
 	{
-		return m_program;
+		return m_shader->Handle;
 	}
 
 	bool IsInScreenSpace;
 
 	bool OnInitialize() override;
 
-	/// <summary>
-	/// Gets the shader information log.
-	/// </summary>
-	/// <param name="shader">The shader.</param>
-	/// <returns></returns>
-	std::string GetShaderLog(GLuint shader);
-	std::string GetProgramLog(GLuint program);
-
 	virtual void SetUniforms(const GameTime& time);
 
 	void Bind()
 	{
-		gl::UseProgram(m_program);
+		m_shader->Bind();
+	}
+
+	void Unbind()
+	{
+		m_shader->Unbind();
 	}
 
 	UniformCollection Uniforms;
@@ -68,16 +63,18 @@ public:
 		return Uniforms.GetUniformLocation(name);
 	}
 
-private:
+	GLint GetAttribLocation(const std::string& name) const
+	{
+		return m_shader->GetAttribLocation(name);
+	}
 
 private:
-	GLuint m_program;
+	Shader* m_shader = nullptr;
 
-	bool CompileSuccessful(GLint program);
 	void Preprocess(std::string& source);
 
 	// programs that have already been built, by name.
-	static std::map<std::string, GLint> m_programs;
+	static std::map<std::string, Shader*> m_programs;
 
 
 };

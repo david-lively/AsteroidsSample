@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 #define PI (3.141592f)
 #define TO_RADIANS(x) (x * PI / 180)
@@ -70,6 +70,11 @@ float Luminosity(vec3 color)
 
 
 void main() {
+	fragmentColor = vec4(1);
+	return;
+
+
+
 	vec3 fragmentPosition = WorldPosition.xyz;
 
     vec3 dx = normalize(dFdx(fragmentPosition));

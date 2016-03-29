@@ -1,6 +1,5 @@
 //
-//  GameObject.hpp
-//  Assignment2
+//  GameObject.h
 //
 //  Created by David Lively on 2/1/16.
 //  Copyright © 2016 David Lively. All rights reserved.
@@ -15,13 +14,12 @@
 
 #include "Common.h"
 #include "Matrix.h"
+#include "Identity.h"
 
-class GameObject
+class GameObject : public Identity
 {
 public:
 	bool Break = false;
-    std::string Name;
-    int Id;
     bool Enabled = true;
 	GameObject* Parent = nullptr;
 
@@ -32,11 +30,14 @@ public:
         
     }
     
-    GameObject(const std::string& name) : Name(name)
+    GameObject(const std::string& name) : Identity(Name)
     {
 		++ReferenceCount;
-		Id = ++m_nextId;
     }
+
+	int CountObjects();
+
+	void GetHierarchyParameters(int& objectCount, int& maxDepth);
 
 	void PrintHierarchy(int indent);
     
@@ -53,8 +54,8 @@ public:
     virtual void OnRender(const GameTime& time) {}
     virtual void OnPostRender(const GameTime& time) {}
     
-    virtual void Render(const GameTime& time);
-    virtual void Update(const GameTime& time);
+    void Render(const GameTime& time);
+    void Update(const GameTime& time);
     
     virtual void OnDispose() {}
     
@@ -114,42 +115,6 @@ public:
         return *object;
     }
     
-    /// Find an object of type T in the current hierarchy. If not found, create a new one.
-    //template<typename T>
-    //T& GetObject(const std::string& name)
-    //{
-    //    auto* objectPtr = FindObject(name);
-    //    
-    //    if (nullptr == objectPtr)
-    //    {
-    //        T* ptr = new T();
-    //        ptr->Name = name;
-    //        
-    //        m_children.push_back(ptr);
-    //        
-    //        return ptr;
-    //    }
-    //    else
-    //        return *objectPtr;
-    //    
-    //}
-
-    
-    /// If an object with the given name exists in this hierarchy, return a pointer to it.
-    //void* FindObject(const std::string& name)
-    //{
-    //    if (name == Name)
-    //        return this;
-    //    
-    //    for(auto it = begin(m_children); it != end(m_children); ++it)
-    //    {
-    //        auto* item = (*it)->FindObject(name);
-    //        if (nullptr != item)
-    //            return item;
-    //    }
-    //    
-    //    return nullptr;
-    //}
     
 private:
 	bool m_isInitialized = false;
@@ -164,13 +129,9 @@ private:
     void DoRender(const GameTime& time);
     void DoUpdate(const GameTime& time);
     
-    static int m_nextId;
 
 	// objects created this frame to be moved to m_children at the start of the next frame
 	std::vector<GameObject*> m_newObjects;
-
-
-    
     
 protected:
 	void ProcessNewObjects();

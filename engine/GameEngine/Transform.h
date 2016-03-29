@@ -70,6 +70,7 @@ public:
     void Reset();
     
     BoundingBox TransformAABB(const BoundingBox& bounds);
+	BoundingSphere TransformSphere(const BoundingSphere& bounds);
     
 
 private:

@@ -58,10 +58,10 @@ public:
 
 		gl::BufferData((GLenum)BufferTarget::ArrayBuffer, vertexBufferSize, vertices.data(), (GLenum)BufferUsageHint::StaticDraw);
 		
-		gl::UseProgram(Material->Program());
+		Material->Bind();
 
 		/// get the attribute location of Position (vertex) from the compiled shader
-		auto location = gl::GetAttribLocation(Material->Program(), "Position");
+		auto location = Material->GetAttribLocation("Position");
 		/// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
 		gl::EnableVertexAttribArray(location);
 
@@ -125,7 +125,7 @@ public:
 			);
 
 		/// get the attribute location of Position (vertex) from the compiled shader
-		auto location = gl::GetAttribLocation(Material->Program(), "Position");
+		auto location = Material->GetAttribLocation("Position");
 
 		/// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
 		gl::EnableVertexAttribArray(location);

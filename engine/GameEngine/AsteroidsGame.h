@@ -41,7 +41,8 @@ public:
 	void CreateLights(std::vector<Light*>& lights);
 
 	void CreateAsteroids(const int count, const int total, std::vector<WorldEntity*>& entities);
-    
+	void DoCollisionCheck();
+
 private:
     Grid* m_grid;
     Ship* m_ship;

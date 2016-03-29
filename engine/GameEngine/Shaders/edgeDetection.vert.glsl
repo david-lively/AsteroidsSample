@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 #define PI (3.141592f)
 #define TO_RADIANS(degrees) (degrees * PI / 180.f)
@@ -16,11 +16,14 @@ in vec3 Position;
 
 out vec4 Color;
 out vec4 WorldPosition;
+out vec4 ModelPosition;
 
 
 void main()
 {
 	vec4 position = vec4(Position, 1);
+	ModelPosition = position;
+
 	WorldPosition = World * position;
 	gl_Position = Projection * View * WorldPosition;
     

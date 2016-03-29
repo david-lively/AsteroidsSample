@@ -32,6 +32,9 @@ class WorldEntity : public GameObject
 public:
     Transform* Transform;
     BoundingBox Bounds;
+
+	BoundingSphere Sphere;
+
 	FrustumAction OnExitFrustum = FrustumAction::Wrap;
     
     

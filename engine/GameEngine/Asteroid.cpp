@@ -53,6 +53,7 @@ bool Asteroid::OnInitialize()
 	}
 	
 	GeometryProvider::FitToUnitCube(vertices);
+	Sphere = BoundingSphere::FromVectors(vertices);
 
 	GeometryProvider::Noisify(vertices, 4, 0.3f);
 
