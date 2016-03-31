@@ -120,6 +120,9 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scoreboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -236,6 +239,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scoreboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag.glsl">
@@ -278,6 +284,24 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\particle.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ship.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ship.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ship.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\text.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\text.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\text.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -26,7 +26,7 @@ bool Light::OnInitialize()
 
 	GeometryProvider::Circle(vertices, indices, Vector3(0), 0.6f, 12);
 
-	Bounds = BoundingBox::FromVectors(vertices);
+	Bounds = BoundingSphere::FromVectors(vertices);
 
 	material.Build("Shaders/primitive");
 

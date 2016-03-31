@@ -212,11 +212,10 @@ bool GameObject::Initialize()
 
 	auto result = OnInitialize();
 	check_gl_error();
-
-	//for (auto it = begin(m_newObjects); it != end(m_newObjects); ++it)
-	//{
-	//	result &= (*it)->Initialize();
-	//}
+	for (auto it = begin(m_newObjects); it != end(m_newObjects); ++it)
+	{
+		result &= (*it)->Initialize();
+	}
 
 	m_isInitialized = true;
 

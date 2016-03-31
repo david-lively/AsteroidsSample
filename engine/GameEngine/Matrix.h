@@ -80,10 +80,12 @@ public:
     static Matrix CreateScale(const Vector3& scale);
     
     static Matrix CreatePerspective(float fov, float aspect, float zNear, float zFar);
-  
-    
 
-    
+	Vector3 GetScaleVector()
+	{
+		return Vector3(m00, m11, m22) * (1.f / m33) ;
+	}
+
     static void Multiply(const Matrix& left, const Matrix& right, Matrix& result);
     
     static Matrix Multiply(const Matrix& left, const Matrix& right)

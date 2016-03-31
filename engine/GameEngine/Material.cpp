@@ -31,17 +31,16 @@ void Material::SetUniforms(const GameTime& time)
 
 	environment.Apply(*this, time);
 
-
 	check_gl_error();
 
-	Uniforms.Apply(time);
-
+	m_uniforms.Apply(time);
 	check_gl_error();
 }
 
 bool Material::OnInitialize()
 {
-	Uniforms.Initialize(*m_shader);
+	m_uniforms.Initialize(*m_shader);
+
 	return true;
 }
 

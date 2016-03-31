@@ -61,6 +61,8 @@ public:
     
     bool Initialize();
     virtual bool OnInitialize() { return true; }
+	bool PostInitialize();
+	virtual bool OnPostInitialize() { return true; }
     
 
 	void WindowResize(int width, int height);

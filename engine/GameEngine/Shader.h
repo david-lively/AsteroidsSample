@@ -12,8 +12,7 @@ class Shader :
 	public Resource
 {
 public:
-	UniformCollection Uniforms;
-
+	
 	Shader();
 	Shader(const std::string& name);
 	~Shader();
@@ -31,7 +30,6 @@ public:
 	{
 		return gl::GetUniformLocation(Handle, name.c_str());
 	}
-
 
 private:
 	std::string GetShaderFilename(const std::string& basePath, const ShaderType shaderType) const;

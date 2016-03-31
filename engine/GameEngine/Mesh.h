@@ -34,6 +34,7 @@ public:
 	Material* Material;
 
 	BeginMode Type = BeginMode::Triangles;
+	bool CullBackfaces = true;
 
 	bool OnInitialize() override;
 

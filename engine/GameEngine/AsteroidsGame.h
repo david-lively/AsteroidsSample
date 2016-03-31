@@ -19,6 +19,8 @@
 #include "Grid.h"
 #include "Light.h"
 #include "Missile.h"
+#include "Scoreboard.h"
+
 
 class AsteroidsGame : public Game
 {
@@ -41,11 +43,13 @@ public:
 	void CreateLights(std::vector<Light*>& lights);
 
 	void CreateAsteroids(const int count, const int total, std::vector<WorldEntity*>& entities);
-	void DoCollisionCheck();
+	void DoCollisionCheck(const GameTime& time);
+	void DoWrapping(const GameTime& time);
 
 private:
     Grid* m_grid;
     Ship* m_ship;
+	Scoreboard* m_scoreboard;
 	
 	std::vector<Missile*> m_allMissiles; 
 	std::queue<Missile*> m_inactiveMissiles;

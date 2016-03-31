@@ -111,6 +111,7 @@
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="UniformCollection.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="UniformCollection.h" />
@@ -172,10 +174,16 @@
     <None Include="Shaders\particle.vert.glsl" />
     <None Include="Shaders\primitive.frag.glsl" />
     <None Include="Shaders\primitive.vert.glsl" />
+    <None Include="Shaders\ship.frag.glsl" />
+    <None Include="Shaders\ship.geom.glsl" />
+    <None Include="Shaders\ship.vert.glsl" />
     <None Include="Shaders\simple.frag.glsl" />
     <None Include="Shaders\simple.vert.glsl" />
     <None Include="Shaders\simpleLight.frag.glsl" />
     <None Include="Shaders\simpleLight.vert.glsl" />
+    <None Include="Shaders\text.frag.glsl" />
+    <None Include="Shaders\text.geom.glsl" />
+    <None Include="Shaders\text.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

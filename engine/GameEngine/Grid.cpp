@@ -32,7 +32,7 @@ bool Grid::OnInitialize()
     
     GeometryProvider::LineGrid(vertices,20);
     
-    Bounds = BoundingBox::FromVectors(vertices);
+    Bounds = BoundingSphere::FromVectors(vertices);
     
     material.Build("Shaders/primitive");
     

@@ -30,10 +30,11 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
+	m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_grid->Enabled = false;
 
-	//CreateLights(m_lights);
+	CreateLights(m_lights);
 
 	CreateAsteroids(4, 4, m_itemsToWrap);
 
@@ -191,60 +192,9 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 void AsteroidsGame::OnPreUpdate(const GameTime& time)
 {
 	/// wrap moving items to view frustum
-	DoCollisionCheck();
+	DoCollisionCheck(time);
+	DoWrapping(time);
 
-	auto title = "Missiles: active " + to_string(m_allMissiles.size()) + " inactive " + to_string(m_inactiveMissiles.size());
-
-
-	glfwSetWindowTitle(Game::Instance().Window(), title.c_str());
-	auto& camera = Game::Instance().Camera();
-	auto& viewMatrix = camera.GetViewMatrix();
-
-	for (auto entityPtr : m_itemsToWrap)
-	{
-		if (!entityPtr->Enabled)
-			continue;
-
-		auto& entity = *entityPtr;
-		auto& worldView = entity.Transform->GetMatrix() * viewMatrix;
-
-		Vector3 center(0);
-		Vector3 bound(0.5f, 0, 0);
-
-		center = worldView.Transform(center);
-		bound = worldView.Transform(bound);
-
-		float radius = (bound - center).Length();
-
-		Vector3 containment;
-
-		if (!camera.ContainsSphere(center, radius, containment))
-		{
-			if (FrustumAction::Wrap == entityPtr->OnExitFrustum)
-			{
-				Vector3 newPosition = entity.Transform->Translation;
-
-				if (containment.X < 1)
-					newPosition.X *= -0.99f;
-
-				if (containment.Y < 1)
-					newPosition.Y *= -0.99f;
-
-				entity.Transform->Move(newPosition);
-			}
-			else if (FrustumAction::Recycle == entityPtr->OnExitFrustum)
-			{
-				entityPtr->Enabled = false;
-
-				Missile* ptr = dynamic_cast<Missile*>(entityPtr);
-
-				if (nullptr != ptr)
-					m_inactiveMissiles.push(ptr);
-
-			}
-		}
-
-	}
 
 }
 
@@ -253,6 +203,7 @@ Ship& AsteroidsGame::CreateShip()
 	auto& ship = Create<Ship>("ship");
 
 	ship.Transform->Scale = Vector3(1.5f);
+	ship.Transform->Spin(Vector3(0, 0.1f, 0));
 
 	return ship;
 }
@@ -401,39 +352,99 @@ void AsteroidsGame::Fire(Ship& ship)
 	auto up = m_ship->Transform->GetMatrix().Up();
 	missile.Transform->SetRotation(m_ship->Transform->Rotation);
 	missile.Transform->Move(m_ship->Transform->Translation);
-	missile.Transform->Stop();
 	missile.Transform->Drag = 0.f;
 
-	float missileSpeed = 0.075f;
+	float missileSpeed = 0.09f;
 	missile.Transform->Push(up * missileSpeed);
 }
 
-void AsteroidsGame::DoCollisionCheck()
+void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 {
-	Ship& s = *m_ship;
-	auto shipBounds = s.Sphere;
+	Ship& ship = *m_ship;
+	
+	if (ship.Exploding())
+		return;
+	
+	auto shipBounds = ship.Bounds;
 
-	shipBounds = s.Transform->TransformSphere(shipBounds);
+	shipBounds = ship.Transform->TransformSphere(shipBounds);
 
 	for (Asteroid* asteroid : m_asteroids)
 	{
-		auto asteroidBounds = asteroid->Sphere;
+		auto asteroidBounds = asteroid->Bounds;
 		asteroidBounds = asteroid->Transform->TransformSphere(asteroidBounds);
 
 		if (asteroidBounds.Intersects(shipBounds))
 		{
+			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
+			
+			//ship.Transform->Bounce(dir);
+			ship.Explode(time, 1.5f);
+
 			Log::Info << "Ship hit asteroid " << asteroid->Name << endl;
 
-			m_ship->Transform->Stop();
-			m_ship->Transform->Move(0, 0, 0);
+			//m_ship->Transform->Stop();
+			//m_ship->Transform->Move(0, 0, 0);
 		}
 
 
 	}
 
+}
+
+void AsteroidsGame::DoWrapping(const GameTime& time)
+{
+	auto title = "Missiles: active " + to_string(m_allMissiles.size()) + " inactive " + to_string(m_inactiveMissiles.size());
 
 
+	auto& camera = Game::Instance().Camera();
+	auto& viewMatrix = camera.GetViewMatrix();
 
+	for (auto entityPtr : m_itemsToWrap)
+	{
+		if (!entityPtr->Enabled)
+			continue;
+
+		auto& entity = *entityPtr;
+		auto& worldView = entity.Transform->GetMatrix() * viewMatrix;
+
+		Vector3 center(0);
+		Vector3 bound(0.5f, 0, 0);
+
+		center = worldView.Transform(center);
+		bound = worldView.Transform(bound);
+
+		float radius = (bound - center).Length();
+
+		Vector3 containment;
+
+		if (!camera.ContainsSphere(center, radius, containment))
+		{
+			if (FrustumAction::Wrap == entityPtr->OnExitFrustum)
+			{
+				Vector3 newPosition = entity.Transform->Translation;
+
+				if (containment.X < 1)
+					newPosition.X *= -0.99f;
+
+				if (containment.Y < 1)
+					newPosition.Y *= -0.99f;
+
+				entity.Transform->Move(newPosition);
+			}
+			else if (FrustumAction::Recycle == entityPtr->OnExitFrustum)
+			{
+				entityPtr->Enabled = false;
+
+				Missile* ptr = dynamic_cast<Missile*>(entityPtr);
+
+				if (nullptr != ptr)
+					m_inactiveMissiles.push(ptr);
+
+			}
+		}
+
+	}
 
 }
 

@@ -9,7 +9,7 @@ public:
 
 	Identity(const std::string& name) : Identity()
 	{
-		Name = name;
+		Name = name + "." + std::to_string(Id);
 	}
 
 	Identity()

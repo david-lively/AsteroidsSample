@@ -11,14 +11,23 @@ uniform int LightCount = 0;
 uniform vec3 LightDirection[MAX_LIGHTS];
 uniform vec4 LightColorIntensity[MAX_LIGHTS];
 uniform mat4 LightTransform[MAX_LIGHTS];
-uniform float ForceWireframe = 0;
 uniform vec4 EmissiveColorIntensity;
-uniform float ColorByDepth = 0;
-uniform float Contrast = 1.f;
 
-in vec4 ObjectPosition;
-in vec4 WorldPosition;
-in vec4 Color;
+uniform float ForceWireframe = 0;
+uniform float ColorByDepth = 0;
+
+
+in gOutputType
+{
+	in vec4 gObjectPosition;
+	in vec4 gWorldPosition;
+	in vec4 gColor;
+} gOut;
+
+
+//in vec4 gObjectPosition;
+//in vec4 gWorldPosition;
+//in vec4 gColor;
 
 out vec4 fragmentColor;
 
@@ -65,13 +74,10 @@ float Luminosity(vec3 color)
 	return 0.2126f * color.r + 0.7152f * color.g + 0.0722 * color.b;
 }
 
-//  pixelColor.rgb = ((pixelColor.rgb - 0.5f) * max(Contrast, 0)) + 0.5f;
-
-
 
 void main() {
 
-	vec3 fragmentPosition = WorldPosition.xyz;
+	vec3 fragmentPosition = gOut.gWorldPosition.xyz;
 
     vec3 dx = normalize(dFdx(fragmentPosition));
     vec3 dy = normalize(dFdy(fragmentPosition));
@@ -80,9 +86,14 @@ void main() {
 
 	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
 	
+	if (ColorByDepth > 0.5f)
+	{
+		float c = length(gOut.gObjectPosition) / 5.f;
+		color = vec3(c);
+	}
+
 	if (ForceWireframe > 0.5f)
 		color = vec3(1);
-
 
 	fragmentColor = vec4(color,1);
 }

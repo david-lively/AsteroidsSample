@@ -25,7 +25,7 @@ using namespace std;
 
 bool Ship::OnInitialize()
 {
-	Transform->Drag = 0.02f;
+	Transform->Drag = 0.01f;
 	ConfigureInput();
 	//CreateHelpers();
 	CreateShipMesh();
@@ -44,13 +44,16 @@ void Ship::CreateShipMesh()
 	auto& mesh = Create<Mesh>("ship-mesh");
 
 #ifdef CONE_SHIP
-	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 5);
-	
-	
+	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 12);
+	auto center = GeometryProvider::FindCenter(vertices);
+
+	Log::Debug << "Ship center: " << center << endl;
+	GeometryProvider::FitToUnitCube(vertices);
+
 	material.FillType = PolygonMode::Fill;
 	mesh.Type = BeginMode::Triangles;
-	
-	material.Build("Shaders/lit");
+
+	material.Build("Shaders/ship");
 
 #else 
 	material.FillType = PolygonMode::Line;
@@ -85,12 +88,11 @@ void Ship::CreateShipMesh()
 #endif
 
 	GeometryProvider::FitToUnitCube(vertices);
-	Bounds = BoundingBox::FromVectors(vertices);
 
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
 
-	Sphere = BoundingSphere::FromVectors(vertices);
+	Bounds = BoundingSphere::FromVectors(vertices);
 
 	m_mesh = &mesh;
 }
@@ -107,6 +109,7 @@ void Ship::CreateHelpers()
 void Ship::ConfigureInput()
 {
 	auto& handler = Create<InputHandler>("ship.input.handler");
+	m_input = &handler;
 
 	const float forwardSpeed = 0.5f;
 	const float spinSpeed = 0.3f;
@@ -147,6 +150,22 @@ void Ship::ConfigureInput()
 
 	);
 
+	handler.Subscribe(GLFW_KEY_LEFT_BRACKET,
+		DECL_KEYHANDLER
+	{
+		ExplodeScale += 0.2f;
+		Log::Debug << "ship explode " << ExplodeScale << endl;
+	}
+	);
+
+	handler.Subscribe(GLFW_KEY_RIGHT_BRACKET,
+		DECL_KEYHANDLER
+	{
+		ExplodeScale -= 0.2f;
+		Log::Debug << "ship explode " << ExplodeScale << endl;
+	}
+	);
+
 #undef xform
 
 }
@@ -158,8 +177,20 @@ void Ship::OnPreUpdate(const  GameTime& time)
 	if (TimeUntilCanFire < 0)
 		TimeUntilCanFire = 0;
 
-	WorldEntity::OnPreUpdate(time);
+	bool wasExploding = ExplodeTimeRemaining > 0;
+	
+	ExplodeTimeRemaining = max(ExplodeTimeRemaining - time.ElapsedSeconds(), 0);
 
+	bool isExploding = ExplodeTimeRemaining > 0;
+	if (isExploding)
+		EnableInput(false);
+	else if (wasExploding && !isExploding)
+	{
+		Transform->Reset();
+		EnableInput(true);
+	}
+
+	WorldEntity::OnPreUpdate(time);
 }
 
 bool Ship::CanFire()
@@ -177,6 +208,30 @@ bool Ship::Fire()
 
 	return true;
 }
+
+void Ship::OnRender(const GameTime& time)
+{
+
+	m_material->Bind();
+
+	auto moveBy = ExplodeTimeRemaining;
+
+	m_material->SetUniform("MoveBy", moveBy);
+
+	WorldEntity::OnRender(time);
+
+}
+
+
+void Ship::Explode(const GameTime& time, const float explosionTime)
+{
+	ExplodeTimeRemaining = explosionTime;
+
+	Transform->Spin(0, 0, 0.02f);
+	EnableInput(false);
+}
+
+
 
 
 

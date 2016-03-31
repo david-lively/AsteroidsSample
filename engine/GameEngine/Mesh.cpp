@@ -52,8 +52,14 @@ void Mesh::OnRender(const GameTime& time)
 		gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
 	}
 
+
 	gl::Enable(gl::DEPTH_TEST);
-    gl::Enable(gl::CULL_FACE);
+
+	if (CullBackfaces)
+		gl::Enable(gl::CULL_FACE);
+	else
+		gl::Disable(gl::CULL_FACE);
+
     gl::FrontFace(gl::CW);
 
 	check_gl_error();

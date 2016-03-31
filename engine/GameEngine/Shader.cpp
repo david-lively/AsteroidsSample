@@ -108,9 +108,7 @@ GLuint Shader::Build(const string& basePath)
 
 	if (!LinkSuccessful(Handle))
 	{
-		Log::Error << "Link error for shader \"" << basePath << "\"" << endl;
-
-		Log::Error << GetProgramLog(Handle) << endl;
+		Log::Error << "Link error for shader \"" << basePath << "\"" << endl << GetProgramLog(Handle) << endl;
 
 		throw;
 	}

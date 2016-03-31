@@ -58,7 +58,10 @@ public:
 
     
 	void Spin(const Vector3& theta);
-    
+	void Spin(const  float x, const float y, const float z);
+
+	void Bounce(const Vector3& dir);
+
 	void OnUpdate(const GameTime& time) override;
     
     void SetRotation(const Vector3& rotation);

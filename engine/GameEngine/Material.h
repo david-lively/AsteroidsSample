@@ -50,17 +50,15 @@ public:
 		m_shader->Unbind();
 	}
 
-	UniformCollection Uniforms;
-
 	template<typename T>
 	void SetUniform(const std::string& name, const T& value)
 	{
-		Uniforms.SetUniform(name, value);
+		m_uniforms.SetUniform(name, value);
 	}
 
 	GLint GetUniformLocation(const std::string& name) const
 	{
-		return Uniforms.GetUniformLocation(name);
+		return m_shader->GetUniformLocation(name);
 	}
 
 	GLint GetAttribLocation(const std::string& name) const
@@ -70,6 +68,7 @@ public:
 
 private:
 	Shader* m_shader = nullptr;
+	UniformCollection m_uniforms;
 
 	void Preprocess(std::string& source);
 

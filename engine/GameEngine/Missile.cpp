@@ -39,8 +39,7 @@ bool Missile::OnInitialize()
 	indices.push_back(0);
 	indices.push_back(1);
 
-	Bounds = BoundingBox::FromVectors(vertices);
-	Sphere = BoundingSphere::FromVectors(vertices);
+	Bounds = BoundingSphere::FromVectors(vertices);
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
 

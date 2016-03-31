@@ -96,6 +96,18 @@ void Transform::Spin(const Vector3& theta)
 	Rotation += theta;
 }
 
+void Transform::Spin(const  float x, const float y, const float z)
+{
+	Rotation += Vector3(x, y, z);
+}
+
+void Transform::Bounce(const Vector3& dir)
+{
+	Vector3 velocity = Translation - m_previousTranslation;
+	Translation += dir * velocity.Length();
+}
+
+
 void Transform::OnUpdate(const GameTime& time)
 {
 	float timeScale = 1.f;
@@ -124,15 +136,10 @@ BoundingSphere Transform::TransformSphere(const BoundingSphere& bounds)
 {
 	auto matrix = GetMatrix();
 
-	Vector3 c = bounds.Center;
-	Vector3 o = bounds.Center + Vector3(bounds.Radius, 0, 0);
+	float r1 = matrix.GetScaleVector().Length() * bounds.Radius;
+	Vector3 c1 = matrix.Transform(bounds.Center);
 
-	Vector3 c1 = matrix.Transform(c);
-	Vector3 o1 = matrix.Transform(o);
-
-	float newRadius = (o1 - c1).Length();
-
-	return BoundingSphere(c1, newRadius);
+	return BoundingSphere(c1, r1);
 }
 
 
