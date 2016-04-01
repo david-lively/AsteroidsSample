@@ -23,7 +23,8 @@ public:
     Vector3 Scale;
     
     
-    float Drag = 0.05f;
+    float TranslationDrag = 0.05f;
+	float RotationDrag = 0.05f;
     
     Transform()
     {

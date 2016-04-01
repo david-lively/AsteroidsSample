@@ -25,7 +25,7 @@ using namespace std;
 
 bool Ship::OnInitialize()
 {
-	Transform->Drag = 0.01f;
+	Transform->TranslationDrag = 0.01f;
 	ConfigureInput();
 	//CreateHelpers();
 	CreateShipMesh();
@@ -45,64 +45,23 @@ void Ship::CreateShipMesh()
 
 	auto& mesh = Create<Mesh>("ship-mesh");
 
-#ifdef CONE_SHIP
-	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 12);
-
-	//GeometryProvider::Icosahedron(vertices, indices);
-	//GeometryProvider::Tessellate(vertices, indices, 3);
-	//GeometryProvider::Spherize(vertices);
+	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 6, false);
 
 	auto center = GeometryProvider::FindCenter(vertices);
 
-	Log::Debug << "Ship center: " << center << endl;
-	//GeometryProvider::FitToUnitCube(vertices);
 
 	material.FillType = PolygonMode::Fill;
 	mesh.Type = BeginMode::Triangles;
 
 	material.Build("Shaders/ship");
-#else
-	material.FillType = PolygonMode::Line;
-	mesh.Type = BeginMode::Lines;
-	material.Build("Shaders/primitive");
-
-
-	vector<float> coordinates =
-	{
-		0, 0.5f, 0
-		,
-		1 / 3.f, -0.5f, 0
-		,
-		-1 / 3.f, -0.5f, 0
-		,
-		-1 / 4.f, -0.25f, 0
-		,
-		+1 / 4.f, -0.25f, 0
-
-	};
-
-	vertices = GeometryProvider::ToVectors(coordinates);
-
-	indices =
-	{
-		0, 1
-		,
-		0, 2
-		,
-		3, 4
-	};
-
-
-#endif
-
-	//GeometryProvider::FitToUnitCube(vertices);
-	Transform->Scale = Vector3(2);
 
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
 
+	GeometryProvider::FitToUnitCube(vertices);
 	Bounds = BoundingSphere::FromVectors(vertices);
 
+	mesh.CullBackfaces = false;
 	m_mesh = &mesh;
 }
 
@@ -202,6 +161,8 @@ void Ship::ConfigureInput()
 
 void Ship::OnPreUpdate(const  GameTime& time)
 {
+	bool wasExploding = IsExploding;
+
 	if (IsExploding)
 	{
 		ExplosionTime += time.ElapsedSeconds();
@@ -210,22 +171,26 @@ void Ship::OnPreUpdate(const  GameTime& time)
 		{
 			ExplosionTime = 0.f;
 			IsExploding = false;
+			ExplosionFactor = 0.f;
 		}
+		else
+		{
+			ExplosionFactor = ExplosionTime / ExplosionDuration;
+		}
+
 	}
 	else
 		ExplosionTime = 0.f;
 
 	TimeUntilCanFire = max(TimeUntilCanFire - time.ElapsedSeconds(), 0);;
 	
-	return;
-
-	//if (isExploding)
-	//	EnableInput(false);
-	//else if (wasExploding && !isExploding)
-	//{
-	//	Transform->Reset();
-	//	EnableInput(true);
-	//}
+	if (IsExploding)
+		EnableInput(false);
+	else if (wasExploding && !IsExploding)
+	{
+		Transform->Reset();
+		EnableInput(true);
+	}
 
 	WorldEntity::OnPreUpdate(time);
 }
@@ -267,6 +232,11 @@ void Ship::Explode(const GameTime& time, const float duration)
 	ExplosionTime = 0.f;
 	if (duration > 0)
 		ExplosionDuration = duration;
+
+	Vector3 spin((rand() % 10) / 10.f, (rand() % 10) / 10.f, (rand() % 10) / 10.f);
+
+	Transform->Spin(spin * 0.1f);
+
 
 
 	IsExploding = true;

@@ -19,6 +19,7 @@ public:
 
 	GameEnvironment(const std::string& name) : GameObject(name)
 	{
+		GenerateNoiseValues(m_noiseValues, 128);
 	}
 
 	GameEnvironment() : GameEnvironment("gameEnvironment")
@@ -43,7 +44,7 @@ public:
 		m_lights[light.Id] = &light;
 	}
 	
-	void Apply(const GameObject& sender, const GameTime& time);
+	void Apply(Material& material, const GameTime& time);
 	
 	Light& CreateLight()
 	{
@@ -59,6 +60,11 @@ public:
 private:
 	std::map<int, Light*> m_lights;
 	std::stack<Matrix> m_matrixStack;
+	std::vector<float> m_noiseValues;
+
+	void ApplyLights(Material& material, const GameTime& time);
+	void ApplyGlobals(Material& material, const GameTime& time);
+	void GenerateNoiseValues(std::vector<float>& arr, int count);
 
 };
 

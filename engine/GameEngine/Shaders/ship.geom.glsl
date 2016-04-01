@@ -6,9 +6,11 @@ layout(triangle_strip, max_vertices = 3) out;
 uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;
+uniform float GameTimeTotalSeconds = 0.f;
+uniform float ExplosionSpeed = 10.f;
 
-uniform int RandomArrayLength = 128;
-uniform float[128] Random;
+uniform int NoiseArrayLength = 128;
+uniform float[128] NoiseValues;
 
 uniform float ExplosionFactor = 0.f;
 
@@ -68,6 +70,8 @@ void main()
 	
 	vec3 explodeDirection = normal;
 
+	int noiseIndex = (gl_PrimitiveID * 3) % NoiseArrayLength;
+
 
 	//vec3 normal = normalize((ObjectPosition[0].xyz + ObjectPosition[1].xyz + ObjectPosition[2].xyz) / 3.f);
 
@@ -80,18 +84,20 @@ void main()
 		//p.xyz += toCenter * 0.1f;
 
 		p.xyz -= center;
+		
+		float noise = NoiseValues[noiseIndex];
 
-		p.xy = rotate(p.xy, ExplosionFactor + gl_PrimitiveID);
+		p.xy = rotate(p.xy, (GameTimeTotalSeconds + noise * 5) * 3.14159/180 * ExplosionFactor * ExplosionSpeed);
 
 		p.xyz += center;
 
-		p.xyz += explodeDirection * ExplosionFactor;
+		p.xyz += explodeDirection * ExplosionFactor * 3;
 
 		gl_Position = Projection * View * World * p;
 
 		gOut.ObjectPosition = ObjectPosition[i];
 		gOut.WorldPosition = World * p;
-		gOut.Color = vec4(normal, 1);// Color[i];
+		gOut.Color = vec4(normal, 1);
 
 		EmitVertex();
 	}

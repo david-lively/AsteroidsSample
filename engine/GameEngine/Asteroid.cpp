@@ -45,7 +45,6 @@ bool Asteroid::OnInitialize()
 	{
 		material.FillType = PolygonMode::Fill;
 		mesh.Type = BeginMode::Triangles;
-		//material.Build("Shaders/lit");
 		material.Build("Shaders/edgeDetection");
 		GeometryProvider::Icosahedron(vertices, indices);
 		GeometryProvider::Tessellate(vertices, indices, 3);
@@ -53,7 +52,7 @@ bool Asteroid::OnInitialize()
 	}
 	
 
-	//GeometryProvider::Noisify(vertices, 4, 0.3f);
+	GeometryProvider::Noisify(vertices, 4, 0.3f);
 	GeometryProvider::FitToUnitCube(vertices);
 	Bounds = BoundingSphere::FromVectors(vertices);
 
@@ -63,8 +62,7 @@ bool Asteroid::OnInitialize()
 
 	m_mesh = &mesh;
 
-	Transform->Drag = 0.f;
-	mesh.CullBackfaces = false;
+	Transform->TranslationDrag = 0.f;
 
 	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
 

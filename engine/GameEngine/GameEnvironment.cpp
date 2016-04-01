@@ -1,27 +1,44 @@
-#include "GameObject.h"
 #include "GameEnvironment.h"
+
+#include "GameObject.h"
 #include "Material.h"
+#include "Game.h"
+#include "PerlinNoise.h"
+#include <random>
 
 #include <vector>
 
 using namespace std;
 
-void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
+void GameEnvironment::Apply(Material& material, const GameTime& time)
 {
-	const Material* mat = dynamic_cast<const Material*>(&sender);
+	ApplyLights (material, time);
+	ApplyGlobals(material, time);
+}
 
-	if (nullptr == mat)
-	{
-		mat = sender.GetFirst<Material>();
-	}
+void GameEnvironment::PushMatrix(const Matrix& m)
+{
+	if (m_matrixStack.size() > 0)
+		m_matrixStack.push(m * m_matrixStack.top());
+	else
+		m_matrixStack.push(m);
+}
 
-	if (nullptr == mat)
-	{
-		Log::Error << "GameEnvironment::Apply called, but could not find a material!\n";
-		return;
-	}
+void GameEnvironment::PopMatrix()
+{
+	m_matrixStack.pop();
+}
 
-	auto countIndex = mat->GetUniformLocation("LightCount");
+const Matrix& GameEnvironment::CurrentMatrix()
+{
+
+	return m_matrixStack.top();
+}
+
+void GameEnvironment::ApplyLights(Material& material, const GameTime& time)
+{
+
+	auto countIndex = material.GetUniformLocation("LightCount");
 	if (countIndex < 0)
 		return;
 
@@ -65,47 +82,56 @@ void GameEnvironment::Apply(const GameObject& sender, const GameTime& time)
 
 	check_gl_error();
 
-	GLint location = mat->GetUniformLocation("LightColorIntensity");
+	GLint location = material.GetUniformLocation("LightColorIntensity");
 	if (location >= 0)
 		gl::Uniform4fv(location, lightCount, (const GLfloat*)lightColorIntensities.data());
 
 	check_gl_error();
 
-	location = mat->GetUniformLocation("LightDirection");
+	location = material.GetUniformLocation("LightDirection");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightDirections.data());
 
 	check_gl_error();
 
-	location = mat->GetUniformLocation("LightPosition");
+	location = material.GetUniformLocation("LightPosition");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightPosition.data());
 
 	check_gl_error();
-	
-	location = mat->GetUniformLocation("LightTransform");
+
+	location = material.GetUniformLocation("LightTransform");
 	if (location >= 0)
 		gl::UniformMatrix4fv(location, lightCount, false, (GLfloat*)lightTransform.data());
-
 }
 
-void GameEnvironment::PushMatrix(const Matrix& m)
+void GameEnvironment::ApplyGlobals(Material& material, const GameTime& time)
 {
-	if (m_matrixStack.size() > 0)
-		m_matrixStack.push(m * m_matrixStack.top());
-	else
-		m_matrixStack.push(m);
+	auto& camera = Game::Camera();
+
+	auto location = material.GetUniformLocation("NoiseValues");
+
+	if (location >= 0)
+	{
+		gl::Uniform1fv(location, m_noiseValues.size(), m_noiseValues.data());
+	}
+
+	material.SetUniform("NoiseArrayLength", (int)m_noiseValues.size());
+
+	material.SetUniform("GameTimemTotalSeconds", Game::Instance().Time.TotalSeconds());
 }
 
-void GameEnvironment::PopMatrix()
+void GameEnvironment::GenerateNoiseValues(std::vector<float>& arr, int count)
 {
-	m_matrixStack.pop();
+	PerlinNoise noise;
+	srand(time(NULL));
+
+	arr.reserve(count);
+
+	for (int i = 0; i < count; ++i)
+	{
+		float noiseValue = (rand() % 100) / 100.f;
+		arr.push_back(noiseValue);
+	}
+
 }
-
-const Matrix& GameEnvironment::CurrentMatrix()
-{
-
-	return m_matrixStack.top();
-}
-
-

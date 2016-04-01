@@ -17,7 +17,7 @@ bool Scoreboard::OnInitialize()
 {
 	bool success = WorldEntity::OnInitialize();
 
-	Transform->Move(6, 6, 0);
+	Transform->Move(13, 10, 0);
 
 	for (int i = 0; i < 3; ++i)
 	{

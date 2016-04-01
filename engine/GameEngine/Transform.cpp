@@ -119,12 +119,12 @@ void Transform::OnUpdate(const GameTime& time)
 
 	m_previousFrameTime = time.ElapsedSeconds();
 
-	auto velocity = (Translation - m_previousTranslation) * (1 - Drag) * timeScale;
+	auto velocity = (Translation - m_previousTranslation) * (1 - TranslationDrag) * timeScale;
 
 	m_previousTranslation = Translation;
 	Translation += velocity;
 
-	auto spin = (Rotation - m_previousRotation) * (1 - Drag) * timeScale;
+	auto spin = (Rotation - m_previousRotation) * (1 - TranslationDrag) * timeScale;
 	m_previousRotation = Rotation;
 	Rotation += spin;
 

@@ -204,8 +204,6 @@ Ship& AsteroidsGame::CreateShip()
 
 	ship.EnableInput(true);
 
-	//ship.Transform->Spin(Vector3(0, 0.1f, 0));
-
 	return ship;
 }
 
@@ -260,17 +258,6 @@ void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<Wor
 	if (count > 1)
 		CreateAsteroids(count - 1, total, entities);
 }
-
-
-//void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<WorldEntity*>& entities)
-//{
-//	createAsteroids(*this, count, total, entities);
-//	//thread t1(createAsteroids,*this,count,total,entities);
-//	//
-//	//t1.join();
-//
-//}
-//
 
 void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
@@ -380,14 +367,12 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		{
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
 			
-			//ship.Transform->Bounce(dir);
-			ship.Explode(time, 5.f);
+			//ship.Transform->Stop();
+			ship.Transform->Bounce(dir);// *0.1f);
+			ship.Explode(time, 3.f);
 			m_scoreboard->Kill();
 
 			Log::Info << "Ship hit asteroid " << asteroid->Name << endl;
-
-			//m_ship->Transform->Stop();
-			//m_ship->Transform->Move(0, 0, 0);
 		}
 
 

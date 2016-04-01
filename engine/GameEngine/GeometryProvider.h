@@ -37,7 +37,7 @@ public:
 	/// offset all vertices along their direction from the object center.
 	static void Noisify(std::vector<Vector3>& vertices, float scale, float amplitude);
 
-	static void Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float  height, const float radius, const int sides);
+	static void Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float  height, const float radius, const int sides, const bool generateBase = true);
 
 
 private:

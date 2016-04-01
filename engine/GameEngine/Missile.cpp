@@ -46,7 +46,7 @@ bool Missile::OnInitialize()
 
 	m_mesh = &mesh;
 
-	Transform->Drag = 0.f;
+	Transform->TranslationDrag = 0.f;
 
 	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
 	return WorldEntity::OnInitialize();
