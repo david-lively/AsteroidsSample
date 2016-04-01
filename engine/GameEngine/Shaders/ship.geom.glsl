@@ -1,3 +1,4 @@
+//#define PASSTHROUGH
 #version 330 core
 /// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
 layout(triangles) in;
@@ -32,6 +33,21 @@ void main()
 {
 	vec3 normal = (ObjectPosition[0].xyz + ObjectPosition[1].xyz + ObjectPosition[2].xyz) / 3.f;
 
+#ifdef PASSTHROUGH
+	for (int i = 0; i < 3; ++i)
+	{
+		gOut.gObjectPosition = ObjectPosition[i];
+		gOut.gWorldPosition = WorldPosition[i];
+		gOut.gColor = Color[i];
+
+		gl_Position = gl_in[i].gl_Position;
+		EmitVertex();
+	}
+
+	EndPrimitive();
+
+
+#else
 	for (int i = 0; i < 3; ++i)
 	{
 		vec4 p = ObjectPosition[i];
@@ -47,4 +63,5 @@ void main()
 	}
 
 	EndPrimitive();
+#endif
 }

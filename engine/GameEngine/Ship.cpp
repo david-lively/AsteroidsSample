@@ -54,8 +54,7 @@ void Ship::CreateShipMesh()
 	mesh.Type = BeginMode::Triangles;
 
 	material.Build("Shaders/ship");
-
-#else 
+#else
 	material.FillType = PolygonMode::Line;
 	mesh.Type = BeginMode::Lines;
 	material.Build("Shaders/primitive");
@@ -85,9 +84,12 @@ void Ship::CreateShipMesh()
 		,
 		3, 4
 	};
+
+
 #endif
 
 	GeometryProvider::FitToUnitCube(vertices);
+	GeometryProvider::Circle(vertices, indices, Vector3::Zero, 0.5f, 12);
 
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
@@ -172,6 +174,7 @@ void Ship::ConfigureInput()
 
 void Ship::OnPreUpdate(const  GameTime& time)
 {
+
 	TimeUntilCanFire -= time.ElapsedSeconds();
 
 	if (TimeUntilCanFire < 0)
@@ -182,6 +185,9 @@ void Ship::OnPreUpdate(const  GameTime& time)
 	ExplodeTimeRemaining = max(ExplodeTimeRemaining - time.ElapsedSeconds(), 0);
 
 	bool isExploding = ExplodeTimeRemaining > 0;
+	
+	return;
+
 	if (isExploding)
 		EnableInput(false);
 	else if (wasExploding && !isExploding)
@@ -211,7 +217,6 @@ bool Ship::Fire()
 
 void Ship::OnRender(const GameTime& time)
 {
-
 	m_material->Bind();
 
 	auto moveBy = ExplodeTimeRemaining;
@@ -227,8 +232,8 @@ void Ship::Explode(const GameTime& time, const float explosionTime)
 {
 	ExplodeTimeRemaining = explosionTime;
 
-	Transform->Spin(0, 0, 0.02f);
-	EnableInput(false);
+	//Transform->Spin(0, 0, 0.02f);
+	//EnableInput(false);
 }
 
 

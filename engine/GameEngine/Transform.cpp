@@ -136,8 +136,14 @@ BoundingSphere Transform::TransformSphere(const BoundingSphere& bounds)
 {
 	auto matrix = GetMatrix();
 
-	float r1 = matrix.GetScaleVector().Length() * bounds.Radius;
 	Vector3 c1 = matrix.Transform(bounds.Center);
+
+	Vector3 c2 = bounds.Center + Vector3(bounds.Radius, 0, 0);
+
+	c2 = matrix.Transform(c2);
+
+	float r1 = (c2 - c1).Length();
+
 
 	return BoundingSphere(c1, r1);
 }

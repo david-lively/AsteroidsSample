@@ -45,15 +45,16 @@ bool Asteroid::OnInitialize()
 	{
 		material.FillType = PolygonMode::Fill;
 		mesh.Type = BeginMode::Triangles;
-		material.Build("Shaders/lit");
+		//material.Build("Shaders/lit");
+		material.Build("Shaders/edgeDetection");
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 5);
+		GeometryProvider::Tessellate(vertices, indices, 3);
 		GeometryProvider::Spherize(vertices);
 	}
 	
-	GeometryProvider::FitToUnitCube(vertices);
 
-	GeometryProvider::Noisify(vertices, 4, 0.3f);
+	//GeometryProvider::Noisify(vertices, 4, 0.3f);
+	GeometryProvider::FitToUnitCube(vertices);
 	Bounds = BoundingSphere::FromVectors(vertices);
 
 

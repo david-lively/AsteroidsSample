@@ -18,7 +18,7 @@ class Ship : public WorldEntity
 public:
 
 	float TimeUntilCanFire = 0.f;
-	const float FireIntervalSec = 0.2f;
+	const float FireIntervalSec = 0.5f;
 
 	float ExplodeTimeRemaining = 0.f;
 	float ExplodeScale = 1.f;

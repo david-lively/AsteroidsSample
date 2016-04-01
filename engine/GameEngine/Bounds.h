@@ -10,6 +10,7 @@
 #define BOUNDINGBOX_H
 
 #include "Vectors.h"
+#include "Common.h"
 
 #include <vector>
 #include <cmath>
@@ -135,25 +136,27 @@ public:
 	{
 		Vector3 delta = (other.Center - Center);
 
-		//float distanceSquared = delta.X * delta.X + delta.Y *  delta.Y + delta.Z * delta.Z;
+		float distance = delta.Length();
+	
+		bool result = distance < (Radius + other.Radius);
 
-		float distanceSquared = delta.Dot(delta);
-		float radiusSumSquared = (Radius + other.Radius) * (Radius + other.Radius);
-		return radiusSumSquared > distanceSquared;
+		return result;
 	}
 
 	static BoundingSphere FromVectors(const std::vector<Vector3>& vectors)
 	{
-		float maxRadiusSquared = 0.f;
+		Vector3 mn = vectors[0];
+		Vector3 mx = vectors[0];
 
-		for (Vector3 v : vectors)
+		for (int i = 1; i < vectors.size(); ++i)
 		{
-			auto lengthSquared = v.Dot(v);
-
-			maxRadiusSquared = max(maxRadiusSquared, lengthSquared);
+			mn = Vector3::Min(mn, vectors[i]);
+			mx = Vector3::Max(mx, vectors[i]);
 		}
 
-		return BoundingSphere(Vector3::Zero, sqrt(maxRadiusSquared));
+		float maxDim = max(max(mx.X - mn.X, mx.Y - mn.Y), mx.Z - mn.Z);
+
+		return BoundingSphere((mn + mx) * 0.5f, maxDim * 0.5f);
 	}
 
 };

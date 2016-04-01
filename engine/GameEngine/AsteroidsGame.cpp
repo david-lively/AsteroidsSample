@@ -30,7 +30,7 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
-	m_scoreboard = &Create<Scoreboard>("scoreboard");
+	//m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_grid->Enabled = false;
 
@@ -186,6 +186,9 @@ bool AsteroidsGame::OnCreateScene()
 
 void AsteroidsGame::OnUpdate(const GameTime& time)
 {
+	Game::OnUpdate(time);
+
+	Log::Info << "Ship translation " << m_ship->Transform->Translation << "\r";
 
 }
 
@@ -194,8 +197,6 @@ void AsteroidsGame::OnPreUpdate(const GameTime& time)
 	/// wrap moving items to view frustum
 	DoCollisionCheck(time);
 	DoWrapping(time);
-
-
 }
 
 Ship& AsteroidsGame::CreateShip()
@@ -203,7 +204,7 @@ Ship& AsteroidsGame::CreateShip()
 	auto& ship = Create<Ship>("ship");
 
 	ship.Transform->Scale = Vector3(1.5f);
-	ship.Transform->Spin(Vector3(0, 0.1f, 0));
+	//ship.Transform->Spin(Vector3(0, 0.1f, 0));
 
 	return ship;
 }
@@ -346,15 +347,16 @@ void AsteroidsGame::Fire(Ship& ship)
 	Log::Debug << Time.FrameNumber() << " Fire!\n";
 
 	auto& missile = GetAMissile();
+	auto shipMatrix = m_ship->Transform->GetMatrix();
 
-	auto initialPosition = m_ship->Transform->Translation;
-
-	auto up = m_ship->Transform->GetMatrix().Up();
+	auto up = shipMatrix.Up();
+	
+	missile.Transform->Reset();
+	
 	missile.Transform->SetRotation(m_ship->Transform->Rotation);
-	missile.Transform->Move(m_ship->Transform->Translation);
-	missile.Transform->Drag = 0.f;
+	missile.Transform->Move(shipMatrix.Translation());
 
-	float missileSpeed = 0.09f;
+	float missileSpeed = 0.04f;
 	missile.Transform->Push(up * missileSpeed);
 }
 

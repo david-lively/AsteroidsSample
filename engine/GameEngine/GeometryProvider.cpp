@@ -401,9 +401,10 @@ void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float scale, floa
 
 void GeometryProvider::Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float height, const float radius, const int sides)
 {
-	vertices.push_back(Vector3(0, height / 2.f, 0));
+	vertices.push_back(Vector3(0, height * 0.5f, 0));
+	//vertices.push_back(Vector3(0, 0, 0));
 
-	Circle(vertices, indices, Vector3(0, -height / 2.f, 0), radius, sides, true);
+	Circle(vertices, indices, Vector3(0, -height * 0.5f, 0), radius, sides, true);
 	
 	indices.clear();
 
