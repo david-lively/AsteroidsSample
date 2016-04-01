@@ -339,7 +339,6 @@ void GeometryProvider::Arrow(std::vector<Vector3>& vertices, std::vector<GLushor
 {
 	int startIndex = (int)vertices.size();
 
-
 	float halfWidth = width * 0.5f;
 	float headHeight = height * 0.25f;
 
@@ -401,21 +400,36 @@ void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float scale, floa
 
 void GeometryProvider::Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float height, const float radius, const int sides)
 {
-	vertices.push_back(Vector3(0, height * 0.5f, 0));
-	//vertices.push_back(Vector3(0, 0, 0));
+	Vector3 peak(0, height * 0.75f, 0);
+	Vector3 base(0, height * -0.25f, 0);
 
-	Circle(vertices, indices, Vector3(0, -height * 0.5f, 0), radius, sides, true);
+	Circle(vertices, indices, Vector3(0,0,0), radius, sides, true);
 	
 	indices.clear();
 
+	int peakIndex = vertices.size();
+	int baseIndex = peakIndex + 1;
 
-	for (int i = 1; i < vertices.size(); ++i)
+	for (int i = 0; i < vertices.size(); ++i)
 	{
-		indices.push_back(0);
-		indices.push_back(i);
-		indices.push_back((i + 1) % vertices.size());
+		int i0 = peakIndex;
+		int i1 = (i + 1) % vertices.size();
+		int i2 = i;
+		
+		// clockwise
+		indices.push_back(i0);
+		indices.push_back(i2);
+		indices.push_back(i1);
+
+		i0 = baseIndex;
+
+		indices.push_back(i0);
+		indices.push_back(i1);
+		indices.push_back(i2);
 	}
 
+	vertices.push_back(peak);
+	vertices.push_back(base);
 }
 
 

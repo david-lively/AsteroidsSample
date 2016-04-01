@@ -19,15 +19,15 @@ uniform float ColorByDepth = 0;
 
 in gOutputType
 {
-	in vec4 gObjectPosition;
-	in vec4 gWorldPosition;
-	in vec4 gColor;
+	in vec4 ObjectPosition;
+	in vec4 WorldPosition;
+	in vec4 Color;
 } gOut;
 
 
-//in vec4 gObjectPosition;
-//in vec4 gWorldPosition;
-//in vec4 gColor;
+//in vec4 ObjectPosition;
+//in vec4 WorldPosition;
+//in vec4 Color;
 
 out vec4 fragmentColor;
 
@@ -77,7 +77,7 @@ float Luminosity(vec3 color)
 
 void main() {
 
-	vec3 fragmentPosition = gOut.gWorldPosition.xyz;
+	vec3 fragmentPosition = gOut.WorldPosition.xyz;
 
     vec3 dx = normalize(dFdx(fragmentPosition));
     vec3 dy = normalize(dFdy(fragmentPosition));
@@ -88,7 +88,7 @@ void main() {
 	
 	if (ColorByDepth > 0.5f)
 	{
-		float c = length(gOut.gObjectPosition) / 5.f;
+		float c = length(gOut.ObjectPosition) / 5.f;
 		color = vec3(c);
 	}
 

@@ -30,7 +30,7 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
-	//m_scoreboard = &Create<Scoreboard>("scoreboard");
+	m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_grid->Enabled = false;
 
@@ -187,9 +187,6 @@ bool AsteroidsGame::OnCreateScene()
 void AsteroidsGame::OnUpdate(const GameTime& time)
 {
 	Game::OnUpdate(time);
-
-	Log::Info << "Ship translation " << m_ship->Transform->Translation << "\r";
-
 }
 
 void AsteroidsGame::OnPreUpdate(const GameTime& time)
@@ -204,6 +201,9 @@ Ship& AsteroidsGame::CreateShip()
 	auto& ship = Create<Ship>("ship");
 
 	ship.Transform->Scale = Vector3(1.5f);
+
+	ship.EnableInput(true);
+
 	//ship.Transform->Spin(Vector3(0, 0.1f, 0));
 
 	return ship;
@@ -364,7 +364,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 {
 	Ship& ship = *m_ship;
 	
-	if (ship.Exploding())
+	if (ship.IsExploding)
 		return;
 	
 	auto shipBounds = ship.Bounds;
@@ -381,7 +381,8 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
 			
 			//ship.Transform->Bounce(dir);
-			ship.Explode(time, 1.5f);
+			ship.Explode(time, 5.f);
+			m_scoreboard->Kill();
 
 			Log::Info << "Ship hit asteroid " << asteroid->Name << endl;
 

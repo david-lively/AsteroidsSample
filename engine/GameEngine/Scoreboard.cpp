@@ -24,14 +24,45 @@ bool Scoreboard::OnInitialize()
 		Ship* ship = &Create<Ship>("lifeIndicator." + to_string(i));
 
 		ship->Transform->Move(i, 0, 0);
-		ship->EnableInput(false);
-
 		
-		m_ships.push_back(ship);
+		m_activeShips.push(ship);
 	}
 
 	return success;
 }
+
+int Scoreboard::Kill()
+{
+	if (m_activeShips.size() > 0)
+	{
+		auto shipPtr = m_activeShips.front();
+		shipPtr->Enabled = false;
+		m_activeShips.pop();
+		m_inactiveShips.push(shipPtr);
+	}
+	else
+	{
+		while (m_inactiveShips.size() > 0)
+		{
+			auto shipPtr = m_inactiveShips.front();
+			shipPtr->Enabled = true;
+			m_inactiveShips.pop();
+			m_activeShips.push(shipPtr);
+		}
+	}
+
+
+
+	LivesRemaining = m_activeShips.size();
+
+	
+
+
+	return LivesRemaining;
+
+}
+
+
 
 bool Scoreboard::OnPostInitialize()
 {
@@ -43,17 +74,17 @@ bool Scoreboard::OnPostInitialize()
 
 void Scoreboard::OnPreUpdate(const GameTime& time)
 {
-	static bool firstFrame = true;
+	//static bool firstFrame = true;
 
-	if (firstFrame)
-	{
-		for (auto shipPtr : m_ships)
-		{
-			shipPtr->EnableInput(false);
-		}
+	//if (firstFrame)
+	//{
+	//	for (auto shipPtr : m_ships)
+	//	{
+	//		shipPtr->EnableInput(false);
+	//	}
 
-		firstFrame = false;
-	}
+	//	firstFrame = false;
+	//}
 }
 
 

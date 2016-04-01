@@ -2,6 +2,7 @@
 #define SCOREBOARD_H
 
 #include <vector>
+#include <queue>
 
 #include "WorldEntity.h"
 #include "Ship.h"
@@ -16,13 +17,17 @@ public:
 	bool OnInitialize() override;
 	bool OnPostInitialize() override;
 
+	int Kill();
+
 	void OnPreUpdate(const GameTime& time) override;
 
 	Scoreboard();
 	~Scoreboard();
 
 private:
-	std::vector<Ship*> m_ships;
+
+	std::queue<Ship*> m_activeShips;
+	std::queue<Ship*> m_inactiveShips;
 
 };
 

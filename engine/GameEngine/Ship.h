@@ -20,13 +20,10 @@ public:
 	float TimeUntilCanFire = 0.f;
 	const float FireIntervalSec = 0.5f;
 
-	float ExplodeTimeRemaining = 0.f;
-	float ExplodeScale = 1.f;
-
-	bool Exploding() { return ExplodeTimeRemaining > 0; }
-
-	Vector3 ExplodeMove;
-
+	float ExplosionFactor = 0.f;
+	float ExplosionTime = 0.f;
+	float ExplosionDuration = 1.f;
+	bool IsExploding = false;
 
 	Ship()
 	{
@@ -40,12 +37,13 @@ public:
 	bool CanFire();
 	bool Fire();
 
-	void Explode(const GameTime& time, const float explosionTime);
+	void Explode(const GameTime& time, const float duration = -1.f);
 
 	void EnableInput(bool isEnabled)
 	{
+		m_inputEnabled = isEnabled;
 		if (nullptr != m_input)
-			m_input->Enabled = isEnabled;
+			m_input->Enabled = m_inputEnabled;
 	}
 
 private:
@@ -58,6 +56,8 @@ private:
 
 	void CreateShipMesh();
 	void CreateHelpers();
+
+	bool m_inputEnabled = false;
 
 };
 

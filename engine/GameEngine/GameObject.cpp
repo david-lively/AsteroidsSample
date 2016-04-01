@@ -210,16 +210,17 @@ bool GameObject::Initialize()
 		DEBUG_BREAK;
 	}
 
-	auto result = OnInitialize();
-	check_gl_error();
+	bool result = true;
+
 	for (auto it = begin(m_newObjects); it != end(m_newObjects); ++it)
 	{
 		result &= (*it)->Initialize();
 	}
+	result &= OnInitialize();
 
-	m_isInitialized = true;
+	m_isInitialized = result;
 
-	return result;
+	return m_isInitialized;
 }
 
 void GameObject::Dispose()
