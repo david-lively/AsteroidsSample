@@ -45,7 +45,7 @@ bool Asteroid::OnInitialize()
 	{
 		material.FillType = PolygonMode::Fill;
 		mesh.Type = BeginMode::Triangles;
-		material.Build("Shaders/edgeDetection");
+		material.Build("Shaders/asteroid");
 		GeometryProvider::Icosahedron(vertices, indices);
 		GeometryProvider::Tessellate(vertices, indices, 3);
 		GeometryProvider::Spherize(vertices);

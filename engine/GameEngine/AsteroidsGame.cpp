@@ -367,12 +367,10 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		{
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
 			
-			//ship.Transform->Stop();
-			ship.Transform->Bounce(dir);// *0.1f);
+			ship.Transform->Stop();
+			ship.Transform->Bounce(dir * 0.1f);// *0.1f);
 			ship.Explode(time, 3.f);
 			m_scoreboard->Kill();
-
-			Log::Info << "Ship hit asteroid " << asteroid->Name << endl;
 		}
 
 
@@ -382,8 +380,6 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 
 void AsteroidsGame::DoWrapping(const GameTime& time)
 {
-	auto title = "Missiles: active " + to_string(m_allMissiles.size()) + " inactive " + to_string(m_inactiveMissiles.size());
-
 
 	auto& camera = Game::Instance().Camera();
 	auto& viewMatrix = camera.GetViewMatrix();

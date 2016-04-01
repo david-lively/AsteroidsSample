@@ -164,6 +164,9 @@
     <ClInclude Include="WorldEntity.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\asteroid.frag.glsl" />
+    <None Include="Shaders\asteroid.geom.glsl" />
+    <None Include="Shaders\asteroid.vert.glsl" />
     <None Include="Shaders\edgeDetection.frag.glsl" />
     <None Include="Shaders\edgeDetection.vert.glsl" />
     <None Include="Shaders\lit.frag.glsl" />

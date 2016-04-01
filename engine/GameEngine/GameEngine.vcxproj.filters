@@ -304,5 +304,14 @@
     <None Include="Shaders\text.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\asteroid.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\asteroid.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\asteroid.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

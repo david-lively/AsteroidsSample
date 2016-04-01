@@ -45,7 +45,7 @@ void Ship::CreateShipMesh()
 
 	auto& mesh = Create<Mesh>("ship-mesh");
 
-	GeometryProvider::Cone(vertices, indices, 1.5f, 0.5f, 6, false);
+	GeometryProvider::Cone(vertices, indices, 2.f, 0.25f, 6, false);
 
 	auto center = GeometryProvider::FindCenter(vertices);
 
