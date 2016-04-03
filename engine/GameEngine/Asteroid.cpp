@@ -66,14 +66,36 @@ bool Asteroid::OnInitialize()
 
 	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
 
+	auto& handler = Create<InputHandler>("asteroid-input");
+
+	float explodeSpeed = 0.01f;
+
+	handler.Subscribe(GLFW_KEY_F10,
+		DECL_KEYHANDLER
+	{
+		ExplosionFactor += explodeSpeed;
+	}
+	);
+
+	handler.Subscribe(GLFW_KEY_F9,
+		DECL_KEYHANDLER
+	{
+		ExplosionFactor = max(ExplosionFactor - explodeSpeed, 0);
+	}
+	);
+
+
 	return WorldEntity::OnInitialize();
 }
 
 void Asteroid::OnPreRender(const GameTime& time)
 {
 	m_material->Bind();
+	
 	m_material->SetUniform("ColorByDepth", 1.f);
-	m_material->SetUniform("Contrast", Game::Instance().Environment().Contrast);
+	m_material->SetUniform("ExplosionFactor", ExplosionFactor);
+	m_material->SetUniform("IsExploding", true);
+
 	WorldEntity::OnPreRender(time);
 }
 

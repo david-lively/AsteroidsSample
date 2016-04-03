@@ -122,20 +122,6 @@ void Ship::ConfigureInput()
 
 	);
 
-	float explodeSpeed = 0.01f;
-	handler.Subscribe(GLFW_KEY_F10,
-		DECL_KEYHANDLER
-	{
-		ExplosionFactor += explodeSpeed;
-	}
-	);
-
-	handler.Subscribe(GLFW_KEY_F9,
-		DECL_KEYHANDLER
-	{
-		ExplosionFactor = max(ExplosionFactor - explodeSpeed, 0);
-	}
-	);
 
 	handler.Subscribe(GLFW_KEY_LEFT_BRACKET,
 		DECL_KEYHANDLER

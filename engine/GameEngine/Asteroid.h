@@ -12,6 +12,7 @@
 //#include "Common.h"
 #include "WorldEntity.h"
 #include "Mesh.h"
+#include "InputHandler.h"
 
 class Asteroid : public WorldEntity
 {
@@ -20,6 +21,8 @@ public:
     {
         
     }
+
+	float ExplosionFactor = 0.f;
 
 	bool TwoD = true;
     
@@ -30,8 +33,9 @@ public:
     void OnUpdate(const GameTime& time) override;
     
 private:
-    Mesh* m_mesh;
-    Material* m_material;
+	Mesh* m_mesh = nullptr;
+	Material* m_material = nullptr;
+	InputHandler* m_input = nullptr;
 };
 
 
