@@ -30,7 +30,7 @@ public:
 
 	static void FindExtents(const std::vector<Vector3>& vertices, Vector3& boxMin, Vector3& boxMax);
 	static const Vector3 FindCenter(std::vector<Vector3>& vertices);
-	static void Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments, bool inXZ=false);
+	static void Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const Vector3& center, float radius, int segments, bool inXZ=false);
 	static std::vector<Vector3> ToVectors(std::vector<float>& coordinates);
 
 	static void Arrow(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float width, const float height);

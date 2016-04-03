@@ -144,7 +144,6 @@ BoundingSphere Transform::TransformSphere(const BoundingSphere& bounds)
 
 	float r1 = (c2 - c1).Length();
 
-
 	return BoundingSphere(c1, r1);
 }
 

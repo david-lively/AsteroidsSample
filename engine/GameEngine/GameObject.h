@@ -11,10 +11,12 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "Common.h"
 #include "Matrix.h"
 #include "Identity.h"
+//#include "Component.h"
 
 class GameObject : public Identity
 {
@@ -39,12 +41,7 @@ public:
 
 	void GetHierarchyParameters(int& objectCount, int& maxDepth);
 
-	void PrintHierarchy(int indent);
-    
 	void BuildCombinedMatrix(Matrix& target);
-	void Add(const GameObject& item);
-	void SetParent(GameObject* newParent);
-
 
     virtual void OnPreUpdate(const GameTime& time) {}
     virtual void OnUpdate(const GameTime& time) {}
@@ -61,14 +58,13 @@ public:
     
     bool Initialize();
     virtual bool OnInitialize() { return true; }
+
 	bool PostInitialize();
 	virtual bool OnPostInitialize() { return true; }
     
 
 	void WindowResize(int width, int height);
 	virtual void OnWindowResize(int width, int height);
-
-    void Dispose();
 
 
 	template<typename T>
@@ -108,19 +104,18 @@ public:
     template<typename T>
     T& Create(const std::string& name)
     {
-        auto* object = new T();
-        object->Name = name + std::to_string(object->Id);
+		std::shared_ptr<T> object = std::make_shared<T>();
+
+		object->Name = "object" + std::to_string(object->Id);
 
 		m_newObjects.push_back(object);
-        
-		object->Parent = this;
-        return *object;
+
+		return *object;
     }
-    
     
 private:
 	bool m_isInitialized = false;
-    std::vector<GameObject*> m_children;
+	std::vector<std::shared_ptr<GameObject>> m_children;
 
     void DoPreRender(const GameTime& time);
     void DoPostRender(const GameTime& time);
@@ -133,7 +128,9 @@ private:
     
 
 	// objects created this frame to be moved to m_children at the start of the next frame
-	std::vector<GameObject*> m_newObjects;
+	std::vector<std::shared_ptr<GameObject>> m_newObjects;
+
+	//std::vector<std::shared_ptr<Component>> m_components;
     
 protected:
 	void ProcessNewObjects();

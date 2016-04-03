@@ -35,34 +35,39 @@ bool Ship::OnInitialize()
 	return WorldEntity::OnInitialize();
 }
 
+
 void Ship::CreateShipMesh()
 {
-	auto& material = Create<class Material>("ship-material");
-	m_material = &material;
+	{
+		auto& material = Create<class Material>("ship-material");
+		m_material = &material;
 
-	vector<Vector3> vertices;
-	vector<GLushort> indices;
+		vector<Vector3> vertices;
+		vector<GLushort> indices;
 
-	auto& mesh = Create<Mesh>("ship-mesh");
+		auto& mesh = Create<Mesh>("ship-mesh");
 
-	GeometryProvider::Cone(vertices, indices, 2.f, 0.25f, 6, false);
-
-	auto center = GeometryProvider::FindCenter(vertices);
+		GeometryProvider::Cone(vertices, indices, 2.f, 0.25f, 6, false);
 
 
-	material.FillType = PolygonMode::Fill;
-	mesh.Type = BeginMode::Triangles;
+		//auto center = GeometryProvider::FindCenter(vertices);
 
-	material.Build("Shaders/ship");
 
-	mesh.Material = &material;
-	mesh.Initialize(vertices, indices);
+		material.FillType = PolygonMode::Fill;
+		mesh.Type = BeginMode::Triangles;
 
-	GeometryProvider::FitToUnitCube(vertices);
-	Bounds = BoundingSphere::FromVectors(vertices);
+		material.Build("Shaders/ship");
 
-	mesh.CullBackfaces = false;
-	m_mesh = &mesh;
+		mesh.Material = &material;
+		mesh.Initialize(vertices, indices);
+
+		GeometryProvider::FitToUnitCube(vertices);
+		Bounds = BoundingSphere::FromVectors(vertices);
+
+		mesh.CullBackfaces = false;
+		m_mesh = &mesh;
+	}
+
 }
 
 void Ship::CreateHelpers()
@@ -70,8 +75,6 @@ void Ship::CreateHelpers()
 	auto& axis = Create<AxisHelper>("axis.helper");
 	axis.Transform->Move(0, 0.5f, 0);
 }
-
-
 
 
 void Ship::ConfigureInput()
@@ -183,13 +186,14 @@ void Ship::OnPreUpdate(const  GameTime& time)
 		ExplosionTime = 0.f;
 
 	TimeUntilCanFire = max(TimeUntilCanFire - time.ElapsedSeconds(), 0);;
-	
+
 	if (IsExploding)
 		EnableInput(false);
 	else if (wasExploding && !IsExploding)
 	{
 		Transform->Reset();
 		EnableInput(true);
+		IsRespawning = true;
 	}
 
 	WorldEntity::OnPreUpdate(time);
@@ -215,10 +219,6 @@ void Ship::OnRender(const GameTime& time)
 {
 	m_material->Bind();
 
-
-	//m_material->SetUniform("ExplosionDuration", ExplosionDuration);
-	//m_material->SetUniform("ExplosionTime", ExplosionTime);
-
 	m_material->SetUniform("ExplosionFactor", ExplosionFactor);
 	m_material->SetUniform("IsExploding", IsExploding ? 1.f : 0.f);
 
@@ -236,8 +236,6 @@ void Ship::Explode(const GameTime& time, const float duration)
 	Vector3 spin((rand() % 10) / 10.f, (rand() % 10) / 10.f, (rand() % 10) / 10.f);
 
 	Transform->Spin(spin * 0.1f);
-
-
 
 	IsExploding = true;
 }

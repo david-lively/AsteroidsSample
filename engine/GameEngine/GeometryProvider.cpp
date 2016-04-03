@@ -33,9 +33,7 @@ void GeometryProvider::FindExtents(const std::vector<Vector3>& vertices, Vector3
 		boxMax = Vector3(0);
 
 		return;
-
 	}
-
 
 	boxMin = vertices[0];
 	boxMax = vertices[0];
@@ -78,7 +76,7 @@ void GeometryProvider::FitToUnitCube(std::vector<Vector3>& vectors)
 	auto vmin = vectors[0];
 	auto vmax = vectors[0];
 
-	for (int i = 1; i < vectors.size(); ++i)
+	for (int i = 0; i < vectors.size(); ++i)
 	{
 		vmin = Vector3::Min(vectors[i], vmin);
 		vmax = Vector3::Max(vectors[i], vmax);
@@ -86,14 +84,26 @@ void GeometryProvider::FitToUnitCube(std::vector<Vector3>& vectors)
 
 	float maxSide = max(max(vmax.X - vmin.X, vmax.Y - vmin.Y), vmax.Z - vmin.Z);
 
-	for (auto it = begin(vectors); it != end(vectors); ++it)
-	{
-		auto& v = *it;
+	float scale = 1.f / maxSide;
 
-		v.X = (v.X - vmin.X) / maxSide - 0.5f;
-		v.Y = (v.Y - vmin.Y) / maxSide - 0.5f;
-		v.Z = (v.Z - vmin.Z) / maxSide - 0.5f;
+	Vector3 center = (vmax + vmin) * 0.5f;
+
+	for (int i = 0; i < vectors.size(); ++i)
+	{
+		Vector3 v = vectors[i];
+
+		v = (v - center) * scale;
+	
+		//v.X -= 0.5f;
+		//v.Y -= 0.5f;
+		//v.Z -= 0.5f;
+
+		vectors[i] = v;
 	}
+
+	FindExtents(vectors, vmin, vmax);
+
+	Log::Info << "Extents: min " << vmin << " max " << vmax << endl;
 
 }
 
@@ -270,7 +280,7 @@ vector<Vector3> GeometryProvider::ToVectors(std::vector<float>& coordinates)
 }
 
 
-void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, Vector3 center, float radius, int segments, bool inXZ)
+void GeometryProvider::Circle(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const Vector3& center, float radius, int segments, bool inXZ)
 {
 	GLushort firstIndex = (GLushort)vertices.size();
 
@@ -400,11 +410,11 @@ void GeometryProvider::Noisify(std::vector<Vector3>& vertices, float scale, floa
 
 void GeometryProvider::Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float height, const float radius, const int sides, const bool generateBase)
 {
-	Vector3 peak(0, height * 0.75f, 0);
-	Vector3 base(0, height * -0.125f, 0);
+	Vector3 peak(0,  0.5f, 0);
+	Vector3 base(0, -0.5f, 0);
 
-	Circle(vertices, indices, Vector3(0, 0, 0), radius, sides, true);
-
+	Circle(vertices, indices, base, radius, sides, true);
+	
 	indices.clear();
 
 	int peakIndex = vertices.size();

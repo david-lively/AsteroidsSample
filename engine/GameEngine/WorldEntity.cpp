@@ -8,6 +8,4 @@
 
 #include "WorldEntity.h"
 
-#include "Material.h"
-#include "Game.h"
 

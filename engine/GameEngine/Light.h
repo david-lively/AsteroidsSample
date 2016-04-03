@@ -29,6 +29,12 @@ public:
 	float Intensity;
 
 
+	Light(const std::string& name)
+	{
+
+	}
+
+
 	Light() : Color(1, 1, 1, 1)
 	{
 

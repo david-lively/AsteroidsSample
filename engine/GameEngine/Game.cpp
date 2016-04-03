@@ -160,8 +160,6 @@ bool Game::Run()
 			Time.Update();
 	}
 
-	Dispose();
-
 	return true;
 
 }

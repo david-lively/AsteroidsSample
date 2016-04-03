@@ -8,6 +8,8 @@
 
 #include "Vectors.h"
 
+const Vector3 Vector3::Zero(0, 0, 0);
+const Vector3 Vector3::One(1, 1, 1);
 
 std::ostream& operator<<(std::ostream& os, const Vector4& vec)
 {
@@ -23,5 +25,4 @@ std::ostream& operator<<(std::ostream& os, const Vector3& vec)
     return os;
 }
 
-const Vector3 Vector3::Zero(0,0,0);
 

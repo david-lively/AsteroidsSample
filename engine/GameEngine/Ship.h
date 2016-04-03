@@ -12,6 +12,7 @@
 #include "Common.h"
 #include "WorldEntity.h"
 #include "Mesh.h"
+#include "InputHandler.h"
 
 class Ship : public WorldEntity
 {
@@ -46,11 +47,15 @@ public:
 			m_input->Enabled = m_inputEnabled;
 	}
 
-private:
-	Mesh* m_mesh;
-	Material* m_material;
+	bool IsRespawning = false;
 
-	InputHandler* m_input;
+
+
+private:
+	Mesh* m_mesh = nullptr;
+	Material* m_material = nullptr;
+
+	InputHandler* m_input = nullptr;
 
 	void ConfigureInput();
 

@@ -123,6 +123,16 @@ struct Vector3 : public Vector2
         return *this;
     }
 
+	inline Vector3& operator-=(const float rval)
+	{
+		X -= rval;
+		Y -= rval;
+		Z -= rval;
+
+		return *this;
+
+	}
+
     template<typename T>
     inline Vector3& operator-=(const T& rval)
     {
@@ -210,6 +220,7 @@ struct Vector3 : public Vector2
 	}
 
 	static const Vector3 Zero;
+	static const Vector3 One;
     
     
     

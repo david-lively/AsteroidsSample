@@ -129,6 +129,7 @@
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameEnvironment.h" />
     <ClInclude Include="Files.h" />

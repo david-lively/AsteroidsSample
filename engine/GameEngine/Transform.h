@@ -26,10 +26,15 @@ public:
     float TranslationDrag = 0.05f;
 	float RotationDrag = 0.05f;
     
-    Transform()
+	Transform() : Transform("transform")
     {
-        Scale.X = Scale.Y = Scale.Z = 1;
+		Scale = Vector3::One;
     }
+
+	Transform(const std::string& name) : GameObject(name)
+	{
+
+	}
 
 	Transform& CopyFrom(const Transform& other)
 	{

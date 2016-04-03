@@ -30,9 +30,15 @@ public:
     Vector3 Near;
     Vector3 Far;
     
-    Camera() : FieldOfView(TO_RADIANS(60)), ZNear(1), ZFar(1000)
+	Camera() : Camera("camera")
     {
     }
+
+	Camera(const std::string& name) : WorldEntity(name)
+		, FieldOfView(TO_RADIANS(60)), ZNear(1), ZFar(1000)
+	{
+
+	}
 
 	void OnWindowResize(int w, int h) override;
 	bool OnInitialize() override;

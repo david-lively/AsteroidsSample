@@ -200,7 +200,7 @@ Ship& AsteroidsGame::CreateShip()
 {
 	auto& ship = Create<Ship>("ship");
 
-	ship.Transform->Scale = Vector3(1.5f);
+	ship.Transform->Scale = Vector3(2.f);
 
 	ship.EnableInput(true);
 
@@ -319,7 +319,7 @@ Missile& AsteroidsGame::GetAMissile()
 	{
 		missile = &Create<Missile>("missile");
 		m_itemsToWrap.push_back(missile);
-		m_allMissiles.push_back(missile);
+		m_activeMissiles.push(missile);
 	}
 
 	return *missile;
@@ -347,13 +347,43 @@ void AsteroidsGame::Fire(Ship& ship)
 	missile.Transform->Push(up * missileSpeed);
 }
 
+vector<tuple<WorldEntity*, WorldEntity*>> AsteroidsGame::GetCollisionPairs()
+{
+	throw;
+}
+
+bool AsteroidsGame::CanRespawn()
+{
+	return true;
+
+	/*
+	check ship against the asteroids to make sure it can safely respawn
+	at the center of the screen
+	*/
+	auto& ship = *m_ship;
+
+	for (auto* asteroidPtr : m_asteroids)
+	{
+
+
+
+	}
+
+
+
+
+}
+
 void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 {
 	Ship& ship = *m_ship;
 	
 	if (ship.IsExploding)
 		return;
-	
+
+	//if (ship.IsRespawning && CanRespawn())
+	//	Respawn();
+	//
 	auto shipBounds = ship.Bounds;
 
 	shipBounds = ship.Transform->TransformSphere(shipBounds);

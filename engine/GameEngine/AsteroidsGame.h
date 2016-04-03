@@ -46,12 +46,17 @@ public:
 	void DoCollisionCheck(const GameTime& time);
 	void DoWrapping(const GameTime& time);
 
+	bool CanRespawn();
+
+	std::vector<std::tuple<WorldEntity*, WorldEntity*>> GetCollisionPairs();
+
+
 private:
     Grid* m_grid;
     Ship* m_ship;
 	Scoreboard* m_scoreboard;
 	
-	std::vector<Missile*> m_allMissiles; 
+	std::queue<Missile*> m_activeMissiles;
 	std::queue<Missile*> m_inactiveMissiles;
 
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)

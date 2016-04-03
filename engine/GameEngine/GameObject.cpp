@@ -6,24 +6,8 @@
 #include "Log.h"
 #include "Transform.h"
 #include "Game.h"
-#include "Missile.h"
 
 using namespace std;
-
-void GameObject::SetParent(GameObject* newParent)
-{
-	if (nullptr != Parent)
-	{
-		std::vector<GameObject*>& pc = Parent->m_children;
-		pc.erase(std::remove(begin(pc), end(pc), this), end(pc));
-	}
-
-	Parent = newParent;
-
-	if (nullptr != Parent)
-		Parent->m_children.push_back(this);
-}
-
 
 void GameObject::BuildCombinedMatrix(Matrix& target)
 {
@@ -223,21 +207,6 @@ bool GameObject::Initialize()
 	return m_isInitialized;
 }
 
-void GameObject::Dispose()
-{
-	for (auto it = begin(m_children); it != end(m_children); ++it)
-	{
-		auto refCount = --((*it)->ReferenceCount);
-		if (refCount <= 0)
-		{
-			(*it)->Dispose();
-			delete *it;
-		}
-	}
-
-	OnDispose();
-}
-
 
 void GameObject::WindowResize(int width, int height)
 {
@@ -252,13 +221,6 @@ void GameObject::WindowResize(int width, int height)
 
 void GameObject::OnWindowResize(int width, int height)
 {
-
-}
-
-
-void GameObject::PrintHierarchy(int indent)
-{
-
 
 }
 

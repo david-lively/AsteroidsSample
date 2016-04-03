@@ -11,7 +11,6 @@
 
 #include "GameObject.h"
 #include "Transform.h"
-#include "InputHandler.h"
 #include "Bounds.h"
 
 #include <string>
@@ -23,19 +22,17 @@ enum class FrustumAction
 	Wrap
 	,
 	Recycle
-	,
-	Delete
 };
 
 class WorldEntity : public GameObject
 {
 public:
-    Transform* Transform;
+	Transform* Transform = nullptr;
     BoundingSphere Bounds;
 
+	//bool DrawBounds = false;
 
 	FrustumAction OnExitFrustum = FrustumAction::Wrap;
-    
     
     WorldEntity(const std::string& name) : GameObject(name)
     {
@@ -47,6 +44,9 @@ public:
         
     }
 
+private:
+	//Material* m_material = nullptr;
+	//Mesh* m_mesh = nullptr;
    
 };
 
