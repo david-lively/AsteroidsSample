@@ -60,27 +60,29 @@ GLuint Shader::Build(const string& basePath)
 				if (shaders.count(shaderType) > 0)
 					shader = shaders[shaderType];
 				else
+				{
 					shader = gl::CreateShader((GLenum)shaderType);
 
-				check_gl_error();
+					check_gl_error();
 
-				GLchar* sourceStr = (GLchar*)source.c_str();
-				GLint sourceLength = (GLint)source.length();
+					GLchar* sourceStr = (GLchar*)source.c_str();
+					GLint sourceLength = (GLint)source.length();
 
-				gl::ShaderSource(shader, 1, &sourceStr, &sourceLength);
+					gl::ShaderSource(shader, 1, &sourceStr, &sourceLength);
 
-				check_gl_error();
+					check_gl_error();
 
-				gl::CompileShader(shader);
+					gl::CompileShader(shader);
 
-				if (!CompileSuccessful(shader))
-				{
-					Log::Error << "Shader compilation error for " << to_string(shaderType) << " " << GetShaderFilename(basePath, shaderType) << endl;
-					Log::Error << GetShaderLog(shader) << endl;
-					success = false;
+					if (!CompileSuccessful(shader))
+					{
+						Log::Error << "Shader compilation error for " << to_string(shaderType) << " " << GetShaderFilename(basePath, shaderType) << endl;
+						Log::Error << GetShaderLog(shader) << endl;
+						success = false;
+					}
+					else
+						shaders[shaderType] = shader;
 				}
-				else
-					shaders[shaderType] = shader;
 			}
 		}
 

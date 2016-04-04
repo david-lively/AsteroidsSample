@@ -10,10 +10,10 @@
 #define TRANSFORM_H
 
 #include "Common.h"
-#include "GameObject.h"
 #include "Vectors.h"
 #include "Matrix.h"
 #include "Bounds.h"
+#include "GameObject.h"
 
 class Transform : public GameObject
 {

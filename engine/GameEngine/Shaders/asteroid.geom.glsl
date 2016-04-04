@@ -73,16 +73,9 @@ void main()
 	int noiseIndex = (gl_PrimitiveID * 3) % NoiseArrayLength;
 
 
-	//vec3 normal = normalize((ObjectPosition[0].xyz + ObjectPosition[1].xyz + ObjectPosition[2].xyz) / 3.f);
-
 	for (int i = 0; i < 3; ++i)
 	{
 		vec4 p = ObjectPosition[i];
-
-		/// nudge towards center of the primitive
-		//vec3 toCenter = normalize(center - p.xyz);
-		//p.xyz += toCenter * 0.1f;
-
 		p.xyz -= center;
 		
 		float noise = NoiseValues[noiseIndex];

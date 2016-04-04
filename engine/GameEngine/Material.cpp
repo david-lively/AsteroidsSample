@@ -72,9 +72,5 @@ bool Material::Build(const std::string& path)
 
 void Material::Preprocess(std::string& source)
 {
-	Parser parser;
-
-
-
 }
 
