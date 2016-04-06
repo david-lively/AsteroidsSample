@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Bounds.h"
+#include "UniformCollection.h"
 
 #include <string>
 
@@ -27,26 +28,20 @@ enum class FrustumAction
 class WorldEntity : public GameObject
 {
 public:
-	Transform* Transform = nullptr;
+	Transform& Transform;
     BoundingSphere Bounds;
-
-	//bool DrawBounds = false;
 
 	FrustumAction OnExitFrustum = FrustumAction::Wrap;
     
-    WorldEntity(const std::string& name) : GameObject(name)
+	WorldEntity(const std::string& name) : GameObject(name)
+		, Transform(Create<class Transform>(name + ".transform"))
     {
-        Transform = &Create<class Transform>(name + "-transform");
     }
     
     WorldEntity() : WorldEntity("unknown.worldentity")
     {
         
     }
-
-private:
-	//Material* m_material = nullptr;
-	//Mesh* m_mesh = nullptr;
    
 };
 

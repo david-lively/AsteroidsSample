@@ -13,7 +13,6 @@
 #include "Camera.h"
 #include "InputHandler.h"
 #include "GeometryProvider.h"
-#include "SimplexNoise.h"
 #include "Material.h"
 
 #include <vector>
@@ -23,14 +22,11 @@ using namespace std;
 
 bool Asteroid::OnInitialize()
 {
-	auto& material = Create<class Material>("asteroid-material");
-	m_material = &material;
-
-	auto& mesh = Create<Mesh>("asteroid-mesh");
-
 	vector<Vector3> vertices;
 	vector<GLushort> indices;
 
+	auto& material = this->Material;
+	auto& mesh = this->Mesh;
 
 	if (TwoD)
 	{
@@ -47,7 +43,7 @@ bool Asteroid::OnInitialize()
 		mesh.Type = BeginMode::Triangles;
 		material.Build("Shaders/asteroid");
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 3);
+		GeometryProvider::Tessellate(vertices, indices, 4);
 		GeometryProvider::Spherize(vertices);
 	}
 	
@@ -60,24 +56,20 @@ bool Asteroid::OnInitialize()
 	mesh.Material = &material;
 	mesh.Initialize(vertices, indices);
 
-	m_mesh = &mesh;
+	Transform.TranslationDrag = 0.f;
 
-	Transform->TranslationDrag = 0.f;
-
-	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
-
-	auto& handler = Create<InputHandler>("asteroid-input");
+	Uniforms.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
 
 	float explodeSpeed = 0.01f;
 
-	handler.Subscribe(GLFW_KEY_F10,
+	Input.Subscribe(GLFW_KEY_F10,
 		DECL_KEYHANDLER
 	{
 		ExplosionFactor += explodeSpeed;
 	}
 	);
 
-	handler.Subscribe(GLFW_KEY_F9,
+	Input.Subscribe(GLFW_KEY_F9,
 		DECL_KEYHANDLER
 	{
 		ExplosionFactor = max(ExplosionFactor - explodeSpeed, 0);
@@ -85,50 +77,47 @@ bool Asteroid::OnInitialize()
 	);
 
 
-	return WorldEntity::OnInitialize();
+	return Explodable::OnInitialize();
 }
 
 void Asteroid::OnPreRender(const GameTime& time)
 {
-	m_material->Bind();
-	
-	m_material->SetUniform("ColorByDepth", 1.f);
-	m_material->SetUniform("ExplosionFactor", ExplosionFactor);
-	m_material->SetUniform("IsExploding", true);
+	Uniforms.SetUniform("ColorByDepth", 1.f);
+	Uniforms.SetUniform("ExplosionFactor", ExplosionFactor);
+	Uniforms.SetUniform("IsExploding", true);
 
-	WorldEntity::OnPreRender(time);
+	Explodable::OnPreRender(time);
 }
 
 
 void Asteroid::OnUpdate(const GameTime& time)
 {
-	auto world = Transform->GetMatrix();
-	auto view = Game::Camera().GetViewMatrix();
+	//auto world = Transform.GetMatrix();
+	//auto view = Game::Camera().GetViewMatrix();
 
-	auto mvp = world * view;
+	//auto mvp = world * view;
 
-	Vector4 pos(0, 0, 0, 1);
-	Vector3 bounds = pos;
-	bounds.Y += 0.5f;
+	//Vector4 pos(0, 0, 0, 1);
+	//Vector3 bounds = pos;
+	//bounds.Y += 0.5f;
 
-	pos = mvp.Transform(pos);
-	bounds = mvp.Transform(bounds);
-	float radius = (bounds - pos).Length() / 2.f;
+	//pos = mvp.Transform(pos);
+	//bounds = mvp.Transform(bounds);
+	//float radius = (bounds - pos).Length() / 2.f;
 
-	WorldEntity::OnUpdate(time);
+	Explodable::OnUpdate(time);
 }
 
 void Asteroid::OnRender(const GameTime& time)
 {
-	m_material->Bind();
+	Material.Bind();
 
 	Vector4 orange(1, 165.f / 255.f, 0, 0.125f);
 
-	m_material->SetUniform("EmissiveColorIntensity", orange);
-
-	WorldEntity::OnRender(time);
+	Uniforms.SetUniform("EmissiveColorIntensity", orange);
 
 
+	Explodable::OnRender(time);
 }
 
 

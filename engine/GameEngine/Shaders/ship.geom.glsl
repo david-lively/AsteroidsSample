@@ -7,12 +7,13 @@ uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;
 uniform float GameTimeTotalSeconds = 0.f;
+
 uniform float ExplosionSpeed = 10.f;
+uniform float ExplosionFactor = 0.f;
 
 uniform int NoiseArrayLength = 128;
 uniform float[128] NoiseValues;
 
-uniform float ExplosionFactor = 0.f;
 
 in vec4 Color[3];
 in vec4 ObjectPosition[3];
@@ -73,7 +74,6 @@ void main()
 	int noiseIndex = (gl_PrimitiveID * 3) % NoiseArrayLength;
 
 
-	//vec3 normal = normalize((ObjectPosition[0].xyz + ObjectPosition[1].xyz + ObjectPosition[2].xyz) / 3.f);
 
 	for (int i = 0; i < 3; ++i)
 	{

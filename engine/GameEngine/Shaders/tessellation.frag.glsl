@@ -76,6 +76,7 @@ float Luminosity(vec3 color)
 
 
 void main() {
+
 	vec3 fragmentPosition = gOut.WorldPosition.xyz;
 
     vec3 dx = normalize(dFdx(fragmentPosition));
@@ -85,17 +86,20 @@ void main() {
 
 	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
 	
-	if (ColorByDepth > 0.5f)
-	{
-		float c = length(gOut.ObjectPosition) / 5.f;
-		color = vec3(c);
-	}
+	if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
+		discard;
+	else
+		color = vec3(1);
+
+
+	//if (ColorByDepth > 0.5f)
+	//{
+	//	float c = length(gOut.ObjectPosition) / 5.f;
+	//	color = vec3(c);
+	//}
 
 	if (ForceWireframe > 0.5f)
-	{
-		fragmentColor = vec4(1, 0, 1, 1);
-		return;
-	}
+		color = vec3(1);
 
 	fragmentColor = vec4(color,1);
 }

@@ -9,20 +9,25 @@
 #ifndef ASTEROID_H
 #define ASTEROID_H
 
-//#include "Common.h"
-#include "WorldEntity.h"
+#include "Explodable.h"
 #include "Mesh.h"
 #include "InputHandler.h"
 
-class Asteroid : public WorldEntity
+class Asteroid : public Explodable
 {
 public:
-    Asteroid()
+	InputHandler& Input;
+
+	Asteroid() : Asteroid("asteroid")
     {
         
     }
 
-	float ExplosionFactor = 0.f;
+	Asteroid(const std::string& name) : Explodable(name)
+		, Input(Create<InputHandler>("asteroid.input"))
+	{
+
+	}
 
 	bool TwoD = true;
     
@@ -32,10 +37,6 @@ public:
 	void OnPreRender(const GameTime& time) override;
     void OnUpdate(const GameTime& time) override;
     
-private:
-	Mesh* m_mesh = nullptr;
-	Material* m_material = nullptr;
-	InputHandler* m_input = nullptr;
 };
 
 

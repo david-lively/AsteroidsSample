@@ -115,10 +115,10 @@ GLuint Shader::Build(const string& basePath)
 		throw;
 	}
 
-	for (auto shader : shaders)
-	{
-		gl::DeleteShader(shader.second);
-	}
+	//for (auto shader : shaders)
+	//{
+	//	gl::DeleteShader(shader.second);
+	//}
 
 	return Handle;
 }

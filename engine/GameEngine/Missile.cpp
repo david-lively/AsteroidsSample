@@ -20,18 +20,16 @@ using namespace std;
 
 bool Missile::OnInitialize()
 {
-	auto& material = Create<class Material>("Missile-material");
-	m_material = &material;
-
-	auto& mesh = Create<Mesh>("Missile-mesh");
-
 	vector<Vector3> vertices;
 	vector<GLushort> indices;
 
-	material.FillType = PolygonMode::Line;
-	mesh.Type = BeginMode::Lines;
+	Material.FillType = PolygonMode::Line;
+	Mesh.Type = BeginMode::Lines;
+	Mesh.CullBackfaces = false;
+
 	
-	material.Build("Shaders/primitive");
+	Material.Build("Shaders/primitive");
+	Material.Name = "Missile.primitive";
 
 	vertices.push_back(Vector3(0, 0, 0));
 	vertices.push_back(Vector3(0, +1.f, 0));
@@ -40,16 +38,14 @@ bool Missile::OnInitialize()
 	indices.push_back(1);
 
 	Bounds = BoundingSphere::FromVectors(vertices);
-	mesh.Material = &material;
-	mesh.Initialize(vertices, indices);
+	Mesh.Initialize(vertices, indices);
+
+	Transform.TranslationDrag = 0.f;
+
+	Uniforms.SetUniform("EmissiveColorIntensity", Vector4(1, 1, 1, 1));
 
 
-	m_mesh = &mesh;
-
-	Transform->TranslationDrag = 0.f;
-
-	material.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
-	return WorldEntity::OnInitialize();
+	return Drawable::OnInitialize();
 
 }
 

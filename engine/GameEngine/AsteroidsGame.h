@@ -52,12 +52,13 @@ public:
 
 
 private:
-    Grid* m_grid;
-    Ship* m_ship;
-	Scoreboard* m_scoreboard;
+    Grid* m_grid = nullptr;
+    Ship* m_ship = nullptr;
+	Scoreboard* m_scoreboard = nullptr;
 	
-	std::queue<Missile*> m_activeMissiles;
-	std::queue<Missile*> m_inactiveMissiles;
+
+	std::queue<Drawable*> m_activeMissiles;
+	std::queue<Drawable*> m_inactiveMissiles;
 
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
 	std::vector<WorldEntity*> m_itemsToWrap;
@@ -66,7 +67,7 @@ private:
 	std::vector<Asteroid*> m_asteroids;
 
 	void Fire(Ship& ship);
-	Missile& GetAMissile();
+	Drawable& GetAMissile();
 
 };
 

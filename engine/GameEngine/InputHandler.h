@@ -34,8 +34,13 @@ enum class KeyState
 class InputHandler : public GameObject
 {
 public:
-	InputHandler()
+	InputHandler() : InputHandler("inputHandler")
 	{
+	}
+
+	InputHandler(const std::string& name) : GameObject(name)
+	{
+
 	}
 
 

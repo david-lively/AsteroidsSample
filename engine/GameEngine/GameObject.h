@@ -32,7 +32,7 @@ public:
         
     }
     
-    GameObject(const std::string& name) : Identity(Name)
+    GameObject(const std::string& name) : Identity(name)
     {
 		++ReferenceCount;
     }
@@ -104,14 +104,18 @@ public:
     template<typename T>
     T& Create(const std::string& name)
     {
-		std::shared_ptr<T> object = std::make_shared<T>();
+		std::shared_ptr<T> objectPtr = std::make_shared<T>(name);
 
-		object->Name = "object" + std::to_string(object->Id);
+		m_newObjects.push_back(objectPtr);
 
-		m_newObjects.push_back(object);
-
-		return *object;
+		return *objectPtr;
     }
+
+	template<typename T>
+	T& Add(std::shared_ptr<T> ptr)
+	{
+		m_children.push_back(ptr);
+	}
     
 private:
 	bool m_isInitialized = false;

@@ -1,19 +1,22 @@
 #include "GameEnvironment.h"
 
+#include <random>
+#include <vector>
+
 #include "GameObject.h"
 #include "Material.h"
 #include "Game.h"
 #include "PerlinNoise.h"
-#include <random>
-
-#include <vector>
+#include "Vectors.h"
+#include "Matrix.h"
+#include "Drawable.h"
 
 using namespace std;
 
-void GameEnvironment::Apply(Material& material, const GameTime& time)
+void GameEnvironment::Apply(Drawable& drawable, const GameTime& time)
 {
-	ApplyLights (material, time);
-	ApplyGlobals(material, time);
+	ApplyLights (drawable, time);
+	ApplyGlobals(drawable, time);
 }
 
 void GameEnvironment::PushMatrix(const Matrix& m)
@@ -31,14 +34,14 @@ void GameEnvironment::PopMatrix()
 
 const Matrix& GameEnvironment::CurrentMatrix()
 {
-
 	return m_matrixStack.top();
 }
 
-void GameEnvironment::ApplyLights(Material& material, const GameTime& time)
+void GameEnvironment::ApplyLights(Drawable& drawable, const GameTime& time)
 {
+	auto& uniforms = drawable.Uniforms;
 
-	auto countIndex = material.GetUniformLocation("LightCount");
+	auto countIndex = uniforms.GetUniformLocation("LightCount");
 	if (countIndex < 0)
 		return;
 
@@ -82,43 +85,44 @@ void GameEnvironment::ApplyLights(Material& material, const GameTime& time)
 
 	check_gl_error();
 
-	GLint location = material.GetUniformLocation("LightColorIntensity");
+	GLint location = uniforms.GetUniformLocation("LightColorIntensity");
 	if (location >= 0)
 		gl::Uniform4fv(location, lightCount, (const GLfloat*)lightColorIntensities.data());
 
 	check_gl_error();
 
-	location = material.GetUniformLocation("LightDirection");
+	location = uniforms.GetUniformLocation("LightDirection");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightDirections.data());
 
 	check_gl_error();
 
-	location = material.GetUniformLocation("LightPosition");
+	location = uniforms.GetUniformLocation("LightPosition");
 	if (location >= 0)
 		gl::Uniform3fv(location, lightCount, (const GLfloat*)lightPosition.data());
 
 	check_gl_error();
 
-	location = material.GetUniformLocation("LightTransform");
+	location = uniforms.GetUniformLocation("LightTransform");
 	if (location >= 0)
 		gl::UniformMatrix4fv(location, lightCount, false, (GLfloat*)lightTransform.data());
 }
 
-void GameEnvironment::ApplyGlobals(Material& material, const GameTime& time)
+void GameEnvironment::ApplyGlobals(Drawable& drawable, const GameTime& time)
 {
 	auto& camera = Game::Camera();
-
-	auto location = material.GetUniformLocation("NoiseValues");
+	auto& uniforms = drawable.Uniforms;
+	auto location = uniforms.GetUniformLocation("NoiseValues");
 
 	if (location >= 0)
 	{
 		gl::Uniform1fv(location, m_noiseValues.size(), m_noiseValues.data());
 	}
+	
 
-	material.SetUniform("NoiseArrayLength", (int)m_noiseValues.size());
-
-	material.SetUniform("GameTimemTotalSeconds", Game::Instance().Time.TotalSeconds());
+	uniforms.SetUniform("NoiseArrayLength", (int)m_noiseValues.size());
+	uniforms.SetUniform("GameTimeTotalSeconds", Game::Instance().Time.TotalSeconds());
+	uniforms.SetUniform("ForceWireframe", ForceWireframe);
 }
 
 void GameEnvironment::GenerateNoiseValues(std::vector<float>& arr, int count)

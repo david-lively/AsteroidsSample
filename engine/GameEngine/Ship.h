@@ -10,35 +10,40 @@
 #define SHIP_H
 
 #include "Common.h"
-#include "WorldEntity.h"
+#include "Explodable.h"
 #include "Mesh.h"
 #include "InputHandler.h"
 
-class Ship : public WorldEntity
+class Ship : public Explodable
 {
 public:
-
+	bool ScoreboardIndicator = false;
 	float TimeUntilCanFire = 0.f;
-	const float FireIntervalSec = 0.5f;
+	const float FireIntervalSec = 0.25f;
 
-	float ExplosionFactor = 0.f;
-	float ExplosionTime = 0.f;
-	float ExplosionDuration = 1.f;
-	bool IsExploding = false;
-
-	Ship()
+	Ship(const std::string& name) : Explodable(name)
 	{
 
 	}
 
+	Ship() : Ship("ship")
+	{
+
+	}
+
+	bool enableBreak = false;
+
+	void OnRender(const GameTime& time) override
+	{
+		Log::Info << "Rendering ship " << Name << std::endl;
+		Explodable::OnRender(time);
+	}
+
 	bool OnInitialize() override;
 	void OnPreUpdate(const  GameTime& time) override;
-	void OnRender(const GameTime& time) override;
 
 	bool CanFire();
 	bool Fire();
-
-	void Explode(const GameTime& time, const float duration = -1.f);
 
 	void EnableInput(bool isEnabled)
 	{
@@ -52,9 +57,6 @@ public:
 
 
 private:
-	Mesh* m_mesh = nullptr;
-	Material* m_material = nullptr;
-
 	InputHandler* m_input = nullptr;
 
 	void ConfigureInput();

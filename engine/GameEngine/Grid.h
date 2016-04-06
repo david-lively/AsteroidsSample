@@ -10,26 +10,27 @@
 #define GRID_H
 
 #include "Common.h"
-#include "WorldEntity.h"
-#include "Mesh.h"
+#include "Drawable.h"
 
-class Grid : public WorldEntity
+class Grid : public Drawable
 {
 public:
-    Grid()
-    {
-        
-    }
-    
-    bool OnInitialize() override;
+	Grid(const std::string& name) : Drawable(name)
+	{
+
+	}
+
+	Grid() : Grid("grid")
+	{
+
+	}
+
+
+
+	bool OnInitialize() override;
 
 	void OnUpdate(const GameTime& time)  override;
-    
-private:
-    Mesh* m_mesh;
-    Material* m_material;
-    
-    
+
 };
 
 

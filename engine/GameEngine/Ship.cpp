@@ -15,7 +15,6 @@
 #include "Camera.h"
 #include "InputHandler.h"
 #include "GeometryProvider.h"
-#include "AxisHelper.h"
 #include "WorldEntity.h"
 
 #include <vector>
@@ -25,57 +24,37 @@ using namespace std;
 
 bool Ship::OnInitialize()
 {
-	Transform->TranslationDrag = 0.01f;
+	Transform.TranslationDrag = 0.01f;
+	Transform.RotationDrag = 0.25f;
 	ConfigureInput();
-	//CreateHelpers();
 	CreateShipMesh();
 
 	m_input->Enabled = m_inputEnabled;
 
-	return WorldEntity::OnInitialize();
+	return Explodable::OnInitialize();
 }
 
 
 void Ship::CreateShipMesh()
 {
-	{
-		auto& material = Create<class Material>("ship-material");
-		m_material = &material;
+	vector<Vector3> vertices;
+	vector<GLushort> indices;
 
-		vector<Vector3> vertices;
-		vector<GLushort> indices;
+	GeometryProvider::Cone(vertices, indices, 2.f, 0.25f, 6, false);
 
-		auto& mesh = Create<Mesh>("ship-mesh");
+	Material.FillType = PolygonMode::Fill;
+	Mesh.Type = BeginMode::Triangles;
 
-		GeometryProvider::Cone(vertices, indices, 2.f, 0.25f, 6, false);
+	Material.Build("Shaders/ship");
 
+	Mesh.Initialize(vertices, indices);
 
-		//auto center = GeometryProvider::FindCenter(vertices);
+	GeometryProvider::FitToUnitCube(vertices);
+	Bounds = BoundingSphere::FromVectors(vertices);
 
-
-		material.FillType = PolygonMode::Fill;
-		mesh.Type = BeginMode::Triangles;
-
-		material.Build("Shaders/ship");
-
-		mesh.Material = &material;
-		mesh.Initialize(vertices, indices);
-
-		GeometryProvider::FitToUnitCube(vertices);
-		Bounds = BoundingSphere::FromVectors(vertices);
-
-		mesh.CullBackfaces = false;
-		m_mesh = &mesh;
-	}
+	Mesh.CullBackfaces = false;
 
 }
-
-void Ship::CreateHelpers()
-{
-	auto& axis = Create<AxisHelper>("axis.helper");
-	axis.Transform->Move(0, 0.5f, 0);
-}
-
 
 void Ship::ConfigureInput()
 {
@@ -84,13 +63,13 @@ void Ship::ConfigureInput()
 	m_input = &handler;
 
 	const float forwardSpeed = 0.5f;
-	const float spinSpeed = 0.3f;
+	const float spinSpeed = 1.f;
 
-#define xform (*this->Transform)
+#define xform (this->Transform)
 	handler.Subscribe(GLFW_KEY_UP,
 		DECL_KEYHANDLER
 	{
-		auto dir = Transform->GetMatrix().Up() * forwardSpeed;
+		auto dir = Transform.GetMatrix().Up() * forwardSpeed;
 		xform.Push(dir * forwardSpeed * time.ElapsedSeconds());
 	}
 	);
@@ -98,7 +77,7 @@ void Ship::ConfigureInput()
 	handler.Subscribe(GLFW_KEY_DOWN,
 		DECL_KEYHANDLER
 	{
-		auto dir = Transform->GetMatrix().Up() * (-1.f * forwardSpeed);
+		auto dir = Transform.GetMatrix().Up() * (-1.f * forwardSpeed);
 		xform.Push(dir * forwardSpeed * time.ElapsedSeconds());
 	}
 	);
@@ -177,7 +156,7 @@ void Ship::OnPreUpdate(const  GameTime& time)
 		EnableInput(false);
 	else if (wasExploding && !IsExploding)
 	{
-		Transform->Reset();
+		Transform.Reset();
 		EnableInput(true);
 		IsRespawning = true;
 	}
@@ -200,33 +179,6 @@ bool Ship::Fire()
 
 	return true;
 }
-
-void Ship::OnRender(const GameTime& time)
-{
-	m_material->Bind();
-
-	m_material->SetUniform("ExplosionFactor", ExplosionFactor);
-	m_material->SetUniform("IsExploding", IsExploding ? 1.f : 0.f);
-
-	WorldEntity::OnRender(time);
-
-}
-
-
-void Ship::Explode(const GameTime& time, const float duration)
-{
-	ExplosionTime = 0.f;
-	if (duration > 0)
-		ExplosionDuration = duration;
-
-	Vector3 spin((rand() % 10) / 10.f, (rand() % 10) / 10.f, (rand() % 10) / 10.f);
-
-	Transform->Spin(spin * 0.1f);
-
-	IsExploding = true;
-}
-
-
 
 
 

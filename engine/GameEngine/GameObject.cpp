@@ -15,7 +15,7 @@ void GameObject::BuildCombinedMatrix(Matrix& target)
 
 	if (nullptr != we)
 	{
-		target = target * we->Transform->GetMatrix();
+		target = target * we->Transform.GetMatrix();
 	}
 
 	if (nullptr != Parent)
@@ -120,7 +120,7 @@ void GameObject::DoRender(const GameTime& time)
 
 	if (nullptr != we)
 	{
-		env.PushMatrix(we->Transform->GetMatrix());
+		env.PushMatrix(we->Transform.GetMatrix());
 		//Log::Debug << "Push matrix " << we->Name << " depth " << env.MatrixStackSize() << endl;
 	}
 
@@ -198,8 +198,9 @@ bool GameObject::Initialize()
 
 	for (auto it = begin(m_newObjects); it != end(m_newObjects); ++it)
 	{
-		result &= (*it)->Initialize();
+		result &= (**it).Initialize();
 	}
+
 	result &= OnInitialize();
 
 	m_isInitialized = result;

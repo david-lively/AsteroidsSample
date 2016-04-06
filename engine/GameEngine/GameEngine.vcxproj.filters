@@ -36,9 +36,6 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Files.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,16 +87,10 @@
     <ClCompile Include="GameEnvironment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UniformCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AxisHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimplexNoise.cpp">
@@ -120,6 +111,12 @@
     <ClCompile Include="Scoreboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Explodable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -129,9 +126,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
@@ -206,13 +200,7 @@
     <ClInclude Include="GameEnvironment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UniformCollection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AxisHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
@@ -237,6 +225,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Explodable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -308,6 +302,24 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\asteroid.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\tessellation.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\tessellation.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\tessellation.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\demo.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\demo.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\demo.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

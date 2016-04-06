@@ -30,7 +30,7 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
-	m_scoreboard = &Create<Scoreboard>("scoreboard");
+	//m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_grid->Enabled = false;
 
@@ -63,7 +63,7 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_E,
 		DECL_KEYHANDLER
 	{
-		auto& camTransform = *Game::Instance().Camera().Transform;
+		auto& camTransform = Game::Instance().Camera().Transform;
 		camTransform.Push(0.f, 0.1f, 0);
 	}
 	);
@@ -71,7 +71,7 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_X,
 		DECL_KEYHANDLER
 	{
-		auto& camTransform = *Game::Instance().Camera().Transform;
+		auto& camTransform = Game::Instance().Camera().Transform;
 		camTransform.Push(0.f, -0.1f, 0);
 	}
 	);
@@ -80,7 +80,7 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_D,
 		DECL_KEYHANDLER
 	{
-		auto& camTransform = *Game::Instance().Camera().Transform;
+		auto& camTransform = Game::Instance().Camera().Transform;
 		camTransform.Push(0.1f, 0, 0);
 	}
 	);
@@ -89,7 +89,7 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_A,
 		DECL_KEYHANDLER
 	{
-		auto& camTransform = *Game::Instance().Camera().Transform;
+		auto& camTransform = Game::Instance().Camera().Transform;
 		camTransform.Push(-0.1f, 0, 0);
 	}
 	);
@@ -97,7 +97,7 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_W,
 		DECL_KEYHANDLER
 	{
-		auto& camTransform = *Game::Instance().Camera().Transform;
+		auto& camTransform = Game::Instance().Camera().Transform;
 		camTransform.Push(0, 0, 0.1f);
 	}
 	);
@@ -105,7 +105,7 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_S,
 		DECL_KEYHANDLER
 	{
-		auto& camTransform = *Game::Instance().Camera().Transform;
+		auto& camTransform = Game::Instance().Camera().Transform;
 		camTransform.Push(0, 0, -0.1f);
 	}
 	);
@@ -114,11 +114,11 @@ bool AsteroidsGame::OnCreateScene()
 		DECL_KEYHANDLER
 	{
 		auto& camera = Game::Camera();
-		auto& translation = camera.Transform->Translation;
+		auto& translation = camera.Transform.Translation;
 
-		camera.Transform->Reset();
+		camera.Transform.Reset();
 
-		camera.Transform->Move(0, 0, 20);
+		camera.Transform.Move(0, 0, 20);
 	}
 	);
 
@@ -179,7 +179,7 @@ bool AsteroidsGame::OnCreateScene()
 		
 
 
-	Game::Camera().Transform->Move(0, 0, 20);
+	Game::Camera().Transform.Move(0, 0, 20);
 
 	return true;
 }
@@ -200,7 +200,7 @@ Ship& AsteroidsGame::CreateShip()
 {
 	auto& ship = Create<Ship>("ship");
 
-	ship.Transform->Scale = Vector3(2.f);
+	ship.Transform.Scale = Vector3(2.f);
 
 	ship.EnableInput(true);
 
@@ -211,7 +211,7 @@ Grid& AsteroidsGame::CreateGrid()
 {
 	auto& grid = Create<Grid>("grid");
 
-	grid.Transform->Scale = Vector3(20);
+	grid.Transform.Scale = Vector3(20);
 
 	return grid;
 
@@ -233,18 +233,20 @@ void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<Wor
 	theta += TO_RADIANS(45.f);
 
 	Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
+	Log::Info << "Creating asteroid at world position " << center << endl;
 
 	auto& asteroid = Create<Asteroid>("asteroid");
-	m_asteroids.push_back(&asteroid);
 	
 	asteroid.TwoD = false;
 
 	entities.push_back(&asteroid);
 
-	auto& transform = *asteroid.Transform;
+	auto& transform = asteroid.Transform;
 
 	transform.Scale = Vector3(4.f);
 	transform.Move(center);
+	transform.RotationDrag = 0.f;
+	transform.TranslationDrag = 0.f;
 
 	/// start the asteroid moving...
 	float radians = TO_RADIANS(rand() % 360);
@@ -254,6 +256,7 @@ void AsteroidsGame::CreateAsteroids(const int count, const int total, vector<Wor
 	transform.Push(dir * 0.005f);
 	/// and make it spin
 	transform.Spin(Vector3(0, 0, 0.005f));
+	m_asteroids.push_back(&asteroid);
 
 	if (count > 1)
 		CreateAsteroids(count - 1, total, entities);
@@ -297,16 +300,16 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 		l.Color = color;
 		l.Intensity = 1.f;
 		l.Position = pos * 9.f;
-		l.Transform->Move(l.Position);
+		l.Transform.Move(l.Position);
 
 		lights.push_back(&l);
 	}
 
 }
 
-Missile& AsteroidsGame::GetAMissile()
+Drawable& AsteroidsGame::GetAMissile()
 {
-	Missile* missile = nullptr;
+	Drawable* missile = nullptr;
 
 	if (m_inactiveMissiles.size() > 0)
 	{
@@ -318,6 +321,10 @@ Missile& AsteroidsGame::GetAMissile()
 	else
 	{
 		missile = &Create<Missile>("missile");
+		
+		missile->OnExitFrustum = FrustumAction::Recycle;
+		missile->Transform.Scale = Vector3(1);
+
 		m_itemsToWrap.push_back(missile);
 		m_activeMissiles.push(missile);
 	}
@@ -334,17 +341,17 @@ void AsteroidsGame::Fire(Ship& ship)
 	Log::Debug << Time.FrameNumber() << " Fire!\n";
 
 	auto& missile = GetAMissile();
-	auto shipMatrix = m_ship->Transform->GetMatrix();
+	auto shipMatrix = m_ship->Transform.GetMatrix();
 
 	auto up = shipMatrix.Up();
 	
-	missile.Transform->Reset();
+	missile.Transform.Reset();
 	
-	missile.Transform->SetRotation(m_ship->Transform->Rotation);
-	missile.Transform->Move(shipMatrix.Translation());
+	missile.Transform.SetRotation(m_ship->Transform.Rotation);
+	missile.Transform.Move(shipMatrix.Translation());
 
 	float missileSpeed = 0.04f;
-	missile.Transform->Push(up * missileSpeed);
+	missile.Transform.Push(up * missileSpeed);
 }
 
 vector<tuple<WorldEntity*, WorldEntity*>> AsteroidsGame::GetCollisionPairs()
@@ -381,30 +388,34 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 	if (ship.IsExploding)
 		return;
 
+	
 	//if (ship.IsRespawning && CanRespawn())
 	//	Respawn();
 	//
 	auto shipBounds = ship.Bounds;
 
-	shipBounds = ship.Transform->TransformSphere(shipBounds);
+	shipBounds = ship.Transform.TransformSphere(shipBounds);
 
 	for (Asteroid* asteroid : m_asteroids)
 	{
 		auto asteroidBounds = asteroid->Bounds;
-		asteroidBounds = asteroid->Transform->TransformSphere(asteroidBounds);
+		asteroidBounds = asteroid->Transform.TransformSphere(asteroidBounds);
 
 		if (asteroidBounds.Intersects(shipBounds))
 		{
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
 			
-			ship.Transform->Stop();
-			ship.Transform->Bounce(dir * 0.1f);// *0.1f);
+			//ship.Transform.Stop();
+			//ship.Transform.Bounce(dir * 0.5f);// *0.1f);
 			ship.Explode(time, 3.f);
-			m_scoreboard->Kill();
+			//m_scoreboard->Kill();
 		}
 
 
 	}
+
+
+
 
 }
 
@@ -420,7 +431,7 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 			continue;
 
 		auto& entity = *entityPtr;
-		auto& worldView = entity.Transform->GetMatrix() * viewMatrix;
+		auto& worldView = entity.Transform.GetMatrix() * viewMatrix;
 
 		Vector3 center(0);
 		Vector3 bound(0.5f, 0, 0);
@@ -436,7 +447,7 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 		{
 			if (FrustumAction::Wrap == entityPtr->OnExitFrustum)
 			{
-				Vector3 newPosition = entity.Transform->Translation;
+				Vector3 newPosition = entity.Transform.Translation;
 
 				if (containment.X < 1)
 					newPosition.X *= -0.99f;
@@ -444,7 +455,7 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 				if (containment.Y < 1)
 					newPosition.Y *= -0.99f;
 
-				entity.Transform->Move(newPosition);
+				entity.Transform.Move(newPosition);
 			}
 			else if (FrustumAction::Recycle == entityPtr->OnExitFrustum)
 			{

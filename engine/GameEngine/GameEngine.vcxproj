@@ -88,8 +88,9 @@
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AsteroidsGame.cpp" />
-    <ClCompile Include="AxisHelper.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="Explodable.cpp" />
     <ClCompile Include="Files.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEnvironment.cpp" />
@@ -103,7 +104,6 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -115,7 +115,6 @@
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="UniformCollection.cpp" />
     <ClCompile Include="Ship.cpp" />
-    <ClCompile Include="SimpleGame.cpp" />
     <ClCompile Include="ThirdParty\src\gl_core_4_3.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vectors.cpp" />
@@ -124,12 +123,13 @@
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="AsteroidsGame.h" />
-    <ClInclude Include="AxisHelper.h" />
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="Explodable.h" />
     <ClInclude Include="GameEnvironment.h" />
     <ClInclude Include="Files.h" />
     <ClInclude Include="Game.h" />
@@ -142,7 +142,6 @@
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Mesh.h" />
@@ -154,7 +153,6 @@
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="UniformCollection.h" />
     <ClInclude Include="Ship.h" />
-    <ClInclude Include="SimpleGame.h" />
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h" />
     <ClInclude Include="ThirdParty\include\gl_core_4_3.hpp" />
     <ClInclude Include="Transform.h" />
@@ -166,6 +164,9 @@
     <None Include="Shaders\asteroid.frag.glsl" />
     <None Include="Shaders\asteroid.geom.glsl" />
     <None Include="Shaders\asteroid.vert.glsl" />
+    <None Include="Shaders\demo.frag.glsl" />
+    <None Include="Shaders\demo.geom.glsl" />
+    <None Include="Shaders\demo.vert.glsl" />
     <None Include="Shaders\edgeDetection.frag.glsl" />
     <None Include="Shaders\edgeDetection.vert.glsl" />
     <None Include="Shaders\lit.frag.glsl" />
@@ -183,6 +184,9 @@
     <None Include="Shaders\simple.vert.glsl" />
     <None Include="Shaders\simpleLight.frag.glsl" />
     <None Include="Shaders\simpleLight.vert.glsl" />
+    <None Include="Shaders\tessellation.frag.glsl" />
+    <None Include="Shaders\tessellation.geom.glsl" />
+    <None Include="Shaders\tessellation.vert.glsl" />
     <None Include="Shaders\text.frag.glsl" />
     <None Include="Shaders\text.geom.glsl" />
     <None Include="Shaders\text.vert.glsl" />

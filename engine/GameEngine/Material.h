@@ -11,6 +11,7 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 #include "Common.h"
 #include "GameObject.h"
@@ -26,56 +27,46 @@ class Material : public GameObject
 {
 public:
 	PolygonMode FillType = PolygonMode::Fill;
+	bool IsInScreenSpace;
+	Shader& Shader;
+
+	Material(const std::string& name) : GameObject(name), Shader(Create<class Shader>(name + ".shader"))
+	{
+
+	}
+
+	Material() : Material("material")
+	{
+
+	}
 
 	bool Build(const std::string& path);
 
 	GLuint Program() const
 	{
-		return m_shader->Handle;
+		return Shader.Handle;
 	}
-
-	bool IsInScreenSpace;
-
-	bool OnInitialize() override;
-
-	virtual void SetUniforms(const GameTime& time);
 
 	void Bind()
 	{
-		m_shader->Bind();
+		Shader.Bind();
 	}
 
 	void Unbind()
 	{
-		m_shader->Unbind();
-	}
-
-	template<typename T>
-	void SetUniform(const std::string& name, const T& value)
-	{
-		m_uniforms.SetUniform(name, value);
-	}
-
-	GLint GetUniformLocation(const std::string& name) const
-	{
-		return m_shader->GetUniformLocation(name);
+		Shader.Unbind();
 	}
 
 	GLint GetAttribLocation(const std::string& name) const
 	{
-		return m_shader->GetAttribLocation(name);
+		return Shader.GetAttribLocation(name);
 	}
 
 private:
-	Shader* m_shader = nullptr;
-	UniformCollection m_uniforms;
-
 	void Preprocess(std::string& source);
 
 	// programs that have already been built, by name.
-	static std::map<std::string, Shader*> m_programs;
-
-
+	static std::map<std::string, class Shader*> m_programs;
 };
 
 #endif /* Material_hpp */

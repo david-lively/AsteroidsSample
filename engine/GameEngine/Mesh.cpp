@@ -37,21 +37,12 @@ void Mesh::OnRender(const GameTime& time)
     Material->Bind();
 	check_gl_error();
 
-	Material->SetUniforms(time);
-	check_gl_error();
-
 	auto& env = Game::Instance().Environment();
 
-	Material->SetUniform("ForceWireframe", env.ForceWireframe);
 	if (env.ForceWireframe)
-	{
 		gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)PolygonMode::Line);
-	}
 	else
-	{
 		gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
-	}
-
 
 	gl::Enable(gl::DEPTH_TEST);
 
@@ -61,7 +52,7 @@ void Mesh::OnRender(const GameTime& time)
 		gl::Disable(gl::CULL_FACE);
 
     gl::FrontFace(gl::CW);
-
+	
 	check_gl_error();
 
     if (m_indexBuffer > 0)

@@ -20,8 +20,8 @@ Matrix Camera::GetProjectionMatrix()
 
 void Camera::OnPreUpdate(const GameTime& time)
 {
-	auto t = Transform->Translation * -1.f;
-	auto r = Transform->Rotation * -1.f;
+	auto t = Transform.Translation * -1.f;
+	auto r = Transform.Rotation * -1.f;
 
 	m_viewMatrix = Matrix::CreateRotation(r) * Matrix::CreateTranslation(t);
 }
@@ -88,45 +88,40 @@ bool Camera::ContainsSphere(const Vector3& center, const float radius, Vector3& 
 
 bool Camera::ContainsSphere(const Vector3& center, const float radius)
 {
-	float dt = center.Dot(Top);
-	float dr = center.Dot(Right);
-	float db = center.Dot(Bottom);
-	float dl = center.Dot(Left);
-
+	float dt = -center.Dot(Top);
+	float dr = -center.Dot(Right);
+	float db = -center.Dot(Bottom);
+	float dl = -center.Dot(Left);
+			   
 	float dn = center.Z - ZNear;
 	float df = ZFar - center.Z;
 
 	float scale = 0.2f;
+	
 	dl *= scale;
 	dr *= scale;
 	dt *= scale;
 	db *= scale;
 
 	float r = radius;
-	bool contains = dl > -r && dr > -r && dt > -r && db > -r;
+
+
+	bool contains = dl < r && dr < r && dt < r && db < r;
 
 	return contains;
 
 }
 
-//bool Camera::ContainsSphere(const Vector3& center, float radius)
-//{
-//	Vector4 containsBounds;
-//
-//	return ContainsSphere(center, radius, containsBounds);
-//}
-
 bool Camera::ContainsPoint(const Vector3& point)
 {
-	float dl = Left.Dot(point);
-	float dr = Right.Dot(point);
-	float dt = Top.Dot(point);
-	float db = Bottom.Dot(point);
+	float dl = -Left.Dot(point);
+	float dr = -Right.Dot(point);
+	float dt = -Top.Dot(point);
+	float db = -Bottom.Dot(point);
 
-	auto contains = (dl > 0 && dr > 0 && db > 0 && dt > 0);
+	auto contains = (dl < 0 && dr < 0 && db < 0 && dt < 0);
 
 	Log::Info << "Contains " << contains << " l " << (dl > 0) << " r " << (dr > 0) << " t " << (dt > 0) << " b " << (db > 0) << endl;
-
 
 	return contains;
 }

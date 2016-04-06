@@ -10,7 +10,8 @@
 #include "Log.h"
 #include "Light.h"
 #include "Matrix.h"
-
+#include "Material.h"
+#include "Drawable.h"
 
 class GameEnvironment : public GameObject
 {
@@ -44,7 +45,7 @@ public:
 		m_lights[light.Id] = &light;
 	}
 	
-	void Apply(Material& material, const GameTime& time);
+	void Apply(Drawable& material, const GameTime& time);
 	
 	Light& CreateLight()
 	{
@@ -62,8 +63,8 @@ private:
 	std::stack<Matrix> m_matrixStack;
 	std::vector<float> m_noiseValues;
 
-	void ApplyLights(Material& material, const GameTime& time);
-	void ApplyGlobals(Material& material, const GameTime& time);
+	void ApplyLights (Drawable& drawable, const GameTime& time);
+	void ApplyGlobals(Drawable& drawable, const GameTime& time);
 	void GenerateNoiseValues(std::vector<float>& arr, int count);
 
 };

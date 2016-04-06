@@ -18,7 +18,6 @@ struct LightUniform
 	float Intensity;
 };
 
-
 class Light : public WorldEntity
 {
 public:
@@ -42,10 +41,7 @@ public:
 
 	bool OnInitialize();
 
-	void OnRender(const GameTime& time) override;
-
-private:
-	class Material* m_material = nullptr;
+	//void OnRender(const GameTime& time) override;
 };
 
 

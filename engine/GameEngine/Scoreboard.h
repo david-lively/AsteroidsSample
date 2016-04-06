@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <queue>
+#include <iostream>
 
 #include "WorldEntity.h"
 #include "Ship.h"
@@ -10,19 +11,29 @@
 class Scoreboard : public WorldEntity
 {
 public:
-	int Score;
-	int LivesRemaining;
-	int AsteroidsRemaining;
+	int Score = 0;
+	int LivesRemaining = 3;
+	int AsteroidsRemaining = 4;
 
 	bool OnInitialize() override;
-	bool OnPostInitialize() override;
 
 	int Kill();
 
-	void OnPreUpdate(const GameTime& time) override;
+	Scoreboard(const std::string& name) : WorldEntity(name)
+	{
 
-	Scoreboard();
-	~Scoreboard();
+	}
+
+	Scoreboard() : Scoreboard("scoreBoard")
+	{
+
+	}
+
+	void OnRender(const GameTime& time) override
+	{
+		Log::Info << "Rendering Scoreboard" << std::endl;
+		WorldEntity::OnRender(time);
+	}
 
 private:
 

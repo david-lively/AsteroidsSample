@@ -1,9 +1,6 @@
-#include "Light.h"
 #include "Common.h"
+#include "Light.h"
 #include "Vectors.h"
-#include "Matrix.h"
-#include "Material.h"
-#include "Mesh.h"
 #include "GeometryProvider.h"
 
 #include <vector>
@@ -14,35 +11,30 @@ using namespace std;
 
 bool Light::OnInitialize()
 {
-	auto& material = Create<class Material>("ship-material");
-	m_material = &material;
+	//Material.FillType = PolygonMode::Line;
 
-	material.FillType = PolygonMode::Line;
+	//vector<Vector3> vertices;
+	//vector<GLushort> indices;
 
-	auto& mesh = Create<Mesh>("light-mesh");
+	//GeometryProvider::Circle(vertices, indices, Vector3(0), 0.6f, 12);
 
-	vector<Vector3> vertices;
-	vector<GLushort> indices;
+	//Bounds = BoundingSphere::FromVectors(vertices);
 
-	GeometryProvider::Circle(vertices, indices, Vector3(0), 0.6f, 12);
+	//Material.Build("Shaders/primitive");
 
-	Bounds = BoundingSphere::FromVectors(vertices);
+	//Mesh.Material = &Material;
+	//Mesh.Initialize(vertices, indices);
+	//Mesh.Type = BeginMode::Lines;
+	//
 
-	material.Build("Shaders/primitive");
-
-	mesh.Material = &material;
-
-	mesh.Initialize(vertices, indices);
-	mesh.Type = BeginMode::Lines;
-	
 	return true;
 }
 
-
-void Light::OnRender(const GameTime& time)
-{
-	m_material->SetUniform("Color", this->Color);
-	WorldEntity::OnRender(time);
-}
-
-
+//
+//void Light::OnRender(const GameTime& time)
+//{
+//	//Uniforms.SetUniform("Color", this->Color);
+//	//WorldEntity::OnRender(time);
+//}
+//
+//

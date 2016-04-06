@@ -31,7 +31,7 @@ public:
 
 	}
 
-	Material* Material;
+	Material* Material = nullptr;
 
 	BeginMode Type = BeginMode::Triangles;
 	bool CullBackfaces = true;
@@ -63,6 +63,12 @@ public:
 
 		/// get the attribute location of Position (vertex) from the compiled shader
 		auto location = Material->GetAttribLocation("Position");
+		
+		if (location < 0)
+		{
+			Log::Error << "Attribute \"Position\" not found! Cannot render.";
+			throw;
+		}
 		/// enable position - really useful when we have a lot of vertex attributes and want to disable some of them
 		gl::EnableVertexAttribArray(location);
 

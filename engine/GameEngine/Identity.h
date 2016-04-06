@@ -7,15 +7,14 @@ class Identity
 {
 public:
 
-	Identity(const std::string& name) : Identity()
-	{
-		Name = name + "." + std::to_string(Id);
-	}
-
-	Identity()
+	Identity(const std::string& name)
 	{
 		Id = ++m_nextId;
-		Name = "object." + std::to_string(Id);
+		Name = name + std::to_string(Id);
+	}
+
+	Identity() : Identity("identity")
+	{
 	}
 
 	~Identity()
