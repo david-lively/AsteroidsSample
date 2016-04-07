@@ -44,6 +44,19 @@ vec2 rotate(vec2 p, float theta)
 	return result;
 }
 
+vec4 rotateZ(vec4 p, float theta)
+{
+	vec4 result = p;
+
+	float x1 = p.x * cos(theta) - p.y * sin(theta);
+	float y1 = p.x * sin(theta) + p.y * cos(theta);
+
+	result.x = x1;
+	result.y = y1;
+
+	return result;
+}
+
 
 void main()
 {
@@ -67,7 +80,7 @@ void main()
 		
 		float noise = NoiseValues[noiseIndex];
 
-		p.xy = rotate(p.xy, (GameTimeTotalSeconds + noise * 100) * 3.14159/180 * ExplosionFactor * ExplosionSpeed);
+		p.xy = rotate(p.xy, (GameTimeTotalSeconds + noise * 5) * 3.14159/180 * ExplosionFactor * ExplosionSpeed);
 
 		p.xyz += center;
 

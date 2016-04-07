@@ -30,7 +30,7 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
-	//m_scoreboard = &Create<Scoreboard>("scoreboard");
+	m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_grid->Enabled = false;
 

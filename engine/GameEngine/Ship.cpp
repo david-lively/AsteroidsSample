@@ -25,7 +25,7 @@ using namespace std;
 bool Ship::OnInitialize()
 {
 	Transform.TranslationDrag = 0.01f;
-	Transform.RotationDrag = 0.25f;
+	Transform.RotationDrag = 0.125f;
 	ConfigureInput();
 	CreateShipMesh();
 

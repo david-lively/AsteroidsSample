@@ -35,7 +35,6 @@ public:
 
 	void OnRender(const GameTime& time) override
 	{
-		Log::Info << "Rendering ship " << Name << std::endl;
 		Explodable::OnRender(time);
 	}
 

@@ -35,7 +35,7 @@ void InputHandler::OnPostUpdate(const GameTime& time)
             
             for(auto func = begin(funcs); func != end(funcs); ++func)
             {
-                (*func)(*this,time);
+                (*func)(time);
             }
             
         }
@@ -43,24 +43,22 @@ void InputHandler::OnPostUpdate(const GameTime& time)
     }
 
 	GameObject::OnPostUpdate(time);
-    
-    
 }
 
 
 void InputHandler::UpdateKeyStates()
 {
-    for(auto it = begin(m_keyStates); it != end(m_keyStates); ++it)
-    {
-    }
+    //for(auto it = begin(m_keyStates); it != end(m_keyStates); ++it)
+    //{
+    //}
 }
 
-void InputHandler::Subscribe(int keyCode, KeyHandler handler)
+void InputHandler::Subscribe(int keyCode, KeyHandler handler, int action, int modifiers)
 {
-    auto state = glfwGetKey(Game::Instance().Window(), keyCode);
-    
-    m_keyHandlers[keyCode].push_back(handler);
+	//InputSystem::Subscribe(keyCode, modifiers, action, handler);
 }
+
+
 
 
 

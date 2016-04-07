@@ -6,7 +6,7 @@
 //
 
 #include "Game.h"
-
+#include "InputHandler.h"
 #include <iostream>
 
 
@@ -20,6 +20,12 @@ void framebufferSizeChanged(GLFWwindow* window, int width, int height)
 	gl::Viewport(0, 0, width, height);
 	Game::Instance().WindowResize(width, height);
 }
+
+void errorCallback(int code, const char* message)
+{
+	Log::Error << "GLFW Error: (" << code << ") \"" << message << "\"" << endl;
+}
+
 
 
 Game::Game() :
@@ -88,6 +94,7 @@ bool Game::OnInitialize()
 
 
 	glfwSetFramebufferSizeCallback(m_window, framebufferSizeChanged);
+	glfwSetErrorCallback(errorCallback);
 
 	int w, h;
 

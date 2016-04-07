@@ -11,20 +11,16 @@
 
 #include "Explodable.h"
 #include "Mesh.h"
-#include "InputHandler.h"
 
 class Asteroid : public Explodable
 {
 public:
-	InputHandler& Input;
-
 	Asteroid() : Asteroid("asteroid")
     {
         
     }
 
 	Asteroid(const std::string& name) : Explodable(name)
-		, Input(Create<InputHandler>("asteroid.input"))
 	{
 
 	}

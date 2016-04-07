@@ -31,7 +31,6 @@ public:
 
 	void OnRender(const GameTime& time) override
 	{
-		Log::Info << "Rendering Scoreboard" << std::endl;
 		WorldEntity::OnRender(time);
 	}
 

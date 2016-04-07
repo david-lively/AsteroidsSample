@@ -11,24 +11,17 @@
 
 #include "Common.h"
 #include "GameObject.h"
+#include "InputSystem.h"
 
 #include <map>
 #include <vector>
 #include <functional>
 
 /// shortcut for declaring input handlers
-#define DECL_KEYHANDLER [=](const GameObject& sender, const GameTime& time)
+//#define DECL_KEYHANDLER [=](const GameObject& sender, const GameTime& time)
+#define DECL_KEYHANDLER [=](const GameTime& time)
 
-typedef std::function<void(const GameObject&, const GameTime&)> KeyHandler;
 
-
-enum class KeyState
-{
-    Non
-    ,Press
-    ,Hold
-    ,Release    
-};
 
 
 class InputHandler : public GameObject
@@ -45,14 +38,10 @@ public:
 
 
     void OnPostUpdate(const GameTime& time) override;
-    void Subscribe(int keyCode, KeyHandler handler);
+	void Subscribe(int key, KeyHandler handler, int action = GLFW_REPEAT, int modifiers = 0);
     
 private:
-
-
     std::map<int, std::vector<KeyHandler>> m_keyHandlers;
-    /// previous key states from GLFW 
-    std::map<int,KeyState>  m_keyStates;
     
     void UpdateKeyStates();
 };

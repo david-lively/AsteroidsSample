@@ -71,7 +71,7 @@ void main()
 	
 	vec3 explodeDirection = normal;
 
-	int noiseIndex = (gl_PrimitiveID * 3) % NoiseArrayLength;
+	int noiseIndex = (gl_PrimitiveID * 3 * 100) % NoiseArrayLength;
 
 
 
