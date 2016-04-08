@@ -6,6 +6,7 @@
 uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;
+uniform float Broken;
 
 /// uniforms - same value for all vertices
 uniform float GameTimeTotalSeconds;
@@ -18,8 +19,13 @@ out vec4 ObjectPosition;
 
 void main()
 {
-	ObjectPosition = vec4(Position, 1);
 	Color = ObjectPosition;
+	
+	ObjectPosition = vec4(Position, 1);
+
+	if (Broken > 0 && ObjectPosition.x > 0)
+		ObjectPosition.x = 0;
+
 
 	gl_Position = ObjectPosition;
 }

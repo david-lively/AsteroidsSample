@@ -67,8 +67,6 @@ private:
     static class Camera* m_camera;
 	GameEnvironment *m_environment = nullptr;;
     
-    bool m_isInitialized;
-
     void Shutdown();
     
 };

@@ -46,7 +46,7 @@ bool Asteroid::OnInitialize()
 		GeometryProvider::Tessellate(vertices, indices, 4);
 		GeometryProvider::Spherize(vertices);
 	}
-	
+
 
 	GeometryProvider::Noisify(vertices, 4, 0.3f);
 	GeometryProvider::FitToUnitCube(vertices);
@@ -76,19 +76,15 @@ bool Asteroid::OnInitialize()
 	}
 	);
 
+	Input.Subscribe(GLFW_KEY_B,
+		DECL_KEYHANDLER
+	{
+		Broken = !Broken;
+	}
+	);
 
 	return Explodable::OnInitialize();
 }
-
-void Asteroid::OnPreRender(const GameTime& time)
-{
-	Uniforms.SetUniform("ColorByDepth", 1.f);
-	Uniforms.SetUniform("ExplosionFactor", ExplosionFactor);
-	Uniforms.SetUniform("IsExploding", true);
-
-	Explodable::OnPreRender(time);
-}
-
 
 void Asteroid::OnUpdate(const GameTime& time)
 {
@@ -114,6 +110,8 @@ void Asteroid::OnRender(const GameTime& time)
 
 	Vector4 orange(1, 165.f / 255.f, 0, 0.125f);
 
+	Uniforms.SetUniform("ColorByDepth", 1.f);
+	Uniforms.SetUniform("Broken", Broken);
 	Uniforms.SetUniform("EmissiveColorIntensity", orange);
 
 

@@ -40,6 +40,13 @@ public:
 
 	}
 
+	Material(Material& toCopy) :
+		FillType(toCopy.FillType)
+		, IsInScreenSpace(toCopy.IsInScreenSpace)
+		, Shader(toCopy.Shader)
+	{
+	}
+
 	bool Build(const std::string& path);
 
 	GLuint Program() const

@@ -16,16 +16,6 @@
 using namespace std;
 
 
-bool Mesh::OnInitialize()
-{
-    Log::Info << "Mesh::OnInitialize\n";
-    
-    /// initialize assets for OpenGL
-    
-    return true;
-}
-
-
 void Mesh::OnRender(const GameTime& time)
 {
     check_gl_error();

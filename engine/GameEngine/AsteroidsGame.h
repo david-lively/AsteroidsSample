@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <queue>
+#include <set>
 
 #include "Game.h"
 #include "Ship.h"
@@ -42,7 +43,7 @@ public:
     Grid& CreateGrid();
 	void CreateLights(std::vector<Light*>& lights);
 
-	void CreateAsteroids(const int count, const int total, std::vector<WorldEntity*>& entities);
+	void CreateAsteroids(const int count, const int total);
 	void DoCollisionCheck(const GameTime& time);
 	void DoWrapping(const GameTime& time);
 
@@ -57,7 +58,8 @@ private:
 	Scoreboard* m_scoreboard = nullptr;
 	
 
-	std::queue<Drawable*> m_activeMissiles;
+	std::vector<Drawable*> m_allMissiles;
+
 	std::queue<Drawable*> m_inactiveMissiles;
 
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
@@ -67,8 +69,13 @@ private:
 	std::vector<Asteroid*> m_asteroids;
 
 	void Fire(Ship& ship);
-	Drawable& GetAMissile();
 
+	void DisableMissile(Drawable& missile);
+	void UpdateStatus();
+
+	Drawable& GetAMissile(bool forceCreateNew = false);
+	Asteroid& CreateAsteroid();
+	void ExpandMissilePool(const int count);
 };
 
 

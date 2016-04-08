@@ -6,12 +6,13 @@
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
+#include <vector>
+#include <map>
+
 #include "InputHandler.h"
 #include "Common.h"
 #include "Game.h"
 
-#include <vector>
-#include <map>
 
 using namespace std;
 
@@ -53,9 +54,9 @@ void InputHandler::UpdateKeyStates()
     //}
 }
 
-void InputHandler::Subscribe(int keyCode, KeyHandler handler, int action, int modifiers)
+void InputHandler::Subscribe(int keyCode, KeyHandler handler)
 {
-	//InputSystem::Subscribe(keyCode, modifiers, action, handler);
+	m_keyHandlers[keyCode].push_back(handler);
 }
 
 

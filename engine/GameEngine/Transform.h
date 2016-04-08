@@ -31,7 +31,7 @@ public:
 		Scale = Vector3::One;
     }
 
-	Transform(const std::string& name) : GameObject(name)
+	Transform(const std::string& name) : GameObject(name), Scale(Vector3::One)
 	{
 
 	}
@@ -40,7 +40,10 @@ public:
 	{
 		Translation = other.Translation;
 		Rotation = other.Translation;
+		Scale = other.Scale;
 
+		TranslationDrag = other.TranslationDrag;
+		RotationDrag = other.RotationDrag;
 
 		m_previousTranslation = Translation;
 		m_previousRotation = Rotation;
@@ -48,8 +51,6 @@ public:
 		return *this;
 	}
     
-	//Matrix GetCombinedMatrix();
-
 	Matrix GetMatrix();
     
     /// transformed Z axis

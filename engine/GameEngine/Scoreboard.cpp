@@ -5,16 +5,16 @@ using namespace std;
 
 bool Scoreboard::OnInitialize()
 {
-	//Transform.Move(13, 10, 0);
+	Transform.Move(13, 10, 0);
 
 	for (int i = 0; i < 3; ++i)
 	{
-		Ship* ship = &Create<Ship>("lifeIndicator." + to_string(i));
+		auto& ship = Create<Ship>("lifeIndicator." + to_string(i));
 
-		//ship.Transform.Move(i, 0, 0);
-		ship->ScoreboardIndicator = true;
+		ship.Transform.Move(i, 0, 0);
+		ship.ScoreboardIndicator = true;
 		
-		m_activeShips.push(ship);
+		m_activeShips.push(&ship);
 	}
 
 	return WorldEntity::OnInitialize();

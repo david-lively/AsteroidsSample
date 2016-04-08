@@ -36,8 +36,6 @@ public:
 	BeginMode Type = BeginMode::Triangles;
 	bool CullBackfaces = true;
 
-	bool OnInitialize() override;
-
 	/// initialize a non-indexed mesh (no index buffer, vertex buffer only)
 	template<typename TVertexCollection>
 	void Initialize(const TVertexCollection& vertices)

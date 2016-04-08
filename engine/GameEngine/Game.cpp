@@ -30,7 +30,6 @@ void errorCallback(int code, const char* message)
 
 Game::Game() :
 m_window(nullptr)
-, m_isInitialized(false)
 , ClearColor(0, 0, 0, 1)
 {
 	if (nullptr != m_instance)
@@ -47,12 +46,6 @@ m_window(nullptr)
 
 bool Game::OnInitialize()
 {
-	if (m_isInitialized)
-	{
-		Log::Warning << "Game is already initialized.";
-		return false;
-	}
-
 	/* Initialize the library */
 	if (!glfwInit())
 	{
@@ -113,9 +106,7 @@ bool Game::OnInitialize()
 	gl::ClearColor(ClearColor.X, ClearColor.Y, ClearColor.Z, ClearColor.W);
 
 
-	m_isInitialized = true;
-
-	return m_isInitialized;
+	return true;
 }
 
 bool Game::Run()

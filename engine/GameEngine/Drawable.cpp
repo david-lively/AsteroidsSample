@@ -6,10 +6,12 @@ void Drawable::OnRender(const GameTime& time)
 {
 	Material.Bind();
 
-	//Uniforms.SetUniform("World", Transform.GetMatrix());
-	Uniforms.Apply(time);
 	
 	Game::Instance().Environment().Apply(*this, time);
+
+	//Uniforms.SetUniform("World", Transform.GetMatrix());
+	Uniforms.Apply(time);
+
 
 	WorldEntity::OnRender(time);
 }

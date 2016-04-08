@@ -11,7 +11,6 @@
 
 #include "Common.h"
 #include "GameObject.h"
-#include "InputSystem.h"
 
 #include <map>
 #include <vector>
@@ -20,6 +19,7 @@
 /// shortcut for declaring input handlers
 //#define DECL_KEYHANDLER [=](const GameObject& sender, const GameTime& time)
 #define DECL_KEYHANDLER [=](const GameTime& time)
+typedef std::function<void(const GameTime&)> KeyHandler;
 
 
 
@@ -38,7 +38,7 @@ public:
 
 
     void OnPostUpdate(const GameTime& time) override;
-	void Subscribe(int key, KeyHandler handler, int action = GLFW_REPEAT, int modifiers = 0);
+	void Subscribe(int key, KeyHandler handler);
     
 private:
     std::map<int, std::vector<KeyHandler>> m_keyHandlers;

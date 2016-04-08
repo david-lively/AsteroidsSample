@@ -107,6 +107,8 @@ public:
 		std::shared_ptr<T> objectPtr = std::make_shared<T>(name);
 
 		m_newObjects.push_back(objectPtr);
+		
+		objectPtr->Parent = this;
 
 		return *objectPtr;
     }
@@ -114,8 +116,15 @@ public:
 	template<typename T>
 	T& Add(std::shared_ptr<T> ptr)
 	{
+		ptr->Parent = this;
 		m_children.push_back(ptr);
 	}
+
+	bool IsInitialized() const
+	{
+		return m_isInitialized;
+	}
+
     
 private:
 	bool m_isInitialized = false;

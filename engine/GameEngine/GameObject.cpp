@@ -116,15 +116,13 @@ void GameObject::DoRender(const GameTime& time)
 
 
 	auto& env = Game::Instance().Environment();
-	WorldEntity* we = dynamic_cast<WorldEntity*>(this);
+	auto* we = dynamic_cast<WorldEntity*>(this);
 
 	if (nullptr != we)
 	{
 		env.PushMatrix(we->Transform.GetMatrix());
-		//Log::Debug << "Push matrix " << we->Name << " depth " << env.MatrixStackSize() << endl;
 	}
 
-	//Log::Debug << "Render " << Name << endl;
 	OnRender(time);
 
 	for (auto it = begin(m_children); it != end(m_children); ++it)
@@ -186,6 +184,12 @@ std::map<GameObject*, int> initCount;
 
 bool GameObject::Initialize()
 {
+	if (m_isInitialized)
+	{
+		Log::Warning << "Game is already initialized.";
+		return true;
+	}
+
 	Log::Info << "Initialize " << Name << endl;
 
 	if (initCount[this]++ > 0)

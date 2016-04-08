@@ -6,6 +6,7 @@ layout(triangle_strip, max_vertices = 3) out;
 uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;
+
 uniform float GameTimeTotalSeconds = 0.f;
 uniform float ExplosionSpeed = 10.f;
 

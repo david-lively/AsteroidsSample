@@ -86,15 +86,12 @@ void main() {
 
 	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
 	
-	//if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
-	//	discard;
-	//else
-	//	color = vec3(1);
-
+	if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
+		color = vec3(0.2f);
 
 	if (ColorByDepth > 0.5f)
 	{
-		float c = 3 * (length(gOut.ObjectPosition)  - 1);
+		float c = 4 * (length(gOut.ObjectPosition)  - 1);
 		color = vec3(c);
 	}
 

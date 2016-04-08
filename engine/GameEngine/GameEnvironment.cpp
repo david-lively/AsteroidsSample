@@ -123,6 +123,7 @@ void GameEnvironment::ApplyGlobals(Drawable& drawable, const GameTime& time)
 	uniforms.SetUniform("NoiseArrayLength", (int)m_noiseValues.size());
 	uniforms.SetUniform("GameTimeTotalSeconds", Game::Instance().Time.TotalSeconds());
 	uniforms.SetUniform("ForceWireframe", ForceWireframe);
+	uniforms.SetUniform("World", m_matrixStack.top());
 }
 
 void GameEnvironment::GenerateNoiseValues(std::vector<float>& arr, int count)
