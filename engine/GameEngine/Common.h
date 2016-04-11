@@ -56,7 +56,6 @@ typedef unsigned int ID;
 //	return (a & b) == b;
 //}
 
-typedef std::function<void(GameTime&)> GameTimeEvent;
 
 typedef std::function<void()> NotifyEvent;
 

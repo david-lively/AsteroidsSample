@@ -117,6 +117,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="ThirdParty\soil\etc1_utils.cpp" />
     <ClCompile Include="ThirdParty\soil\image_DXT.cpp" />
     <ClCompile Include="ThirdParty\soil\image_helper.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="ThirdParty\soil\etc1_utils.h" />
     <ClInclude Include="ThirdParty\soil\image_DXT.h" />
     <ClInclude Include="ThirdParty\soil\image_helper.h" />

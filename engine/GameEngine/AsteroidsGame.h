@@ -22,8 +22,7 @@
 #include "Missile.h"
 #include "Scoreboard.h"
 #include "Sprite.h"
-
-#include "GameState.h"
+#include "StateMachine.h"
 
 class AsteroidsGame : public Game
 {
@@ -55,10 +54,9 @@ public:
 
 
 private:
-	std::vector<std::shared_ptr<GameState>> m_states;
-	GameState* m_currentState = nullptr;
+	StateMachine* m_stateMachine;
 
-	Sprite* m_title = nullptr;
+
     Grid* m_grid = nullptr;
     Ship* m_ship = nullptr;
 	Scoreboard* m_scoreboard = nullptr;
@@ -84,9 +82,6 @@ private:
 	Asteroid& GetAsteroid(bool forceCreateNew = false);
 
 	void ExpandMissilePool(const int count);
-
-	Sprite& CreateTitleScreen();
-
 };
 
 

@@ -47,7 +47,7 @@ public:
 	void Break(const GameTime& time, const Vector3& impactPoint, bool pushBackward = false);
 	virtual void Reset();
 
-	GameEvent OnExploded;
+	GameTimeEvent OnExploded;
 
 private:
 

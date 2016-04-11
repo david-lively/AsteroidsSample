@@ -20,7 +20,8 @@
 
 class GameObject;
 
-typedef std::function<void(const GameTime&, GameObject&)> GameEvent;
+typedef std::function<void()> GameEvent;
+typedef std::function<void(const GameTime&, GameObject&)> GameTimeEvent;
 
 class GameObject : public Identity
 {
@@ -130,7 +131,7 @@ public:
 	}
 
 protected:
-	void Dispatch(const GameTime& time, const std::vector<GameEvent>& events)
+	void Dispatch(const GameTime& time, const std::vector<GameTimeEvent>& events)
 	{
 		for (auto event : events)
 			event(time, *this);

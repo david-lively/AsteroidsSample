@@ -30,6 +30,8 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
+	m_stateMachine = &Create<StateMachine>("asteroids.statemachine");
+
 	m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_grid->Enabled = false;
@@ -46,8 +48,6 @@ bool AsteroidsGame::OnCreateScene()
 
 	auto& camera = Camera();
 	auto& input = Create<InputHandler>("asteroids-input");
-
-	m_title = &CreateTitleScreen();
 
 	input.Subscribe(GLFW_KEY_ESCAPE,
 		DECL_KEYHANDLER
@@ -591,15 +591,6 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 
 	}
 
-}
-
-Sprite& AsteroidsGame::CreateTitleScreen()
-{
-	auto& title = Create<Sprite>("splash.screen");
-
-	title.Load("Textures/AsteroidsTitle.png");
-
-	return title;
 }
 
 

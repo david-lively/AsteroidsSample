@@ -150,6 +150,9 @@
     <ClCompile Include="ThirdParty\soil\stb_image_write.cpp">
       <Filter>ThirdParty\SOIL</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\soil\stbi_pvr_c.h">
       <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
