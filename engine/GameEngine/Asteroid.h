@@ -13,11 +13,22 @@
 #include "Mesh.h"
 #include "InputHandler.h"
 
+
+enum class AsteroidMaterial
+{
+	Rock
+	,Confetti
+};
+
 class Asteroid : public Explodable
 {
 public:
+	/* What the asteroid is made of - for different explosion effects, mass etc.*/
+	AsteroidMaterial MadeOf;
+
+	int Level() { return BreakPlanes.size(); }
+
 	InputHandler& Input;
-	bool Broken = false;
 
 	Asteroid() : Asteroid("asteroid")
     {
@@ -30,13 +41,13 @@ public:
 	}
 
 
-	bool TwoD = true;
+	bool TwoD = false;
     
     bool OnInitialize() override;
     
 	void OnRender(const GameTime& time) override;
     void OnUpdate(const GameTime& time) override;
-    
+
 };
 
 

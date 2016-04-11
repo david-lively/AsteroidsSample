@@ -129,39 +129,21 @@ void Ship::ConfigureInput()
 
 void Ship::OnPreUpdate(const  GameTime& time)
 {
+	Explodable::OnPreUpdate(time);
+
 	bool wasExploding = IsExploding;
-
-	if (IsExploding)
-	{
-		ExplosionTime += time.ElapsedSeconds();
-
-		if (ExplosionTime >= ExplosionDuration)
-		{
-			ExplosionTime = 0.f;
-			IsExploding = false;
-			ExplosionFactor = 0.f;
-		}
-		else
-		{
-			ExplosionFactor = ExplosionTime / ExplosionDuration;
-		}
-
-	}
-	else
-		ExplosionTime = 0.f;
 
 	TimeUntilCanFire = max(TimeUntilCanFire - time.ElapsedSeconds(), 0);;
 
-	if (IsExploding)
-		EnableInput(false);
-	else if (wasExploding && !IsExploding)
-	{
-		Transform.Reset();
-		EnableInput(true);
-		IsRespawning = true;
-	}
+	//if (IsExploding)
+	//	EnableInput(false);
+	//else if (wasExploding && !IsExploding)
+	//{
+	//	Transform.Reset();
+	//	EnableInput(true);
+	//	IsRespawning = true;
+	//}
 
-	WorldEntity::OnPreUpdate(time);
 }
 
 bool Ship::CanFire()

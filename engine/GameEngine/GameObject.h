@@ -18,6 +18,10 @@
 #include "Identity.h"
 //#include "Component.h"
 
+class GameObject;
+
+typedef std::function<void(const GameTime&, GameObject&)> GameEvent;
+
 class GameObject : public Identity
 {
 public:
@@ -123,6 +127,19 @@ public:
 	bool IsInitialized() const
 	{
 		return m_isInitialized;
+	}
+
+protected:
+	void Dispatch(const GameTime& time, const std::vector<GameEvent>& events)
+	{
+		for (auto event : events)
+			event(time, *this);
+
+	}
+
+	void Dispatch(const GameTime& time)
+	{
+
 	}
 
     

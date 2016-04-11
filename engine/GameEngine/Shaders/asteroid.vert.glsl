@@ -17,15 +17,31 @@ in vec3 Position;
 out vec4 Color;
 out vec4 ObjectPosition;
 
+uniform int BreakPlaneCount = 0;
+uniform vec3 BreakPlanes[];
+
+
+vec3 BreakVertex(vec3 v)
+{
+	// projected_point = point - dist*normal;
+	for (int i = 0; i < BreakPlaneCount; ++i)
+	{
+		vec3 n = BreakPlanes[i];
+
+		float d = dot(n, v);
+
+		if (d > 0)
+			v = v - d * n;
+	}
+
+	return v;
+}
+
 void main()
 {
 	Color = ObjectPosition;
 	
-	ObjectPosition = vec4(Position, 1);
-
-	if (Broken > 0 && ObjectPosition.x > 0)
-		ObjectPosition.x = 0;
-
+	ObjectPosition = vec4(BreakVertex(Position), 1);
 
 	gl_Position = ObjectPosition;
 }

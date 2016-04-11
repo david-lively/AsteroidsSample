@@ -13,8 +13,12 @@ uniform vec4 LightColorIntensity[MAX_LIGHTS];
 uniform mat4 LightTransform[MAX_LIGHTS];
 uniform vec4 EmissiveColorIntensity;
 
+uniform int BreakPlaneCount=0;
+uniform vec3 BreakPlanes[];
+
 uniform float ForceWireframe = 0;
 uniform float ColorByDepth = 0;
+uniform float ExplosionFactor = 0.f;
 
 
 in gOutputType
@@ -24,10 +28,6 @@ in gOutputType
 	in vec4 Color;
 } gOut;
 
-
-//in vec4 ObjectPosition;
-//in vec4 WorldPosition;
-//in vec4 Color;
 
 out vec4 fragmentColor;
 
@@ -89,14 +89,18 @@ void main() {
 	if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
 		color = vec3(0.2f);
 
-	if (ColorByDepth > 0.5f)
-	{
-		float c = 4 * (length(gOut.ObjectPosition)  - 1);
-		color = vec3(c);
-	}
+	//if (ColorByDepth > 0.5f)
+	//{
+	//	float c = 4 * (length(gOut.ObjectPosition)  - 1);
+	//	color = vec3(c);
+	//}
 
 	if (ForceWireframe > 0.5f)
 		color = vec3(1);
 
-	fragmentColor = vec4(color,1);
+	float explosionColor = 3 * saturate(1 - ExplosionFactor);
+	
+	fragmentColor = vec4(color * explosionColor, explosionColor);
+
+
 }

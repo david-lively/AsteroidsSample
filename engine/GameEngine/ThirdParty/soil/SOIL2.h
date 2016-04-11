@@ -116,7 +116,7 @@ enum
 };
 
 /**
-	The types of images that may be saved.
+	The TokenType of images that may be saved.
 	(TGA supports uncompressed RGB / RGBA)
 	(BMP supports uncompressed RGB)
 	(DDS supports DXT1 and DXT5)
@@ -139,7 +139,7 @@ enum
 #define SOIL_DDS_CUBEMAP_FACE_ORDER "EWUDNS"
 
 /**
-	The types of internal fake HDR representations
+	The TokenType of internal fake HDR representations
 
 	SOIL_HDR_RGBE:		RGB * pow( 2.0, A - 128.0 )
 	SOIL_HDR_RGBdivA:	RGB / A

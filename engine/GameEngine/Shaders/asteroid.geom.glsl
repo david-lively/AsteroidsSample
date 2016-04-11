@@ -1,5 +1,5 @@
-#version 330 core
 /// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
+#version 330 core
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
@@ -68,11 +68,11 @@ void main()
 		
 		float noise = NoiseValues[noiseIndex];
 
-		p.xy = rotate(p.xy, (GameTimeTotalSeconds + noise * 100) * 3.14159/180 * ExplosionFactor * ExplosionSpeed);
+		//p.xy = rotate(p.xy, (GameTimeTotalSeconds + noise * 100) * 3.14159/180 * ExplosionFactor * ExplosionSpeed);
 
 		p.xyz += center;
 
-		p.xyz += explodeDirection * ExplosionFactor * 3;
+		p.xyz += explodeDirection * ExplosionFactor;
 
 		gl_Position = Projection * View * World * p;
 

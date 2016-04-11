@@ -21,12 +21,14 @@
 #include "Light.h"
 #include "Missile.h"
 #include "Scoreboard.h"
+#include "Sprite.h"
 
+#include "GameState.h"
 
 class AsteroidsGame : public Game
 {
 public:
-	AsteroidsGame() :  ShaderFolder("Shaders/")
+	AsteroidsGame() : ShaderFolder("Shaders/")
     {
 		Name = "ASTEROIDS";
     }
@@ -53,6 +55,10 @@ public:
 
 
 private:
+	std::vector<std::shared_ptr<GameState>> m_states;
+	GameState* m_currentState = nullptr;
+
+	Sprite* m_title = nullptr;
     Grid* m_grid = nullptr;
     Ship* m_ship = nullptr;
 	Scoreboard* m_scoreboard = nullptr;
@@ -61,7 +67,7 @@ private:
 	std::vector<Drawable*> m_allMissiles;
 
 	std::queue<Drawable*> m_inactiveMissiles;
-
+	std::queue<Asteroid*> m_inactiveAsteroids;
 	/// entities that need to wrap when leaving the game area (frustum, grid or whatever)
 	std::vector<WorldEntity*> m_itemsToWrap;
 	std::vector<Light*> m_lights;
@@ -72,10 +78,15 @@ private:
 
 	void DisableMissile(Drawable& missile);
 	void UpdateStatus();
-
-	Drawable& GetAMissile(bool forceCreateNew = false);
+	Drawable& GetMissile(bool forceCreateNew = false);
+	
 	Asteroid& CreateAsteroid();
+	Asteroid& GetAsteroid(bool forceCreateNew = false);
+
 	void ExpandMissilePool(const int count);
+
+	Sprite& CreateTitleScreen();
+
 };
 
 

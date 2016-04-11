@@ -339,10 +339,17 @@ void GeometryProvider::Quad(vector<Vector3>& vertices, vector<GLushort>& indices
 	for (int i = 0; i < coordinates.size(); i += 3)
 		vertices.push_back(Vector3(coordinates[i], coordinates[i + 1], coordinates[i + 2]));
 
-	for (int i = 0; i <= coordinates.size(); ++i)
+
+	vector<GLushort> ii = 
 	{
-		indices.push_back(startIndex + i);
-	}
+		0, 1, 2
+		,
+		2, 3, 0
+	};
+
+	for (int i = 0; i < ii.size(); ++i)
+		indices.push_back(startIndex + ii[i]);
+
 }
 
 void GeometryProvider::Arrow(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float width, const float height)

@@ -13,18 +13,25 @@
 #include "Drawable.h"
 #include "Mesh.h"
 
+#include <vector>
+#include <functional>
+
 class Explodable : public Drawable
 {
 public:
-
 	float ExplosionFactor = 0.f;
 	float ExplosionTime = 0.f;
 	float ExplosionDuration = 1.f;
 	bool IsExploding = false;
 
+	bool Broken;
+
+	// normals for breaks 
+	std::vector<Vector3> BreakPlanes;
+
+
 	Explodable(const std::string& name) : Drawable(name)
 	{
-
 	}
 
 
@@ -34,8 +41,16 @@ public:
 	}
 
 	void OnRender(const GameTime& time) override;
+	void OnPreUpdate(const GameTime& time) override;
+	virtual void Explode(const GameTime& time, const float duration = -1.f);
 
-	void Explode(const GameTime& time, const float duration = -1.f);
+	void Break(const GameTime& time, const Vector3& impactPoint, bool pushBackward = false);
+	virtual void Reset();
+
+	GameEvent OnExploded;
+
+private:
+
 };
 
 

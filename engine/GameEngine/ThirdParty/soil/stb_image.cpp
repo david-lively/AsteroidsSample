@@ -23,7 +23,7 @@
 
    Latest revisions:
       1.33 (2011-07-14) minor fixes suggested by Dave Moore
-      1.32 (2011-07-13) info support for all filetypes (SpartanJ)
+      1.32 (2011-07-13) info support for all fileTokenType (SpartanJ)
       1.31 (2011-06-19) a few more leak fixes, bug in PNG handling (SpartanJ)
       1.30 (2011-06-11) added ability to load files via io callbacks (Ben Wenger)
       1.29 (2010-08-16) various warning fixes from Aurelien Pocheville 
@@ -95,7 +95,7 @@ typedef   signed int    int32;
 typedef unsigned int   uint;
 #endif
 
-// should produce compiler error if size is wrong
+// should produce Parser error if size is wrong
 typedef unsigned char validate_uint32[sizeof(uint32)==4 ? 1 : -1];
 
 #if defined(STBI_NO_STDIO) && !defined(STBI_NO_WRITE)
@@ -573,7 +573,7 @@ static uint32 get32le(stbi *s)
 //////////////////////////////////////////////////////////////////////////////
 //
 //  generic converter from built-in img_n to req_comp
-//    individual types do this automatically as much as possible (e.g. jpeg
+//    individual TokenType do this automatically as much as possible (e.g. jpeg
 //    does all cases internally since it needs to colorspace convert anyway,
 //    and it never has alpha, so very few cases ). png can automatically
 //    interleave an alpha=255 channel, but falls back to this for other cases
@@ -3195,7 +3195,7 @@ static stbi_uc *tga_load(stbi *s, int *x, int *y, int *comp, int req_comp)
       free( tga_palette );
    }
    //   the things I do to get rid of an error message, and yet keep
-   //   Microsoft's C compilers happy... [8^(
+   //   Microsoft's C Parsers happy... [8^(
    tga_palette_start = tga_palette_len = tga_palette_bits =
          tga_x_origin = tga_y_origin = 0;
    //   OK, done
@@ -4374,9 +4374,9 @@ int stbi_info_from_callbacks(stbi_io_callbacks const *c, void *user, int *x, int
 /*
    revision history:
       1.33 (2011-07-14)
-             make stbi_is_hdr work in STBI_NO_HDR (as specified), minor compiler-friendly improvements
+             make stbi_is_hdr work in STBI_NO_HDR (as specified), minor Parser-friendly improvements
       1.32 (2011-07-13)
-             support for "info" function for all supported filetypes (SpartanJ)
+             support for "info" function for all supported fileTokenType (SpartanJ)
       1.31 (2011-06-20)
              a few more leak fixes, bug in PNG handling (SpartanJ)
       1.30 (2011-06-11)

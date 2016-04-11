@@ -25,36 +25,33 @@ bool Asteroid::OnInitialize()
 	vector<Vector3> vertices;
 	vector<GLushort> indices;
 
-	auto& material = this->Material;
-	auto& mesh = this->Mesh;
-
 	if (TwoD)
 	{
-		material.FillType = PolygonMode::Line;
-		mesh.Type = BeginMode::Lines;
-		material.Build("Shaders/primitive");
+		Material.FillType = PolygonMode::Line;
+		Mesh.Type = BeginMode::Lines;
+		Material.Build("Shaders/primitive");
 
 		GeometryProvider::Circle(vertices, indices, Vector3::Zero, 0.5f, 12);
 
 	}
 	else
 	{
-		material.FillType = PolygonMode::Fill;
-		mesh.Type = BeginMode::Triangles;
-		material.Build("Shaders/asteroid");
+		Material.FillType = PolygonMode::Fill;
+		Mesh.Type = BeginMode::Triangles;
+		Material.Build("Shaders/asteroid");
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 4);
+		GeometryProvider::Tessellate(vertices, indices, 3);
 		GeometryProvider::Spherize(vertices);
 	}
 
 
-	GeometryProvider::Noisify(vertices, 4, 0.3f);
+	GeometryProvider::Noisify(vertices, 20, 0.3f);
 	GeometryProvider::FitToUnitCube(vertices);
 	Bounds = BoundingSphere::FromVectors(vertices);
 
 
-	mesh.Material = &material;
-	mesh.Initialize(vertices, indices);
+	Mesh.Material = &Material;
+	Mesh.Initialize(vertices, indices);
 
 	Transform.TranslationDrag = 0.f;
 
@@ -111,12 +108,14 @@ void Asteroid::OnRender(const GameTime& time)
 	Vector4 orange(1, 165.f / 255.f, 0, 0.125f);
 
 	Uniforms.SetUniform("ColorByDepth", 1.f);
-	Uniforms.SetUniform("Broken", Broken);
 	Uniforms.SetUniform("EmissiveColorIntensity", orange);
-
 
 	Explodable::OnRender(time);
 }
+
+
+
+
 
 
 

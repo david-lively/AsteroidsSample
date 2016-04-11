@@ -230,7 +230,7 @@ enum PixelType
 	ePT_VG_lABGR_8888_PRE,
 	
 	// max cap for iterating
-	END_OF_PIXEL_TYPES,
+	END_OF_PIXEL_TokenType,
 	
 	MGLPT_NOTYPE = 0xff
 	

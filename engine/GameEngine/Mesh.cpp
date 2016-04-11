@@ -20,6 +20,17 @@ void Mesh::OnRender(const GameTime& time)
 {
     check_gl_error();
 
+
+	if (this->Material->Blend)
+	{
+		gl::Enable(gl::BLEND);
+		gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+	}
+	else
+		gl::Disable(gl::BLEND);
+
+
+
     gl::BindVertexArray(m_vao);
 
 	check_gl_error();
@@ -34,7 +45,10 @@ void Mesh::OnRender(const GameTime& time)
 	else
 		gl::PolygonMode(gl::FRONT_AND_BACK, (GLenum)Material->FillType);
 
-	gl::Enable(gl::DEPTH_TEST);
+	if (Material->DepthTesting)
+		gl::Enable(gl::DEPTH_TEST);
+	else
+		gl::Disable(gl::DEPTH_TEST);
 
 	if (CullBackfaces)
 		gl::Enable(gl::CULL_FACE);

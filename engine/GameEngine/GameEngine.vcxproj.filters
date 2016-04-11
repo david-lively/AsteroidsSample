@@ -16,6 +16,15 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{12589595-1c60-4828-a904-ac5ff8099638}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{65182295-dcd4-4314-880e-d4d50e89b4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\SOIL">
+      <UniqueIdentifier>{ce881777-90a3-484d-9f6a-871e3b38bc61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{53423d5e-2799-4d02-a5d8-3eea4df4c1a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -116,6 +125,30 @@
     </ClCompile>
     <ClCompile Include="Drawable.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\etc1_utils.cpp">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\image_DXT.cpp">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\image_helper.cpp">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\SOIL2.cpp">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\stb_image.cpp">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\stb_image_write.cpp">
+      <Filter>ThirdParty\SOIL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +266,60 @@
     <ClInclude Include="Drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\SOIL2.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\etc1_utils.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\image_DXT.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\image_helper.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\pkm_helper.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\pvr_helper.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stb_image.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stb_image_write.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_DDS.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_DDS_c.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_ext.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_ext_c.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_pkm.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_pkm_c.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_pvr.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\soil\stbi_pvr_c.h">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag.glsl">
@@ -322,5 +409,16 @@
     <None Include="Shaders\demo.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\textured.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\textured.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\AsteroidsTitle.png">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

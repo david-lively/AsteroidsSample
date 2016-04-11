@@ -32,7 +32,6 @@ public:
 	}
 
 	bool enableBreak = false;
-
 	void OnRender(const GameTime& time) override
 	{
 		Explodable::OnRender(time);

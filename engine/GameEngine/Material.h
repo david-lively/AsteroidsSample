@@ -29,6 +29,8 @@ public:
 	PolygonMode FillType = PolygonMode::Fill;
 	bool IsInScreenSpace;
 	Shader& Shader;
+	bool Blend = true;
+	bool DepthTesting = true;
 
 	Material(const std::string& name) : GameObject(name), Shader(Create<class Shader>(name + ".shader"))
 	{

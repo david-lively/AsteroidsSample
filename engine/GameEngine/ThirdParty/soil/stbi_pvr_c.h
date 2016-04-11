@@ -184,7 +184,7 @@ typedef unsigned int       PVRTuint32;
  *****************************************************************************/
 #define PT_INDEX (2)	// The Punch-through index
 
-#define BLK_Y_SIZE 	(4) // always 4 for all 2D block types
+#define BLK_Y_SIZE 	(4) // always 4 for all 2D block TokenType
 
 #define BLK_X_MAX	(8)	// Max X dimension for blocks
 
