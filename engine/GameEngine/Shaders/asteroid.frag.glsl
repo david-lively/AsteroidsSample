@@ -100,7 +100,7 @@ void main() {
 
 	float explosionColor = 3 * saturate(1 - ExplosionFactor);
 	
-	fragmentColor = vec4(color * explosionColor, explosionColor);
+	fragmentColor = vec4(color, 1);// *explosionColor, explosionColor);
 
 
 }

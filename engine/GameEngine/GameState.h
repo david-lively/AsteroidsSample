@@ -8,6 +8,8 @@
 #include "Common.h"
 #include "GameObject.h"
 #include "Sprite.h"
+#include "Ship.h"
+#include "Scoreboard.h"
 
 class GameState : public GameObject
 {
@@ -25,6 +27,7 @@ public:
 	float TimeInState = 0.f;
 
 	GameState* NextState = nullptr;
+
 
 	virtual GameState& GetNext(const GameTime& time)
 	{
@@ -53,9 +56,23 @@ public:
 
 	virtual void OnExit(const GameTime& time)
 	{
-		
+
 	}
 
+};
+
+class WaitState : public GameState
+{
+public:
+	float WaitSeconds = 0;
+
+	WaitState(const std::string& name) : GameState(name)
+	{
+
+	}
+
+
+private:
 };
 
 
@@ -123,7 +140,12 @@ class PlayState : public GameState
 {
 public:
 	NotifyEvent CreateGame;
-	
+	Ship* Ship = nullptr;
+	Scoreboard* Scoreboard = nullptr;
+
+	GameState* OnLevelComplete = nullptr;
+	GameState* OnDead = nullptr;
+
 	PlayState(const std::string& name) : GameState(name)
 	{
 
@@ -137,7 +159,29 @@ public:
 		return GameState::OnInitialize();
 	}
 
+	bool IsDead()
+	{
+		return Scoreboard->LivesRemaining == 0;
+	}
+
+	bool IsLevelComplete()
+	{
+		return Scoreboard->AsteroidsRemaining == 0;
+	}
+
+	//GameState& GetNext(const GameTime& time) override
+	//{
+	//	if (IsDead())
+	//		return *OnDead;
+	//	if (IsLevelComplete())
+	//		return *OnLevelComplete;
+
+	//	return GameState::GetNext(time);
+	//}
+
 private:
+
+
 };
 
 

@@ -30,9 +30,13 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
-	m_stateMachine = &Create<StateMachine>("asteroids.statemachine");
+	m_stateMachine = &CreateStateMachine();
 
 	m_scoreboard = &Create<Scoreboard>("scoreboard");
+
+	
+	m_stateMachine->Ship = m_ship;
+	m_stateMachine->Scoreboard = m_scoreboard;
 
 	m_grid->Enabled = false;
 
@@ -473,8 +477,9 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 
 	for (auto* ptr : m_asteroids)
 	{
-		if (!ptr->Enabled)
+		if (!ptr->Enabled || ptr->IsExploding)
 			continue;
+
 		auto* asteroid = dynamic_cast<Asteroid*>(ptr);
 		if (nullptr == asteroid || !asteroid->Enabled)
 			continue;
@@ -595,3 +600,12 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 
 
 
+StateMachine& AsteroidsGame::CreateStateMachine()
+{
+	auto& fsm = Create<StateMachine>("asteroids.fsm");
+
+
+	return fsm;
+
+
+}

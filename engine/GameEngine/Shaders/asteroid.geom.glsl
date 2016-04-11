@@ -78,7 +78,7 @@ void main()
 
 		gOut.ObjectPosition = ObjectPosition[i];
 		gOut.WorldPosition = World * p;
-		gOut.Color = vec4(normal, 1);
+		gOut.Color = vec4(1, 0, 1, 1);// normal, 1);
 
 		EmitVertex();
 	}

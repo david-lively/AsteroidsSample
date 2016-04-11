@@ -58,6 +58,7 @@ typedef unsigned int ID;
 
 
 typedef std::function<void()> NotifyEvent;
+typedef std::function<bool(const GameTime& time)> BoolEvent;
 
 template<typename TCollection, typename TValue>
 void clear(TCollection &collection, TValue value)

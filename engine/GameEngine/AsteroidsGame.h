@@ -82,6 +82,8 @@ private:
 	Asteroid& GetAsteroid(bool forceCreateNew = false);
 
 	void ExpandMissilePool(const int count);
+
+	StateMachine& CreateStateMachine();
 };
 
 
