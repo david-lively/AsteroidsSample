@@ -121,10 +121,47 @@ void GeometryProvider::LineGrid(vector<Vector3>& vertices, int cellCount = 4)
 		vertices.push_back(Vector3(-0.5f, vary, 0));
 		vertices.push_back(Vector3(0.5f, vary, 0));
 
+
+
+
 	}
 
 
 }
+
+void GeometryProvider::Grid(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const int cellsX, const int cellsY)
+{
+	float cellWidth = 1.f / cellsX;
+	float cellHeight = 1.f / cellsY;
+
+	for (int j = 0; j <= cellsY; ++j)
+	{
+		for (int i = 0; i <= cellsX; ++i)
+		{
+
+			Vector3 v(i * cellWidth - 0.5f, j * cellHeight - 0.5f, 0);
+			vertices.push_back(v);
+		}
+	}
+
+
+	for (int j = 0; j < cellsY; ++j)
+	{
+		for (int i = 0; i < cellsX; ++i)
+		{
+			GLushort nw = j * (cellsX + 1) + i;
+			GLushort ne = nw + 1;
+			GLushort se = ne + (cellsX + 1);
+			GLushort sw = nw + (cellsX + 1);
+
+			vector<GLushort> faces = { nw, ne, sw, ne, se, sw };
+			indices.insert(end(indices), begin(faces), end(faces));
+		}
+	}
+
+}
+
+
 
 void GeometryProvider::Icosahedron(vector<Vector3>& vertices, vector<GLushort>& indices)
 {

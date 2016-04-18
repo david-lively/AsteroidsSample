@@ -40,7 +40,7 @@ public:
 
 	}
 
-	void OnWindowResize(int w, int h) override;
+	void OnWindowResize(const int w, const int h) override;
 	bool OnInitialize() override;
 
 	void OnPreUpdate(const GameTime& time);

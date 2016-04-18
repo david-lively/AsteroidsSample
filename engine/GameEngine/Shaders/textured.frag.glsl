@@ -13,6 +13,9 @@ void main()
 	texel.a = texel.r;
 	fragmentColor = texel;
 
+	if (ForceWireframe > 0)
+		fragmentColor = vec4(1);
+
 	//fragmentColor = vec4(texCoord, 0, 1);
 
     //fragmentColor = vertexColor * clamp(1 - ForceWireframe, 0, 1) + vec4(ForceWireframe);

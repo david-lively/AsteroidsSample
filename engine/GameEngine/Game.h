@@ -23,6 +23,8 @@ class Game : public GameObject
 public:
     GameTime Time;
 
+	int FramebufferWidth;
+	int FramebufferHeight;
 
 	bool IsPlaying = false;
 	Vector4 ClearColor;
@@ -54,6 +56,7 @@ public:
         return true;
     }
 
+	//void OnWindowResize(const int width, const int height);
 	static void GetFramebufferSize(int* width, int* height);
     
     static Game& Instance() { return *m_instance; }

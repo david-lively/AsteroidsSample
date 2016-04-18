@@ -59,19 +59,6 @@ bool Asteroid::OnInitialize()
 
 	float explodeSpeed = 0.01f;
 
-	Input.Subscribe(GLFW_KEY_F10,
-		DECL_KEYHANDLER
-	{
-		ExplosionFactor += explodeSpeed;
-	}
-	);
-
-	Input.Subscribe(GLFW_KEY_F9,
-		DECL_KEYHANDLER
-	{
-		ExplosionFactor = max(ExplosionFactor - explodeSpeed, 0);
-	}
-	);
 
 	Input.Subscribe(GLFW_KEY_B,
 		DECL_KEYHANDLER

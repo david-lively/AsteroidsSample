@@ -17,6 +17,12 @@ class GameEnvironment : public GameObject
 {
 public:
 	const int MaxLights = 16;
+	float TestFloat = 1.f;
+	float Contrast = 1.f;
+	bool ForceWireframe = false;
+	int WindowWidth = 1280;
+	int WindowHeight = 720;
+
 
 	GameEnvironment(const std::string& name) : GameObject(name)
 	{
@@ -28,7 +34,6 @@ public:
 
 	}
 
-	float Contrast = 1.f;
 
 	// top-most world matrix from object hierarchy
 	const Matrix& CurrentMatrix();
@@ -56,12 +61,14 @@ public:
 		return light;
 	}
 
-	bool ForceWireframe = false;
+	void OnWindowResize(const int width, const int height) override;
+
 
 private:
 	std::map<int, Light*> m_lights;
 	std::stack<Matrix> m_matrixStack;
 	std::vector<float> m_noiseValues;
+	Vector2 m_windowSize;
 
 	void ApplyLights (Drawable& drawable, const GameTime& time);
 	void ApplyGlobals(Drawable& drawable, const GameTime& time);

@@ -13,7 +13,7 @@ bool Scoreboard::OnInitialize()
 
 		ship.Transform.Move(i, 0, 0);
 		ship.ScoreboardIndicator = true;
-		
+		ship.EnableInput(false);
 		m_activeShips.push(&ship);
 	}
 

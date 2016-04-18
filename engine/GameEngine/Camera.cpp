@@ -130,7 +130,7 @@ bool Camera::ContainsPoint(const Vector3& point)
 /*
 Update projection matrix when the window size changes.
 */
-void Camera::OnWindowResize(int width, int height)
+void Camera::OnWindowResize(const int width, const int height)
 {
 	UpdateProjectionMatrix(width, height);
 }
@@ -142,6 +142,8 @@ bool Camera::OnInitialize()
 	GLFWwindow* window = Game::Instance().Window();
 
 	glfwGetWindowSize(window, &w, &h);
+
+	Game::Instance().Environment().WindowResize(w, h);
 
 
 	UpdateProjectionMatrix(w, h);

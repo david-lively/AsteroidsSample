@@ -108,6 +108,18 @@ void GameEnvironment::ApplyLights(Drawable& drawable, const GameTime& time)
 		gl::UniformMatrix4fv(location, lightCount, false, (GLfloat*)lightTransform.data());
 }
 
+void GameEnvironment::OnWindowResize(const int width, const int height)
+{
+	GameObject::OnWindowResize(width, height);
+
+	WindowWidth = width;
+	WindowHeight = height;
+
+	m_windowSize.X = width;
+	m_windowSize.Y = height;
+}
+
+
 void GameEnvironment::ApplyGlobals(Drawable& drawable, const GameTime& time)
 {
 	auto& camera = Game::Camera();
@@ -118,12 +130,16 @@ void GameEnvironment::ApplyGlobals(Drawable& drawable, const GameTime& time)
 	{
 		gl::Uniform1fv(location, m_noiseValues.size(), m_noiseValues.data());
 	}
-	
 
 	uniforms.SetUniform("NoiseArrayLength", (int)m_noiseValues.size());
 	uniforms.SetUniform("GameTimeTotalSeconds", Game::Instance().Time.TotalSeconds());
 	uniforms.SetUniform("ForceWireframe", ForceWireframe);
 	uniforms.SetUniform("World", m_matrixStack.top());
+
+	uniforms.SetUniform("WindowSize", m_windowSize);
+	uniforms.SetUniform("AspectRatio", m_windowSize.X * 1.f / m_windowSize.Y);
+
+	uniforms.SetUniform("TestFloat", TestFloat);
 }
 
 void GameEnvironment::GenerateNoiseValues(std::vector<float>& arr, int count)

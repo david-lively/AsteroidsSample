@@ -68,8 +68,8 @@ public:
 	virtual bool OnPostInitialize() { return true; }
     
 
-	void WindowResize(int width, int height);
-	virtual void OnWindowResize(int width, int height);
+	void WindowResize(const int width, const int height);
+	virtual void OnWindowResize(const  int width, const int height);
 
 
 	template<typename T>

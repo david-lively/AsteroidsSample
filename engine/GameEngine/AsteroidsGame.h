@@ -23,6 +23,8 @@
 #include "Scoreboard.h"
 #include "Sprite.h"
 #include "StateMachine.h"
+#include "Hud.h"
+
 
 class AsteroidsGame : public Game
 {
@@ -56,7 +58,7 @@ public:
 private:
 	StateMachine* m_stateMachine;
 
-
+	Hud* m_hud = nullptr; 
     Grid* m_grid = nullptr;
     Ship* m_ship = nullptr;
 	Scoreboard* m_scoreboard = nullptr;

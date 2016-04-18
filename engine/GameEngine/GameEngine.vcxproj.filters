@@ -153,6 +153,9 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -326,6 +329,9 @@
     <ClInclude Include="StateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag.glsl">
@@ -424,6 +430,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\AsteroidsTitle.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\personal\cpp\Terrain\Terrain\verasansmono32.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\personal\cpp\Terrain\Terrain\verasansmono.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\courier_sdf.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\lucidagrande_sdf.jpg">
       <Filter>Textures</Filter>
     </Image>
   </ItemGroup>

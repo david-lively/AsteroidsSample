@@ -1,39 +1,81 @@
-#version 410 core
-/// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
+#version 330 core
 layout(points) in;
 layout(triangle_strip, max_vertices = 4) out;
 
-in int vCharacter[1];
-in int vPosition[1];
+uniform mat4 World;
+uniform mat4 View;
+uniform mat4 Projection;
+uniform float GameTimeTotalSeconds;
+uniform float TestFloat = 1;
+uniform vec2 WindowSize;
+uniform vec2 TextureSize;
+uniform float AspectRatio;
+uniform float FontSize = 1.f;
+
+
+//uniform vec2 CellSize = vec2(1 / 16.f, 1 / 8.f);
+//uniform vec2 RenderSize;
+uniform int FirstCharacterInTexture = 32; // space
+
+/// number of character cells in the font on each axis
+uniform ivec2 FontLayout = ivec2(16, 8);
+uniform sampler2D FontTexture;
+//uniform vec2 RenderPosition = vec2(0, 0);
+
+in int vCharacter[];
+in int vPosition[];
+
+
+
 out vec2 gTexCoord;
-uniform sampler2D Sampler;
 
-uniform vec2 CellSize;
-uniform vec2 RenderSize;
-uniform vec2 RenderOrigin;
 
-void main()
+
+void main(void)
 {
-    // Determine the final quad's position and size:
-    float x = RenderOrigin.x + float(vPosition[0]) * RenderSize.x;
-    float y = RenderOrigin.y;
-    vec4 P = vec4(x, y, 0, 1);
-    vec4 U = vec4(0.5, 0, 0, 0) * RenderSize.x;
-    vec4 V = vec4(0, 0.5, 0, 0) * RenderSize.y;
-    
-    // Determine the texture coordinates:
-    int letter = vCharacter[0] - 32;
-    int row = letter / 16;
-    int col = letter % 16;
-    float S0 = CellSize.x * col;
-    float T0 = CellSize.y * row;
-    float S1 = S0 + CellSize.x;
-    float T1 = T0 + CellSize.y;
-    
-    // Output the quad's vertices:
-    gTexCoord = vec2(S0, T1); gl_Position = P-U-V; EmitVertex();
-    gTexCoord = vec2(S1, T1); gl_Position = P+U-V; EmitVertex();
-    gTexCoord = vec2(S0, T0); gl_Position = P-U+V; EmitVertex();
-    gTexCoord = vec2(S1, T0); gl_Position = P+U+V; EmitVertex();
-    EndPrimitive();
+	vec2 RenderPosition = vec2(-1, +1) *  0.95f;
+	vec2 RenderSize = vec2(1 / 32.f, 1 / 16.f);
+
+	vec2 pos = RenderPosition;
+	vec2 renderSize = RenderSize * FontSize;
+
+	if (AspectRatio > 0)
+		renderSize.y *= AspectRatio;
+	else
+		renderSize.x /= AspectRatio;
+
+	vec2 texelSize = vec2(1.f / TextureSize.x, 1.f / TextureSize.y);
+	vec2 glyphSize = 32 * texelSize;
+
+
+	int character = vCharacter[0] - FirstCharacterInTexture;
+	
+	ivec2 cell = ivec2(character % FontLayout.x, character / FontLayout.x);
+
+
+	vec2 texNW = cell * glyphSize + texelSize; 
+	vec2 texSE = texNW + glyphSize - texelSize; 
+
+	vec2 renderNW = pos + vec2(vPosition[0] * renderSize.x, 0);
+	vec2 renderSE = renderNW + vec2(renderSize.x, -renderSize.y);
+
+	float z = TestFloat;
+	/// clockwise triangle strip
+	gl_Position = vec4(renderNW, z, 1);
+	gTexCoord = texNW;
+	EmitVertex();
+
+	gl_Position = vec4(renderSE.x, renderNW.y, z, 1);
+	gTexCoord = vec2(texSE.x, texNW.y);
+	EmitVertex();
+
+	gl_Position = vec4(renderNW.x, renderSE.y, z, 1);
+	gTexCoord = vec2(texNW.x, texSE.y);
+	EmitVertex();
+
+	gl_Position = vec4(renderSE, z, 1);;
+	gTexCoord = texSE;
+	EmitVertex();
+
+	EndPrimitive();
 }

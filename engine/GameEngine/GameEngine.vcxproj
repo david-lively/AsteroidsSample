@@ -102,6 +102,7 @@
     <ClCompile Include="GeometryProvider.cpp" />
     <ClCompile Include="glError.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Identity.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="GeometryProvider.h" />
     <ClInclude Include="glError.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="Identity.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Light.h" />
@@ -224,7 +226,11 @@
     <None Include="Shaders\textured.vert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\personal\cpp\Terrain\Terrain\verasansmono.png" />
+    <Image Include="..\..\..\..\personal\cpp\Terrain\Terrain\verasansmono32.png" />
     <Image Include="Textures\AsteroidsTitle.png" />
+    <Image Include="Textures\courier_sdf.png" />
+    <Image Include="Textures\lucidagrande_sdf.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

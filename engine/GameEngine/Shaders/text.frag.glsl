@@ -1,15 +1,22 @@
-#version 410 core
+#version 330 core
 
-/// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
+uniform sampler2D FontTexture;
 
-out vec4 FragColor;
+uniform float ForceWireframe;
+uniform float TestFloat;
+uniform float SignedDistanceThreshold = 0.4;
+
 in vec2 gTexCoord;
 
-uniform sampler2D Sampler;
-uniform vec3 TextColor;
+out vec4 fragmentColor;
 
-void main()
+void main() 
 {
-    float A = texture(Sampler, gTexCoord).r;
-    FragColor = vec4(TextColor, A);
+	float d = texture(FontTexture, gTexCoord).r;
+
+	if (d > SignedDistanceThreshold)
+		fragmentColor = vec4(1);
+	else
+		discard;
+
 }

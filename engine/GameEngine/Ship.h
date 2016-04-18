@@ -62,7 +62,7 @@ private:
 	void CreateShipMesh();
 	void CreateHelpers();
 
-	bool m_inputEnabled = false;
+	bool m_inputEnabled = true;
 
 };
 

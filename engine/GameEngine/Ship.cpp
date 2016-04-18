@@ -41,6 +41,11 @@ void Ship::CreateShipMesh()
 	vector<GLushort> indices;
 
 	GeometryProvider::Cone(vertices, indices, 2.f, 0.25f, 6, false);
+	//GeometryProvider::Icosahedron(vertices, indices);
+	//GeometryProvider::Tessellate(vertices, indices, 2);
+
+	GeometryProvider::FitToUnitCube(vertices);
+	Bounds = BoundingSphere::FromVectors(vertices);
 
 	Material.FillType = PolygonMode::Fill;
 	Mesh.Type = BeginMode::Triangles;
@@ -49,9 +54,7 @@ void Ship::CreateShipMesh()
 
 	Mesh.Initialize(vertices, indices);
 
-	GeometryProvider::FitToUnitCube(vertices);
-	Bounds = BoundingSphere::FromVectors(vertices);
-
+	
 	Mesh.CullBackfaces = false;
 
 }
@@ -122,6 +125,7 @@ void Ship::ConfigureInput()
 		xform.Reset();
 	}
 	);
+
 
 #undef xform
 

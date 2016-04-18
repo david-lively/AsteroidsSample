@@ -39,6 +39,8 @@ public:
 
 	static void Cone(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const float  height, const float radius, const int sides, const bool generateBase = true);
 
+	static void Grid(std::vector<Vector3>& vertices, std::vector<GLushort>& indices, const int cellsX, const int cellsY);
+
 
 private:
     

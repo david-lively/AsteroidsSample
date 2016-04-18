@@ -24,6 +24,7 @@ using namespace std;
 #include "Asteroid.h"
 #include "Bounds.h"
 #include "Light.h"
+#include "Hud.h"
 
 
 bool AsteroidsGame::OnCreateScene()
@@ -34,6 +35,8 @@ bool AsteroidsGame::OnCreateScene()
 
 	m_scoreboard = &Create<Scoreboard>("scoreboard");
 
+	m_hud = &Create<Hud>("hud");
+	m_hud->Transform.Move(-50.f, 0.5f, 0);
 	
 	m_stateMachine->Ship = m_ship;
 	m_stateMachine->Scoreboard = m_scoreboard;
@@ -186,6 +189,25 @@ bool AsteroidsGame::OnCreateScene()
 	{
 		Log::Info << "There are " << CountObjects() << " objects in the hierarchy." << endl;
 	});
+
+
+	input.Subscribe(GLFW_KEY_F10,
+		DECL_KEYHANDLER
+	{
+		Environment().TestFloat += 0.005f;
+		Log::Info << "Testfloat: " << Environment().TestFloat << "\r";
+	}
+	);
+
+	input.Subscribe(GLFW_KEY_F9,
+		DECL_KEYHANDLER
+	{
+		Environment().TestFloat -= 0.005f;
+		Log::Info << "Testfloat: " << Environment().TestFloat << "\r";
+	}
+	);
+
+
 
 
 
@@ -491,6 +513,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		{
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
 
+			
 			ship.Explode(time, 3.f);
 			ship.EnableInput(false);
 			m_scoreboard->Kill();

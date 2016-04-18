@@ -213,7 +213,7 @@ bool GameObject::Initialize()
 }
 
 
-void GameObject::WindowResize(int width, int height)
+void GameObject::WindowResize(const int width, const int height)
 {
 	OnWindowResize(width, height);
 
@@ -224,7 +224,7 @@ void GameObject::WindowResize(int width, int height)
 	}
 }
 
-void GameObject::OnWindowResize(int width, int height)
+void GameObject::OnWindowResize(const int width, const int height)
 {
 
 }
