@@ -36,7 +36,6 @@ public:
 
 	}
 
-
     void OnPostUpdate(const GameTime& time) override;
 	void Subscribe(int key, KeyHandler handler);
     

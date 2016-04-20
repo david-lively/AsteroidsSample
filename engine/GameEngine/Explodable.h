@@ -22,6 +22,7 @@ public:
 	float ExplosionFactor = 0.f;
 	float ExplosionTime = 0.f;
 	float ExplosionDuration = 1.f;
+	float ExplosionSpeed = 1.f;
 	bool IsExploding = false;
 
 	bool Broken;

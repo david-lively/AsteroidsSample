@@ -47,9 +47,11 @@ void Hud::OnUpdate(const GameTime& time)
 void Hud::OnRender(const GameTime& time)
 {
 
-	string text = "FPS: " + to_string(time.FramesPerSecond()) + " Frame " + to_string(time.FrameNumber());
+	string text = "FPS: " + to_string((int)time.FramesPerSecond())
+		+ " Frame " + to_string(time.FrameNumber())
+		;
 
-	Mesh.SetVertexData(text, BufferUsageHint::DynamicDraw);
+	Mesh.SetVertexData(Data, BufferUsageHint::DynamicDraw);
 
 	Material.Bind();
 
@@ -58,6 +60,8 @@ void Hud::OnRender(const GameTime& time)
 	Uniforms.SetUniform("TextureSize", TextureSize);
 	Uniforms.SetUniform("CellSize", CellSize);
 	Uniforms.SetUniform("FirstCharacterInTexture", (int)' ');
+	Uniforms.SetUniform("FontSize", 4.f);
+
 
 	if (FontTextureId > 0)
 	{

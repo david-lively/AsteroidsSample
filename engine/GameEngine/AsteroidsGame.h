@@ -46,13 +46,14 @@ public:
     Grid& CreateGrid();
 	void CreateLights(std::vector<Light*>& lights);
 
-	void CreateAsteroids(const int count, const int total);
+	void CreateAsteroids(const int count);
 	void DoCollisionCheck(const GameTime& time);
 	void DoWrapping(const GameTime& time);
 
 	bool CanRespawn();
 
 	std::vector<std::tuple<WorldEntity*, WorldEntity*>> GetCollisionPairs();
+	void Reset(const GameTime& time);
 
 
 private:

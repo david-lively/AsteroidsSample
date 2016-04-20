@@ -5,9 +5,11 @@
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
+#include <iostream>
+
 #include "Game.h"
 #include "InputHandler.h"
-#include <iostream>
+#include "Shader.h"
 
 
 Game* Game::m_instance = nullptr;
@@ -139,11 +141,8 @@ bool Game::Run()
 		}
 
 		prevPauseKeyState = pauseKeyState;
-
 		if (IsPlaying)
-		{
 			Update(Time);
-		}
 
 		gl::ClearColor(ClearColor.X, ClearColor.Y, ClearColor.Z, ClearColor.W);
 		gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
@@ -190,8 +189,6 @@ void Game::GetFramebufferSize(int* width, int* height)
 
 
 }
-
-
 
 
 

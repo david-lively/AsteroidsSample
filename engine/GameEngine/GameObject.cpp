@@ -258,6 +258,16 @@ int GameObject::CountObjects()
 	return result;
 }
 
+void GameObject::Reload(const std::string& tag)
+{
+	OnReload(tag);
+
+	for (auto child : m_children)
+	{
+		child->Reload(tag);
+	}
+}
+
 
 
 

@@ -40,7 +40,7 @@ bool Asteroid::OnInitialize()
 		Mesh.Type = BeginMode::Triangles;
 		Material.Build("Shaders/asteroid");
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 3);
+		GeometryProvider::Tessellate(vertices, indices, 2);
 		GeometryProvider::Spherize(vertices);
 	}
 
@@ -52,13 +52,13 @@ bool Asteroid::OnInitialize()
 
 	Mesh.Material = &Material;
 	Mesh.Initialize(vertices, indices);
+	Mesh.CullBackfaces = false;
 
 	Transform.TranslationDrag = 0.f;
 
 	Uniforms.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
 
-	float explodeSpeed = 0.01f;
-
+	float explodeSpeed = 0.02f;
 
 	Input.Subscribe(GLFW_KEY_B,
 		DECL_KEYHANDLER

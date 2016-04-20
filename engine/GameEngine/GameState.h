@@ -76,18 +76,17 @@ private:
 };
 
 
-class SplashScreenState : public GameState
+class SplashScreenState : public WaitState
 {
 public:
-	int WaitForSeconds = 4;
 	Sprite* Title = nullptr;
 
-	SplashScreenState()
+	SplashScreenState() : SplashScreenState("splash")
 	{
 
 	}
 
-	SplashScreenState(const std::string& name) : GameState(name)
+	SplashScreenState(const std::string& name) : WaitState(name)
 	{
 
 	}
@@ -103,15 +102,15 @@ public:
 	}
 
 
-	GameState& GetNext(const GameTime& time) override
-	{
-		if (TimeInState >= WaitForSeconds)
-		{
-			return GameState::GetNext(time);
-		}
-		else
-			return *this;
-	}
+	//GameState& GetNext(const GameTime& time) override
+	//{
+	//	if (TimeInState >= WaitForSeconds)
+	//	{
+	//		return GameState::GetNext(time);
+	//	}
+	//	else
+	//		return *this;
+	//}
 
 	void OnEnter(const GameTime& time) override
 	{
@@ -166,20 +165,66 @@ public:
 
 	bool IsLevelComplete()
 	{
-		return Scoreboard->AsteroidsRemaining == 0;
+		bool levelComplete = Scoreboard->AsteroidsRemaining == 0;
+		
+		return levelComplete;
+
 	}
 
-	//GameState& GetNext(const GameTime& time) override
-	//{
-	//	if (IsDead())
-	//		return *OnDead;
-	//	if (IsLevelComplete())
-	//		return *OnLevelComplete;
+	GameState& GetNext(const GameTime& time) override
+	{
+		if (IsDead())
+			NextState = OnDead;
+		else if (IsLevelComplete())
+			NextState = OnLevelComplete;
+		else
+			NextState = this;
 
-	//	return GameState::GetNext(time);
-	//}
+		return GameState::GetNext(time);
+	}
 
 private:
+
+
+};
+
+class LevelUpState : public WaitState
+{
+public:
+	NotifyEvent OnLevelUp;
+
+	LevelUpState(const std::string& name) : WaitState(name)
+	{
+
+	}
+
+	LevelUpState() : LevelUpState("levelup")
+	{
+
+	}
+
+	void OnEnter(const GameTime& time) override;
+
+private:
+};
+
+class ResetState : public WaitState
+{
+public:
+	NotifyTimeEvent OnReset;
+
+
+	ResetState(const std::string& name) : WaitState(name)
+	{
+
+	}
+
+	ResetState() : ResetState("levelup")
+	{
+
+	}
+
+	void OnEnter(const GameTime& time) override;
 
 
 };

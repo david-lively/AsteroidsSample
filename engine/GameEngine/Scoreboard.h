@@ -14,6 +14,7 @@ public:
 	int Score = 0;
 	int LivesRemaining = 3;
 	int AsteroidsRemaining = 4;
+	int Level = 0;
 
 	bool OnInitialize() override;
 
@@ -32,6 +33,13 @@ public:
 	void OnRender(const GameTime& time) override
 	{
 		WorldEntity::OnRender(time);
+	}
+
+	void Reset();
+
+	void LevelUp()
+	{
+		++Level;
 	}
 
 private:

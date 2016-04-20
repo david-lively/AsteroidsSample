@@ -31,7 +31,9 @@ public:
 	GameObject* Parent = nullptr;
 
 	int ReferenceCount = 0;
-    
+	std::vector<std::shared_ptr<GameObject>>& Children() { return m_children; }
+
+
     GameObject() : GameObject("unnamed-gameobject")
     {
         
@@ -129,6 +131,16 @@ public:
 	{
 		return m_isInitialized;
 	}
+
+
+	void Reload(const std::string& tag);
+
+	virtual void OnReload(const std::string& tag)
+	{
+
+	}
+
+
 
 protected:
 	void Dispatch(const GameTime& time, const std::vector<GameTimeEvent>& events)

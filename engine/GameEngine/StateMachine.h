@@ -12,6 +12,7 @@
 class StateMachine : public GameObject
 {
 public:
+	class AsteroidsGame* Game;
 	PlayState* PlayState;
 	Ship* Ship;
 	Scoreboard* Scoreboard;

@@ -58,6 +58,7 @@ typedef unsigned int ID;
 
 
 typedef std::function<void()> NotifyEvent;
+typedef std::function<void(const GameTime& time)> NotifyTimeEvent;
 //typedef std::function<void(const GameTime& time, GameObject& sender)> SenderNotifyEvent;
 typedef std::function<bool(const GameTime& time)> BoolEvent;
 
@@ -80,6 +81,12 @@ template<typename T1, typename T2>
 inline void move_append(T1 &target, T2 &source)
 {
 	target.insert(end(target), make_move_iterator(begin(source)), make_move_iterator(end(source)));
+}
+
+template<typename T>
+inline T lerp(const T& left, const T& right, const float f)
+{
+	return (right - left) * f + left;
 }
 
 #include "GLError.h"

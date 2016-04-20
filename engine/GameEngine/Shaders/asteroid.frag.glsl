@@ -13,8 +13,8 @@ uniform vec4 LightColorIntensity[MAX_LIGHTS];
 uniform mat4 LightTransform[MAX_LIGHTS];
 uniform vec4 EmissiveColorIntensity;
 
-uniform int BreakPlaneCount=0;
-uniform vec3 BreakPlanes[];
+uniform int BreakPlaneCount;
+uniform vec3 BreakPlanes[8];
 
 uniform float ForceWireframe = 0;
 uniform float ColorByDepth = 0;
@@ -53,8 +53,8 @@ vec3 ProcessLights(vec3 normal)
 	for (int i = 0; i < LightCount; ++i)
 	{
 		vec4 colorIntensity = LightColorIntensity[i];
-		vec4 position = vec4(0, 0, 0, 1);
 
+		vec4 position = vec4(0, 0, 0, 1);
 		position = View * LightTransform[i] * position;
 
 		vec3 direction = LightDirection[i];
@@ -89,18 +89,16 @@ void main() {
 	if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
 		color = vec3(0.2f);
 
-	//if (ColorByDepth > 0.5f)
-	//{
-	//	float c = 4 * (length(gOut.ObjectPosition)  - 1);
-	//	color = vec3(c);
-	//}
+	if (ColorByDepth > 0.5f)
+	{
+		float c = 2 * (length(gOut.ObjectPosition)  - 1);
+		color = vec3(c);
+	}
 
 	if (ForceWireframe > 0.5f)
 		color = vec3(1);
 
 	float explosionColor = 3 * saturate(1 - ExplosionFactor);
 	
-	fragmentColor = vec4(color, 1);// *explosionColor, explosionColor);
-
-
+	fragmentColor = vec4(color * explosionColor, explosionColor);
 }

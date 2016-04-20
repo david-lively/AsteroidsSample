@@ -25,6 +25,7 @@ class Asteroid : public Explodable
 public:
 	/* What the asteroid is made of - for different explosion effects, mass etc.*/
 	AsteroidMaterial MadeOf;
+	int PointValue = 10;
 
 	int Level() { return BreakPlanes.size(); }
 

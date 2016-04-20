@@ -19,6 +19,9 @@ void Explodable::OnRender(const GameTime& time)
 
 	Uniforms.SetUniform("ExplosionFactor", ExplosionFactor);
 	Uniforms.SetUniform("IsExploding", IsExploding ? 1.f : 0.f);
+	Uniforms.SetUniform("ExplosionSpeed", ExplosionSpeed);
+
+	int breakPlaneCount = BreakPlanes.size();
 
 	Uniforms.SetUniform("Broken", Broken);
 	Uniforms.SetUniform("BreakPlanes", BreakPlanes);
@@ -31,11 +34,12 @@ void Explodable::OnRender(const GameTime& time)
 void Explodable::Explode(const GameTime& time, const float duration)
 {
 	ExplosionTime = 0.f;
+
 	if (duration > 0)
 		ExplosionDuration = duration;
-	
 
 	IsExploding = true;
+	ExplosionSpeed = 10.f;
 }
 
 void Explodable::Reset()
@@ -95,7 +99,8 @@ void Explodable::OnPreUpdate(const GameTime& time)
 		}
 		else
 		{
-			ExplosionFactor = ExplosionTime / ExplosionDuration;
+			ExplosionSpeed /= 2.f;
+			ExplosionFactor = lerp(0.f, 1.f, ExplosionTime / ExplosionDuration);
 		}
 
 	}

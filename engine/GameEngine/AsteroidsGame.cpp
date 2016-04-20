@@ -37,7 +37,7 @@ bool AsteroidsGame::OnCreateScene()
 
 	m_hud = &Create<Hud>("hud");
 	m_hud->Transform.Move(-50.f, 0.5f, 0);
-	
+
 	m_stateMachine->Ship = m_ship;
 	m_stateMachine->Scoreboard = m_scoreboard;
 
@@ -45,7 +45,7 @@ bool AsteroidsGame::OnCreateScene()
 
 	CreateLights(m_lights);
 
-	CreateAsteroids(4, 4);
+	CreateAsteroids(4);
 
 	Log::Info << "Created and queued " << m_asteroids.size() << " asteroids." << endl;
 
@@ -63,6 +63,25 @@ bool AsteroidsGame::OnCreateScene()
 		glfwSetWindowShouldClose(Game::Instance().Window(), true);
 	}
 
+	);
+
+	input.Subscribe(GLFW_KEY_R,
+		DECL_KEYHANDLER
+	{
+		static int prev = GLFW_RELEASE;
+
+		int current = glfwGetKey(Window(), GLFW_KEY_R);
+
+		if (current == GLFW_RELEASE && prev == GLFW_PRESS)
+		{
+			Log::Info << "Reloading all shaders." << endl;
+			Reload("shaders");
+		}
+
+		Log::Info << "Key R: curr " << current << " prev " << prev << endl;
+
+		prev = current;
+	}
 	);
 
 	input.Subscribe(GLFW_KEY_F1,
@@ -233,7 +252,7 @@ Ship& AsteroidsGame::CreateShip()
 {
 	auto& ship = Create<Ship>("ship");
 
-	ship.OnExploded = 
+	ship.OnExploded =
 		[=](const GameTime& time, GameObject& sender)
 	{
 		Ship* s = dynamic_cast<Ship*>(&sender);
@@ -283,41 +302,44 @@ Asteroid& AsteroidsGame::CreateAsteroid()
 	asteroid.OnExploded =
 		[=](const GameTime& time, GameObject& sender)
 	{
+
+		Asteroid* a = dynamic_cast<Asteroid*>(&sender);
+
 		sender.Enabled = false;
-		
+		m_scoreboard->AsteroidsRemaining--;
+		m_scoreboard->Score += a->PointValue;
+
+		if (nullptr != a)
+			m_inactiveAsteroids.push(a);
 	};
 
 	return asteroid;
 
 }
 
-void AsteroidsGame::CreateAsteroids(const int count, const int total)
+void AsteroidsGame::CreateAsteroids(const int count)
 {
-	float spread = 8.f;
+	for (int i = 0; i < count; ++i)
+	{
+		float spread = 8.f;
 
-	float theta = (count + 1) * 1.f / total * TO_RADIANS(360);
-	theta += TO_RADIANS(45.f);
+		float theta = (i + 1) * 1.f / count * TO_RADIANS(360);
+		theta += TO_RADIANS(45.f);
 
+		Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
 
-	Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
+		auto& asteroid = GetAsteroid();
 
-	auto& asteroid = CreateAsteroid();
+		/// start the asteroid moving...
+		float radians = TO_RADIANS(rand() % 360);
 
-	m_inactiveAsteroids.push(&asteroid);
+		Vector3 dir(cosf(radians), sinf(radians), 0);
 
-	/// start the asteroid moving...
-	float radians = TO_RADIANS(rand() % 360);
-
-	Vector3 dir(cosf(radians), sinf(radians), 0);
-
-	asteroid.Transform.Push(dir * 0.005f);
-	/// and make it spin
-	asteroid.Transform.Spin(Vector3(0, 0, 0.005f));
-	asteroid.Transform.Move(center);
-
-
-	if (count > 1)
-		CreateAsteroids(count - 1, total);
+		asteroid.Transform.Push(dir * 0.005f);
+		/// and make it spin
+		asteroid.Transform.Spin(Vector3(0, 0, 0.005f));
+		asteroid.Transform.Move(center);
+	}
 }
 
 void AsteroidsGame::ExpandMissilePool(const int count)
@@ -338,13 +360,17 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
 	vector<float> positions =
 	{
-		-1, 1, 0
+		0, 0, 1
 		,
-		1, 1, 0
+		0, 0, -1
 		,
-		1, -1, 0
+		1, 0, 0
 		,
-		-1, -1, 0
+		-1, 0, 0
+		,
+		0, 1, 0
+		,
+		0, -1, 0
 	};
 
 	vector<float> colors =
@@ -356,6 +382,10 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 		0, 0, 1
 		,
 		1, 0, 1
+		,
+		1, 1, 1
+		,
+		1, 1, 0
 	};
 
 	int lightCount = min(positions.size(), colors.size()) / 3;
@@ -384,6 +414,11 @@ void AsteroidsGame::UpdateStatus()
 	int activeCount = m_allMissiles.size() - m_inactiveMissiles.size();
 
 	string title = "Asteroids: " + to_string(m_scoreboard->AsteroidsRemaining);
+
+	string info = "Score: " + to_string(m_scoreboard->Score) + " asteroids " + to_string(m_scoreboard->AsteroidsRemaining) + " lives " + to_string(m_scoreboard->LivesRemaining);
+
+	m_hud->Data = info;
+
 
 	glfwSetWindowTitle(Window(), title.c_str());
 }
@@ -417,16 +452,18 @@ Asteroid& AsteroidsGame::GetAsteroid(bool forceCreateNew)
 
 	if (forceCreateNew || m_inactiveAsteroids.size() == 0)
 	{
-		item = &Create<Asteroid>("asteroid");
+		item = &CreateAsteroid();
 
 		m_asteroids.push_back(item);
 		m_itemsToWrap.push_back(item);
 
 		item->OnExitFrustum = FrustumAction::Wrap;
+		m_inactiveAsteroids.push(item);
 	}
 
 	item = m_inactiveAsteroids.front();
-	item->Reset();
+	m_inactiveAsteroids.pop();
+	//item->Reset();
 	item->Enabled = true;
 
 	return *item;
@@ -474,12 +511,34 @@ bool AsteroidsGame::CanRespawn()
 	{
 
 
-
 	}
 
 
+}
+
+void AsteroidsGame::Reset(const GameTime& time)
+{
+	return;
+	//m_scoreboard->Reset();
 
 
+
+
+	//while (m_inactiveAsteroids.size() > 0)
+	//	m_inactiveAsteroids.pop();
+
+	//for (auto a : m_asteroids)
+	//{
+	//	if (a->Enabled)
+	//		a->Explode(time);
+
+	//	m_inactiveAsteroids.push(a);
+	//}
+
+	//m_ship->Reset();
+	//m_ship->EnableInput(true);
+
+	//CreateAsteroids(m_scoreboard->AsteroidsRemaining);
 }
 
 void AsteroidsGame::DoCollisionCheck(const GameTime& time)
@@ -513,7 +572,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		{
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
 
-			
+
 			ship.Explode(time, 3.f);
 			ship.EnableInput(false);
 			m_scoreboard->Kill();
@@ -533,13 +592,18 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 			{
 
 				DisableMissile(*missile);
-				asteroid->Explode(time, 1.f);
-				asteroid->Transform.Stop();
+				if (asteroid->BreakPlanes.size() > 3)
+				{
+					asteroid->Explode(time, 1.f);
+					asteroid->Transform.Stop();
+				}
+				else
+				{
+					asteroid->Break(time, missileBounds.Center, false);
+				}
+				//asteroid->Transform.SetRotation(Vector3(0));
 
-				asteroid->Break(time, missileBounds.Center, false);
-				asteroid->Transform.SetRotation(Vector3(0));
-
-				//auto& newAsteroid = GetAsteroid(false);
+				//auto& newAsteroid = GetAsteroid();
 				//newAsteroid.Transform = asteroid->Transform;
 				//newAsteroid.BreakPlanes = asteroid->BreakPlanes;
 				//newAsteroid.Break(time, missileBounds.Center, true);
@@ -626,7 +690,7 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 StateMachine& AsteroidsGame::CreateStateMachine()
 {
 	auto& fsm = Create<StateMachine>("asteroids.fsm");
-
+	fsm.Game = this;
 
 	return fsm;
 

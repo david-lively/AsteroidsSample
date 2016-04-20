@@ -31,7 +31,13 @@ public:
 		return gl::GetUniformLocation(Handle, name.c_str());
 	}
 
+	void OnReload(const std::string& tag) override;
+
 private:
+	std::string m_basePath;
+	std::map<ShaderType, GLuint> m_shaders;
+
+
 	std::string GetShaderFilename(const std::string& basePath, const ShaderType shaderType) const;
 	bool LoadSources(const std::string& basePath, std::map<ShaderType, std::string>& sources);
 	static bool CompileSuccessful(const GLint shader);

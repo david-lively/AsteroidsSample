@@ -31,6 +31,7 @@ public:
 	PerlinNoise Noise;
 	
 	Game();
+
 	
 	static Camera& Camera()
     {
@@ -63,15 +64,13 @@ public:
     
     GLFWwindow* Window() const { return m_window; }
 
-
 private:
 	GLFWwindow* m_window = nullptr;
     static Game* m_instance;
     static class Camera* m_camera;
-	GameEnvironment *m_environment = nullptr;;
+	GameEnvironment *m_environment = nullptr;
     
     void Shutdown();
-    
 };
 
 #endif /* Game_hpp */

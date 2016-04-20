@@ -31,6 +31,7 @@ int Scoreboard::Kill()
 	}
 	else
 	{
+		/// reactivate all of the ships
 		while (m_inactiveShips.size() > 0)
 		{
 			auto shipPtr = m_inactiveShips.front();
@@ -43,6 +44,23 @@ int Scoreboard::Kill()
 	LivesRemaining = m_activeShips.size();
 
 	return LivesRemaining;
+
+}
+
+void Scoreboard::Reset()
+{
+	Level = 0;
+	AsteroidsRemaining = 4;
+	LivesRemaining = 3;
+	Score = 0;
+
+	while (m_inactiveShips.size() > 0)
+	{
+		auto ship = m_inactiveShips.front();
+		ship->Enabled = true;
+		m_inactiveShips.pop();
+		m_activeShips.push(ship);
+	}
 
 }
 

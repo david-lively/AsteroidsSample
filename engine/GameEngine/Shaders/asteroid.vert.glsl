@@ -17,8 +17,8 @@ in vec3 Position;
 out vec4 Color;
 out vec4 ObjectPosition;
 
-uniform int BreakPlaneCount = 0;
-uniform vec3 BreakPlanes[];
+uniform int BreakPlaneCount;
+uniform vec3 BreakPlanes[8];
 
 
 vec3 BreakVertex(vec3 v)
@@ -30,7 +30,7 @@ vec3 BreakVertex(vec3 v)
 
 		float d = dot(n, v);
 
-		if (d > 0)
+		if (d < 0)
 			v = v - d * n;
 	}
 
