@@ -16,6 +16,9 @@
 class Matrix
 {
 public:
+	static const Matrix Identity;
+
+
     /// X basis vector
     float m00=1, m01=0, m02=0, m03=0;
     /// y basis vector
@@ -33,7 +36,7 @@ public:
     {
         
     }
-    
+
     Vector4 Transform(const Vector4& v) const;
     Vector3 Transform(const Vector3& v) const
     {
@@ -60,7 +63,6 @@ public:
     std::vector<Vector4> GetAllCols();
     
     
-    static Matrix Identity();
     static void CreateRotationX(Matrix& m, float radians);
     static void CreateRotationY(Matrix& m, float radians);
     static void CreateRotationZ(Matrix& m, float radians);

@@ -22,6 +22,10 @@ GameTime::GameTime()
 const GameTime& GameTime::Update()
 {
 	float newTotalSeconds = static_cast<float>(glfwGetTime());
+
+	float elapsed = newTotalSeconds - m_totalSeconds;
+	Scale = m_elapsedSeconds / elapsed;
+
 	m_elapsedSeconds = newTotalSeconds - m_totalSeconds;
 	m_totalSeconds = newTotalSeconds;
 

@@ -28,7 +28,6 @@ public:
 
 	GameState* NextState = nullptr;
 
-
 	virtual GameState& GetNext(const GameTime& time)
 	{
 		if (nullptr != NextState)
@@ -69,7 +68,19 @@ public:
 	WaitState(const std::string& name) : GameState(name)
 	{
 
+	
 	}
+
+	GameState& GetNext(const GameTime& time) override
+	{
+		if (TimeInState >= WaitSeconds)
+		{
+			return GameState::GetNext(time);
+		}
+		else
+			return *this;
+	}
+
 
 
 private:

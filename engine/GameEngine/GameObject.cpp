@@ -266,7 +266,19 @@ void GameObject::Reload(const std::string& tag)
 	{
 		child->Reload(tag);
 	}
+
 }
+
+void GameObject::Reset(const GameTime& time)
+{
+	OnReset(time);
+
+	for (auto child : m_children)
+	{
+		child->Reset(time);
+	}
+}
+
 
 
 

@@ -15,13 +15,20 @@
 #include "Bounds.h"
 #include "GameObject.h"
 
+enum class TransformSequence
+{
+	ScaleRotateTranslate
+	,ScaleTranslateRotate
+};
+
 class Transform : public GameObject
 {
 public:
     Vector3 Translation;
     Vector3 Rotation;
     Vector3 Scale;
-    
+
+	TransformSequence Sequence = TransformSequence::ScaleRotateTranslate;
     
     float TranslationDrag = 0.05f;
 	float RotationDrag = 0.05f;
@@ -34,6 +41,11 @@ public:
 	Transform(const std::string& name) : GameObject(name), Scale(Vector3::One)
 	{
 
+	}
+
+	Vector3 Velocity()
+	{
+		return Translation - m_previousTranslation;
 	}
 
 	Transform& CopyFrom(const Transform& other)

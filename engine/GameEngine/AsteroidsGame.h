@@ -53,7 +53,7 @@ public:
 	bool CanRespawn();
 
 	std::vector<std::tuple<WorldEntity*, WorldEntity*>> GetCollisionPairs();
-	void Reset(const GameTime& time);
+	void OnReset(const GameTime& time) override;
 
 
 private:

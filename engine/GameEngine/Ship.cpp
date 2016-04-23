@@ -16,7 +16,7 @@
 #include "InputHandler.h"
 #include "GeometryProvider.h"
 #include "WorldEntity.h"
-
+#include "Primitive.h"
 #include <vector>
 #include <cmath>
 
@@ -28,6 +28,8 @@ bool Ship::OnInitialize()
 	Transform.RotationDrag = 0.125f;
 	ConfigureInput();
 	CreateShipMesh();
+
+	CreateAccessories();
 
 	m_input->Enabled = m_inputEnabled;
 
@@ -167,4 +169,16 @@ bool Ship::Fire()
 }
 
 
+void Ship::CreateAccessories()
+{
+	auto& orbiter = Create<Primitive>("ship.orbiter.asteroid");
+
+	orbiter.Transform.Sequence = TransformSequence::ScaleRotateTranslate;// TranslateRotate;
+	orbiter.Transform.Scale *= 0.25f;
+	orbiter.Transform.Move(1.f, 0, 0);
+	orbiter.Transform.Spin(0, 0, TO_RADIANS(10.f));
+	orbiter.Transform.RotationDrag = 0.f;
+
+	m_orbiter = &orbiter;
+}
 

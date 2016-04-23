@@ -132,7 +132,6 @@ public:
 		return m_isInitialized;
 	}
 
-
 	void Reload(const std::string& tag);
 
 	virtual void OnReload(const std::string& tag)
@@ -140,6 +139,12 @@ public:
 
 	}
 
+	void Reset(const GameTime& time);
+
+	virtual void OnReset(const GameTime& time)
+	{
+
+	}
 
 
 protected:

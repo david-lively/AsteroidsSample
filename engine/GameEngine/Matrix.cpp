@@ -13,18 +13,7 @@
 
 using namespace std;
 
-
-Matrix Matrix::Identity()
-{
-    Matrix m;
-
-    m.m00 = 1;
-    m.m11 = 1;
-    m.m22 = 1;
-    m.m33 = 1;
-    
-    return m;
-}
+const Matrix Matrix::Identity = Matrix();
 
 void Matrix::CreateRotationX(Matrix& m, float radians)
 {

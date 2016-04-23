@@ -37,7 +37,6 @@ BoundingBox Transform::TransformAABB(const BoundingBox& bounds)
 
 	auto m = GetMatrix();
 
-
 	auto mn = m.Transform(bounds.Min);
 	auto mx = m.Transform(bounds.Max);
 
@@ -53,9 +52,19 @@ Matrix Transform::GetMatrix()
 	auto mr = Matrix::CreateRotation(Rotation);
 	auto ms = Matrix::CreateScale(Scale);
 
-	auto lastMatrix = ms * mr * mt;
-
-	return lastMatrix;
+	switch (Sequence)
+	{
+	case TransformSequence::ScaleRotateTranslate:
+		return ms * mr * mt;
+		break;
+	case TransformSequence::ScaleTranslateRotate:
+		return ms * mt * mr;
+		break;
+	default:
+		Log::Error << "Unhandled transform sequence!" << std::endl;
+		return Matrix::Identity;
+		break;
+	}
 }
 
 
@@ -110,26 +119,19 @@ void Transform::Bounce(const Vector3& dir)
 
 void Transform::OnUpdate(const GameTime& time)
 {
-	float timeScale = 1.f;
-
 	//if (Game::Instance().Time.FrameNumber() > 10)
 	//{
 	//	timeScale = time.ElapsedSeconds() / m_previousFrameTime;
 	//}
-
-	m_previousFrameTime = time.ElapsedSeconds();
-
-	auto velocity = (Translation - m_previousTranslation) * (1 - TranslationDrag) * timeScale;
+	
+	auto velocity = (Translation - m_previousTranslation) * (1 - TranslationDrag) * time.Scale	;
 
 	m_previousTranslation = Translation;
 	Translation += velocity;
 
-	auto spin = (Rotation - m_previousRotation) * (1 - RotationDrag) * timeScale;
+	auto spin = (Rotation - m_previousRotation) * (1 - RotationDrag) * time.Scale;
 	m_previousRotation = Rotation;
 	Rotation += spin;
-
-	if (Scale.X != Scale.Y || Scale.Y != Scale.Z || Scale.Z != Scale.X)
-		Log::Error << "Nonuniform scale detected: " << Scale << "\n";
 }
 
 BoundingSphere Transform::TransformSphere(const BoundingSphere& bounds)

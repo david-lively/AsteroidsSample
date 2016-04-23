@@ -51,6 +51,8 @@ public:
     {
         
     }
+
+	void OnReset(const GameTime& time) override;
    
 };
 

@@ -11,6 +11,9 @@
 class GameTime
 {
 public:
+	// time scale used to keep Verlet stuff consistent over varying frame rates
+	float Scale = 1.f;
+
 	GameTime();
 
 	const float ElapsedSeconds() const 

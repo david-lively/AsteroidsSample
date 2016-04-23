@@ -9,3 +9,14 @@
 #include "WorldEntity.h"
 
 
+void WorldEntity::OnReset(const GameTime& time)
+{
+	//Transform.Translation = Vector3(0);
+
+
+
+
+
+
+	GameObject::OnReset(time);
+}

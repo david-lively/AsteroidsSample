@@ -93,6 +93,25 @@ void main() {
 	{
 		float c = 2 * (length(gOut.ObjectPosition)  - 1);
 		color = vec3(c);
+
+		//if (c < 0.3)
+		//	color.r = c * 3;
+		//else if (c < 0.6)
+		//{
+		//	color.r = 1;
+		//	color.g = (c - 0.3) / 0.3;
+		//}
+		//else
+		//{
+		//	color.r = 1;
+		//	color.g = 1;
+		//	color.b = (c - 0.6) / 0.6;
+		//}
+
+
+
+
+		//color = vec3(c);
 	}
 
 	if (ForceWireframe > 0.5f)

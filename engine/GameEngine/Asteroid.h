@@ -23,9 +23,11 @@ enum class AsteroidMaterial
 class Asteroid : public Explodable
 {
 public:
+	NotifyEvent OnReset = nullptr;
 	/* What the asteroid is made of - for different explosion effects, mass etc.*/
 	AsteroidMaterial MadeOf;
 	int PointValue = 10;
+	int BreaksRemaining = 2;
 
 	int Level() { return BreakPlanes.size(); }
 

@@ -18,7 +18,7 @@ bool StateMachine::OnInitialize()
 	m_start = &Create<GameState>("start");
 
 	auto& splash = Create<SplashScreenState>("splash");
-	splash.WaitSeconds = 3.f;
+	splash.WaitSeconds = 5.f;
 
 
 	auto& reset = Create<ResetState>("reset");
@@ -45,9 +45,9 @@ bool StateMachine::OnInitialize()
 		this->Scoreboard->AsteroidsRemaining = numAsteroids;
 
 		this->Game->CreateAsteroids(numAsteroids);
+		this->Ship->Transform.Stop();
+		this->Ship->Transform.Move(0, 0, 0);
 	};
-
-
 
 	playState.Ship = Ship;
 	playState.Scoreboard = Scoreboard;
@@ -56,15 +56,15 @@ bool StateMachine::OnInitialize()
 	reset.OnReset = [this](const GameTime& time)
 	{
 		this->Game->Reset(time);
+		
 		//auto& sb = *this->Scoreboard;
 
 		//sb.LivesRemaining = 3;
 		//sb.Score = 0;
 		//sb.AsteroidsRemaining = 4;
 		//
-
-
-		//this->Ship->Reset();
+		this->Ship->Transform.Stop();
+		this->Ship->Transform.Move(0, 0, 0);
 	};
 
 	m_current = m_start;

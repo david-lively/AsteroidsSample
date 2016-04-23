@@ -41,12 +41,14 @@ public:
 
 	}
 
+
+	void InvertBreakPlanes();
 	void OnRender(const GameTime& time) override;
 	void OnPreUpdate(const GameTime& time) override;
 	virtual void Explode(const GameTime& time, const float duration = -1.f);
 
 	void Break(const GameTime& time, const Vector3& impactPoint, bool pushBackward = false);
-	virtual void Reset();
+	void OnReset(const GameTime&) override;
 
 	GameTimeEvent OnExploded;
 

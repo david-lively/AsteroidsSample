@@ -42,7 +42,7 @@ void Explodable::Explode(const GameTime& time, const float duration)
 	ExplosionSpeed = 10.f;
 }
 
-void Explodable::Reset()
+void Explodable::OnReset(const GameTime& time)
 {
 	ExplosionFactor = 0.f;
 	ExplosionTime = 0.f;
@@ -51,7 +51,6 @@ void Explodable::Reset()
 
 	Broken = false;
 	BreakPlanes.clear();
-
 }
 
 
@@ -61,20 +60,22 @@ void Explodable::Break(const GameTime& time, const Vector3& impactPoint, bool pu
 	Log::Info << "Break " << Name << endl;
 
 	auto dir = (impactPoint - Transform.Translation).Normalized();
-	//dir.Z = 0;
-	//dir.Normalize();
+	dir.Z = 0;
+	dir.Normalize();
 
-	//// rotate normal 90 degrees to get push direction
-	//// Y = X, X =-1
+	// rotate normal 90 degrees to get push direction
+	// Y = X, X =-1
 
-	//std::swap(dir.X, dir.Y);
+	std::swap(dir.X, dir.Y);
 
-	//dir.X *= -1.f;
+	dir.X *= -1.f;
 
 	if (pushBackward)
 		dir *= -1.f;
 
-	Transform.Push(dir * 0.01f);
+	auto velocity = Transform.Velocity();
+
+	Transform.Push(dir * 0.01f + velocity * 0.5f);
 
 	BreakPlanes.push_back(dir);
 }
@@ -106,6 +107,17 @@ void Explodable::OnPreUpdate(const GameTime& time)
 	}
 	else
 		ExplosionTime = 0.f;
+
+}
+
+void Explodable::InvertBreakPlanes()
+{
+	for (auto it = begin(BreakPlanes); it != end(BreakPlanes); ++it)
+	{
+		auto& n = *it;
+
+		n *= -1.f;
+	}
 
 }
 

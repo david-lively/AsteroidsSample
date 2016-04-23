@@ -47,6 +47,7 @@ bool AsteroidsGame::OnCreateScene()
 
 	CreateAsteroids(4);
 
+
 	Log::Info << "Created and queued " << m_asteroids.size() << " asteroids." << endl;
 
 	ExpandMissilePool(10);
@@ -68,19 +69,29 @@ bool AsteroidsGame::OnCreateScene()
 	input.Subscribe(GLFW_KEY_R,
 		DECL_KEYHANDLER
 	{
-		static int prev = GLFW_RELEASE;
+		static float lastResetTime = 0.f;
 
-		int current = glfwGetKey(Window(), GLFW_KEY_R);
-
-		if (current == GLFW_RELEASE && prev == GLFW_PRESS)
+		float currSeconds = Time.TotalSeconds();
+		if (currSeconds - lastResetTime > 0.5f)
 		{
-			Log::Info << "Reloading all shaders." << endl;
-			Reload("shaders");
+			lastResetTime = currSeconds;
+			Reset(time);
 		}
 
-		Log::Info << "Key R: curr " << current << " prev " << prev << endl;
 
-		prev = current;
+		//static int prev = GLFW_RELEASE;
+
+		//int current = glfwGetKey(Window(), GLFW_KEY_R);
+
+		//if (current == GLFW_RELEASE && prev == GLFW_PRESS)
+		//{
+		//	Log::Info << "Reloading all shaders." << endl;
+		//	Reload("shaders");
+		//}
+
+		//Log::Info << "Key R: curr " << current << " prev " << prev << endl;
+
+		//prev = current;
 	}
 	);
 
@@ -149,7 +160,6 @@ bool AsteroidsGame::OnCreateScene()
 		auto& translation = camera.Transform.Translation;
 
 		camera.Transform.Reset();
-
 		camera.Transform.Move(0, 0, 20);
 	}
 	);
@@ -243,6 +253,7 @@ void AsteroidsGame::OnUpdate(const GameTime& time)
 
 void AsteroidsGame::OnPreUpdate(const GameTime& time)
 {
+	m_scoreboard->AsteroidsRemaining = m_asteroids.size() - m_inactiveAsteroids.size();
 	/// wrap moving items to view frustum
 	DoCollisionCheck(time);
 	DoWrapping(time);
@@ -292,27 +303,28 @@ Asteroid& AsteroidsGame::CreateAsteroid()
 
 	auto& transform = asteroid.Transform;
 
-	transform.Scale = Vector3(4.f);
 	transform.RotationDrag = 0.f;
 	transform.TranslationDrag = 0.f;
 
 	m_asteroids.push_back(&asteroid);
 	m_itemsToWrap.push_back(&asteroid);
+	asteroid.OnExitFrustum = FrustumAction::Wrap;
 
 	asteroid.OnExploded =
 		[=](const GameTime& time, GameObject& sender)
 	{
-
-		Asteroid* a = dynamic_cast<Asteroid*>(&sender);
-
 		sender.Enabled = false;
-		m_scoreboard->AsteroidsRemaining--;
-		m_scoreboard->Score += a->PointValue;
-
-		if (nullptr != a)
-			m_inactiveAsteroids.push(a);
+		Asteroid* a = dynamic_cast<Asteroid*>(&sender);
+		this->m_inactiveAsteroids.push(a);
 	};
 
+	asteroid.OnReset =
+		[=]()
+	{
+
+	}
+	;
+	
 	return asteroid;
 
 }
@@ -329,16 +341,16 @@ void AsteroidsGame::CreateAsteroids(const int count)
 		Vector3 center(cosf(theta) * spread, sinf(theta) * spread, 0);
 
 		auto& asteroid = GetAsteroid();
-
 		/// start the asteroid moving...
 		float radians = TO_RADIANS(rand() % 360);
 
 		Vector3 dir(cosf(radians), sinf(radians), 0);
-
+		asteroid.Transform.Reset();
 		asteroid.Transform.Push(dir * 0.005f);
 		/// and make it spin
 		asteroid.Transform.Spin(Vector3(0, 0, 0.005f));
 		asteroid.Transform.Move(center);
+		asteroid.Enabled = true;
 	}
 }
 
@@ -411,16 +423,12 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 
 void AsteroidsGame::UpdateStatus()
 {
-	int activeCount = m_allMissiles.size() - m_inactiveMissiles.size();
+	int activeCount = m_asteroids.size() - m_inactiveAsteroids.size();
 
-	string title = "Asteroids: " + to_string(m_scoreboard->AsteroidsRemaining);
 
-	string info = "Score: " + to_string(m_scoreboard->Score) + " asteroids " + to_string(m_scoreboard->AsteroidsRemaining) + " lives " + to_string(m_scoreboard->LivesRemaining);
+	string info = "Score: " + to_string(m_scoreboard->Score) + " asteroids " + to_string(activeCount) + " lives " + to_string(m_scoreboard->LivesRemaining);
 
 	m_hud->Data = info;
-
-
-	glfwSetWindowTitle(Window(), title.c_str());
 }
 
 Drawable& AsteroidsGame::GetMissile(bool forceCreateNew)
@@ -453,19 +461,21 @@ Asteroid& AsteroidsGame::GetAsteroid(bool forceCreateNew)
 	if (forceCreateNew || m_inactiveAsteroids.size() == 0)
 	{
 		item = &CreateAsteroid();
-
-		m_asteroids.push_back(item);
-		m_itemsToWrap.push_back(item);
-
-		item->OnExitFrustum = FrustumAction::Wrap;
-		m_inactiveAsteroids.push(item);
+	}
+	else
+	{
+		item = m_inactiveAsteroids.front();
+		m_inactiveAsteroids.pop();
 	}
 
-	item = m_inactiveAsteroids.front();
-	m_inactiveAsteroids.pop();
-	//item->Reset();
 	item->Enabled = true;
+	item->BreakPlanes.clear();
 
+	item->PointValue = 10;
+	item->BreaksRemaining = 2;
+	item->Reset(Game::Instance().Time);
+	item->Transform.Scale = Vector3(4.f);
+	
 	return *item;
 }
 
@@ -516,29 +526,26 @@ bool AsteroidsGame::CanRespawn()
 
 }
 
-void AsteroidsGame::Reset(const GameTime& time)
+void AsteroidsGame::OnReset(const GameTime& time)
 {
-	return;
-	//m_scoreboard->Reset();
+	m_scoreboard->Reset();
 
+	while (m_inactiveAsteroids.size() > 0)
+		m_inactiveAsteroids.pop();
 
+	for (auto a : m_asteroids)
+	{
+		if (a->Enabled)
+			a->Explode(time);
+		
+		a->Enabled = false;
+		m_inactiveAsteroids.push(a);
+	}
 
+	m_ship->Reset(time);
+	m_ship->EnableInput(true);
 
-	//while (m_inactiveAsteroids.size() > 0)
-	//	m_inactiveAsteroids.pop();
-
-	//for (auto a : m_asteroids)
-	//{
-	//	if (a->Enabled)
-	//		a->Explode(time);
-
-	//	m_inactiveAsteroids.push(a);
-	//}
-
-	//m_ship->Reset();
-	//m_ship->EnableInput(true);
-
-	//CreateAsteroids(m_scoreboard->AsteroidsRemaining);
+	CreateAsteroids(4);// m_scoreboard->AsteroidsRemaining);
 }
 
 void AsteroidsGame::DoCollisionCheck(const GameTime& time)
@@ -549,14 +556,11 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		return;
 
 
-	//if (ship.IsRespawning && CanRespawn())
-	//	Respawn();
-	//
 	auto shipBounds = ship.Bounds;
 
 	shipBounds = ship.Transform.TransformSphere(shipBounds);
 
-	for (auto* ptr : m_asteroids)
+	for (auto ptr : m_asteroids)
 	{
 		if (!ptr->Enabled || ptr->IsExploding)
 			continue;
@@ -571,7 +575,6 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		if (asteroidBounds.Intersects(shipBounds))
 		{
 			Vector3 dir = shipBounds.Center - asteroidBounds.Center;
-
 
 			ship.Explode(time, 3.f);
 			ship.EnableInput(false);
@@ -591,27 +594,50 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 			if (missileBounds.Intersects(asteroid->TransformedBounds))
 			{
 
+				m_scoreboard->Score += asteroid->PointValue;
+
 				DisableMissile(*missile);
-				if (asteroid->BreakPlanes.size() > 3)
+
+				if (asteroid->BreaksRemaining-- <= 0)
 				{
 					asteroid->Explode(time, 1.f);
-					asteroid->Transform.Stop();
 				}
 				else
 				{
-					asteroid->Break(time, missileBounds.Center, false);
+					Log::Info << "Break asteroid " << asteroid->Name << endl;
+					
+					auto& newAsteroid = GetAsteroid();
+				
+					newAsteroid.Transform = asteroid->Transform;
+					newAsteroid.BreakPlanes = asteroid->BreakPlanes;
+					newAsteroid.BreaksRemaining = asteroid->BreaksRemaining;
+
+					//newAsteroid.Break(time, missileBounds.Center, false);
+					//asteroid->Break(time, missileBounds.Center, true);
+
+					asteroid->PointValue *= 2;
+					newAsteroid.PointValue *= 2;
+
+					float pushSpeed = asteroid->PointValue / 1000.f;
+					Vector3 pushDir = missile->Transform.Velocity().Normalized();
+					float t = pushDir.X;
+					pushDir.X = -pushDir.Y;
+					pushDir.Y = t;
+
+
+					newAsteroid.Transform.Push(pushDir * pushSpeed);
+					newAsteroid.Transform.Scale *= 0.75f;
+
+					asteroid->Transform.Push(pushDir * -pushSpeed);
+					asteroid->Transform.Scale *= 0.75f;
+
 				}
-				//asteroid->Transform.SetRotation(Vector3(0));
-
-				//auto& newAsteroid = GetAsteroid();
-				//newAsteroid.Transform = asteroid->Transform;
-				//newAsteroid.BreakPlanes = asteroid->BreakPlanes;
-				//newAsteroid.Break(time, missileBounds.Center, true);
-
-				//newAsteroid.Transform.SetRotation(newAsteroid.Transform.Rotation + Vector3(0, 0, TO_RADIANS(180)));
 
 				return;
+
 			}
+
+
 
 		}
 #endif
