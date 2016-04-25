@@ -5,6 +5,8 @@
 //  Created by David Lively on 2/22/16.
 //  Copyright © 2016 David Lively. All rights reserved.
 //
+#include <vector>
+#include <cmath>
 
 #include "Asteroid.h"
 #include "Common.h"
@@ -14,58 +16,56 @@
 #include "InputHandler.h"
 #include "GeometryProvider.h"
 #include "Material.h"
-
-#include <vector>
-#include <cmath>
+#include "Mesh.h"
+#include "ModelStore.h"
 
 using namespace std;
+
+// stupid hack around stupid architecture
 
 bool Asteroid::OnInitialize()
 {
 	vector<Vector3> vertices;
 	vector<GLushort> indices;
 
-	if (TwoD)
+	string modelName = "asteroid";
+	auto& models = Game::Instance().Models;
+
+	Material.FillType = PolygonMode::Fill;
+	Material.Build("Shaders/asteroid");
+
+	if (models.Exists(modelName))
 	{
-		Material.FillType = PolygonMode::Line;
-		Mesh.Type = BeginMode::Lines;
-		Material.Build("Shaders/primitive");
-
-		GeometryProvider::Circle(vertices, indices, Vector3::Zero, 0.5f, 12);
-
+		this->Mesh = *models.Get(modelName);
+		this->Mesh.Parent = this;
+		this->Mesh.Material = &Material;
 	}
 	else
 	{
-		Material.FillType = PolygonMode::Fill;
-		Mesh.Type = BeginMode::Triangles;
-		Material.Build("Shaders/asteroid");
+		Log::Info << "Found mesh \"" << modelName << "\". Reusing." << endl;
+
 		GeometryProvider::Icosahedron(vertices, indices);
 		GeometryProvider::Tessellate(vertices, indices, 2);
 		GeometryProvider::Spherize(vertices);
+		GeometryProvider::Noisify(vertices, 20, 0.3f);
+		GeometryProvider::FitToUnitCube(vertices);
+
+		Mesh.Bounds = BoundingSphere::FromVectors(vertices);
+		Mesh.Type = BeginMode::Triangles;
+		Mesh.Material = &Material;
+		Mesh.Initialize(vertices, indices);
+		Mesh.CullBackfaces = true;
+
+		models.Add(modelName, &Mesh);
+
+
 	}
-
-
-	GeometryProvider::Noisify(vertices, 20, 0.3f);
-	GeometryProvider::FitToUnitCube(vertices);
-	Bounds = BoundingSphere::FromVectors(vertices);
-
-
-	Mesh.Material = &Material;
-	Mesh.Initialize(vertices, indices);
-	Mesh.CullBackfaces = false;
 
 	Transform.TranslationDrag = 0.f;
 
 	Uniforms.SetUniform("EmissiveColorIntensity", Vector4(1, 0, 0, 0.2f));
 
 	float explodeSpeed = 0.02f;
-
-	Input.Subscribe(GLFW_KEY_B,
-		DECL_KEYHANDLER
-	{
-		Broken = !Broken;
-	}
-	);
 
 	return Explodable::OnInitialize();
 }
@@ -96,6 +96,22 @@ void Asteroid::OnRender(const GameTime& time)
 
 	Uniforms.SetUniform("ColorByDepth", 1.f);
 	Uniforms.SetUniform("EmissiveColorIntensity", orange);
+
+	/*
+	uniform vec3 ExplosionColorInner;
+uniform vec3 ExplosionColorOuter;
+uniform float ExplosionColorIntensity;
+
+	*/
+
+	Vector3 eci = Vector3(1, 1, 1);
+	Vector3 eco = Vector3(1, 0, 1);
+	float intensity = 1;
+
+	Uniforms.SetUniform("ExplosionColorInner", eci);
+	Uniforms.SetUniform("ExplosionColorOuter", eco);
+	Uniforms.SetUniform("ExplosionColorIntensity", intensity);
+
 
 	Explodable::OnRender(time);
 }

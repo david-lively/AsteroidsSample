@@ -108,6 +108,7 @@ public:
 
 		Title->Load("Textures/AsteroidsTitle.png");
 		Title->Enabled = false;
+		Title->InScreenSpace = true;
 
 		return GameState::OnInitialize();
 	}

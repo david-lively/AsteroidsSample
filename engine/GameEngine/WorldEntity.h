@@ -29,14 +29,11 @@ class WorldEntity : public GameObject
 {
 public:
 	Transform& Transform;
-    BoundingSphere Bounds;
-	BoundingSphere TransformedBounds;
 
 	FrustumAction OnExitFrustum = FrustumAction::Wrap;
     
 	void OnUpdate(const GameTime& time) override
 	{
-		TransformedBounds = Transform.TransformSphere(Bounds);
 
 		GameObject::OnUpdate(time);
 	}

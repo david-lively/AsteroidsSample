@@ -36,8 +36,8 @@ bool Missile::OnInitialize()
 
 	indices.push_back(0);
 	indices.push_back(1);
-
-	Bounds = BoundingSphere::FromVectors(vertices);
+	
+	Mesh.Bounds = BoundingSphere::FromVectors(vertices);
 	Mesh.Initialize(vertices, indices);
 
 	Transform.TranslationDrag = 0.f;

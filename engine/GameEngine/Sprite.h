@@ -8,9 +8,13 @@
 class Sprite : public Drawable
 {
 public:
+	const int MaxLayers = 10;
+	int Layer = 0;
+
 	int Width = 0;
 	int Height = 0;
 	GLuint TextureId = 0;
+	bool InScreenSpace = false;
 
 	std::string Filenane;
 

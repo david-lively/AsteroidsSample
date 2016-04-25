@@ -25,12 +25,16 @@ using namespace std;
 #include "Bounds.h"
 #include "Light.h"
 #include "Hud.h"
-
+#include "Draw.h"
 
 bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
+
+	//CreateMap();
+	//m_map = &CreateMap();
+
 	m_stateMachine = &CreateStateMachine();
 
 	m_scoreboard = &Create<Scoreboard>("scoreboard");
@@ -329,7 +333,7 @@ Asteroid& AsteroidsGame::CreateAsteroid()
 
 }
 
-void AsteroidsGame::CreateAsteroids(const int count)
+void AsteroidsGame::CreateAsteroids(const int count, const int level)
 {
 	for (int i = 0; i < count; ++i)
 	{
@@ -372,22 +376,24 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
 	vector<float> positions =
 	{
-		0, 0, 1
+		0,0,1
 		,
-		0, 0, -1
-		,
+		//0, 0, 1
+		//,
+		//0, 0, -1
+		//,
 		1, 0, 0
-		,
-		-1, 0, 0
-		,
-		0, 1, 0
-		,
-		0, -1, 0
+		//,
+		//-1, 0, 0
+		//,
+		//0, 1, 0
+		//,
+		//0, -1, 0
 	};
 
 	vector<float> colors =
 	{
-		1, 0, 0
+		1, 1, 1
 		,
 		0, 1, 0
 		,
@@ -410,11 +416,13 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 
 		auto& l = environment.CreateLight();
 
-		l.Direction = -1.f * pos;
+		l.Direction = pos;
 		l.Color = color;
 		l.Intensity = 1.f;
-		l.Position = pos * 9.f;
+		l.Position = pos;
 		l.Transform.Move(l.Position);
+		//l.Transform.Sequence = TransformSequence::ScaleTranslateRotate;
+		l.Transform.Spin(0, 0, TO_RADIANS(10.f));
 
 		lights.push_back(&l);
 	}
@@ -556,7 +564,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		return;
 
 
-	auto shipBounds = ship.Bounds;
+	auto shipBounds = ship.Bounds();
 
 	shipBounds = ship.Transform.TransformSphere(shipBounds);
 
@@ -569,7 +577,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 		if (nullptr == asteroid || !asteroid->Enabled)
 			continue;
 
-		auto asteroidBounds = asteroid->Bounds;
+		auto asteroidBounds = asteroid->Bounds();
 		asteroidBounds = asteroid->Transform.TransformSphere(asteroidBounds);
 
 		if (asteroidBounds.Intersects(shipBounds))
@@ -722,3 +730,14 @@ StateMachine& AsteroidsGame::CreateStateMachine()
 
 
 }
+
+WorldEntity& AsteroidsGame::CreateMap()
+{
+	auto& m = Create<Draw>("map");
+
+	m.Transform.Scale = Vector3(2);
+
+	return m;
+
+}
+

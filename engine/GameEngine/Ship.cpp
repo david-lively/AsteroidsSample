@@ -47,7 +47,7 @@ void Ship::CreateShipMesh()
 	//GeometryProvider::Tessellate(vertices, indices, 2);
 
 	GeometryProvider::FitToUnitCube(vertices);
-	Bounds = BoundingSphere::FromVectors(vertices);
+	Mesh.Bounds = BoundingSphere::FromVectors(vertices);
 
 	Material.FillType = PolygonMode::Fill;
 	Mesh.Type = BeginMode::Triangles;

@@ -21,8 +21,8 @@ bool Grid::OnInitialize()
     
     vector<Vector3> vertices;
     GeometryProvider::LineGrid(vertices,20);
-    
-    Bounds = BoundingSphere::FromVectors(vertices);
+
+	Mesh.Bounds = BoundingSphere::FromVectors(vertices);
     
     Material.Build("Shaders/primitive");
     

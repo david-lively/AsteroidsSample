@@ -13,7 +13,13 @@ void Drawable::OnRender(const GameTime& time)
 	Uniforms.Apply(time);
 
 
+
 	WorldEntity::OnRender(time);
+}
+
+void Drawable::OnUpdate(const GameTime& time)
+{
+	TransformedBounds = Transform.TransformSphere(Mesh.Bounds);
 }
 
 bool Drawable::OnInitialize()

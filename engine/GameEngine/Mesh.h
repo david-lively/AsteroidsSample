@@ -17,6 +17,7 @@
 #include "Enums.h"
 #include "Material.h"
 #include "Vertex.h"
+#include "Bounds.h"
 
 class Mesh : public GameObject
 {
@@ -30,6 +31,16 @@ public:
 	{
 
 	}
+	Material* Material = nullptr;
+
+	BeginMode Type = BeginMode::Triangles;
+	bool CullBackfaces = true;
+	//SenderNotifyEvent OnPreDraw = nullptr;
+
+	bool IsDynamic = false;
+	BoundingSphere  Bounds;
+
+	GLuint VertexBuffer() { return m_vertexBuffer; }
 
 	void Bind()
 	{
@@ -40,15 +51,6 @@ public:
 	{
 		gl::BindVertexArray(0);
 	}
-
-	Material* Material = nullptr;
-
-	BeginMode Type = BeginMode::Triangles;
-	bool CullBackfaces = true;
-	//SenderNotifyEvent OnPreDraw = nullptr;
-
-	GLuint VertexBuffer() { return m_vertexBuffer; }
-	bool IsDynamic = false;
 
 	template<typename TCollection>
 	void SetVertexData(const TCollection& vertices, const BufferUsageHint hint = BufferUsageHint::StaticDraw)
@@ -116,7 +118,7 @@ public:
 	template<typename TVertexCollection, typename TIndexCollection>
 	void Initialize(TVertexCollection& vertices, TIndexCollection& indices)
 	{
-
+		Bounds = BoundingSphere::FromVectors(vertices);
 		/// make sure there aren't any pending OpenGL errors
 		check_gl_error();
 

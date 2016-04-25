@@ -2,13 +2,13 @@
 
 uniform sampler2D Texture0;
 uniform float ForceWireframe = 0;
-
 out vec4 fragmentColor;
 
 in vec2 texCoord;
 
 void main() 
 {
+
 	vec4 texel = texture(Texture0, texCoord);
 	texel.a = texel.r;
 	fragmentColor = texel;

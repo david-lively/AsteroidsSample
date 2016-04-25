@@ -20,6 +20,9 @@ uniform float ForceWireframe = 0;
 uniform float ColorByDepth = 0;
 uniform float ExplosionFactor = 0.f;
 
+uniform vec3 ExplosionColorInner;
+uniform vec3 ExplosionColorOuter;
+uniform float ExplosionColorIntensity;
 
 in gOutputType
 {
@@ -46,22 +49,36 @@ vec4 saturate(vec4 val)
 	return vec4(saturate(val.xyz), saturate(val.w));
 }
 
+vec3 CalculateLight(vec3 color, float emissive, vec3 pos, vec3 dir, vec3 normal)
+{
+	vec4 p = View * vec4(pos,1);
+	float intensity = saturate(dot(normal, dir));
+	return (intensity + emissive) * color;
+}
+
 vec3 ProcessLights(vec3 normal)
 {
 	vec4 color;
 
 	for (int i = 0; i < LightCount; ++i)
 	{
-		vec4 colorIntensity = LightColorIntensity[i];
-
 		vec4 position = vec4(0, 0, 0, 1);
 		position = View * LightTransform[i] * position;
 
+		vec4 colorIntensity = LightColorIntensity[i];
 		vec3 direction = LightDirection[i];
 
-		float intensity = saturate(dot(normal, direction));
-		color.rgb += intensity * colorIntensity.rgb;
+		vec3 rgb = CalculateLight(
+			LightColorIntensity[i].rgb
+			, LightColorIntensity[i].a
+			, position.xyz
+			, direction
+			, normal
+			);
+
+		color.rgb += rgb;
 	}
+
 
 	color.a = 1;
 
@@ -86,33 +103,15 @@ void main() {
 
 	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
 	
-	if (abs(dot(vec3(0, 0, 1), normal)) > cos(TO_RADIANS(80)))
-		color = vec3(0.2f);
+	color *= dot(vec3(0, 0, 1), normal);
+	if (abs(dot(vec3(0, 0, -1), normal)) > cos(TO_RADIANS(80)))
+		color *= vec3(0.2f);
 
-	if (ColorByDepth > 0.5f)
-	{
-		float c = 2 * (length(gOut.ObjectPosition)  - 1);
-		color = vec3(c);
-
-		//if (c < 0.3)
-		//	color.r = c * 3;
-		//else if (c < 0.6)
-		//{
-		//	color.r = 1;
-		//	color.g = (c - 0.3) / 0.3;
-		//}
-		//else
-		//{
-		//	color.r = 1;
-		//	color.g = 1;
-		//	color.b = (c - 0.6) / 0.6;
-		//}
-
-
-
-
-		//color = vec3(c);
-	}
+	//if (ColorByDepth > 0.5f)
+	//{
+	//	float brightness = 2 * (length(gOut.ObjectPosition)  - 1);
+	//	color *= brightness;
+	//}
 
 	if (ForceWireframe > 0.5f)
 		color = vec3(1);

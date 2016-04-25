@@ -8,7 +8,7 @@ using namespace std;
 
 #include "Vectors.h"
 #include "GeometryProvider.h"
-
+#include "Game.h"
 
 Sprite::Sprite()
 {
@@ -21,23 +21,36 @@ Sprite::~Sprite()
 
 bool Sprite::OnInitialize()
 {
-	vector<Vector3> vertices;
-	vector<GLushort> indices;
+	auto& meshes = Game::Instance().Models;
+	string meshName = "Quad";
 
-	Material.FillType = PolygonMode::Fill;
-	Mesh.Type = BeginMode::Triangles;
 	Material.Build("Shaders/textured");
-	//Material.Blend = false;
-	Material.DepthTesting = false;
+	Material.FillType = PolygonMode::Fill;
+	Material.DepthTesting = true;
 
-	GeometryProvider::Quad(vertices, indices, 1, 1);
+	if (meshes.Exists(meshName))
+	{
+		Mesh = *meshes.Get(meshName);
+		Transform.Translation.Z = 0;
+		Mesh.Material = &Material;
+	}
+	else
+	{
+		vector<Vector3> vertices;
+		vector<GLushort> indices;
 
-	GeometryProvider::FitToUnitCube(vertices);
-	Bounds = BoundingSphere::FromVectors(vertices);
+		GeometryProvider::Quad(vertices, indices, 1, 1);
+		GeometryProvider::FitToUnitCube(vertices);
 
+		Mesh.Bounds = BoundingSphere::FromVectors(vertices);
 
-	Mesh.Material = &Material;
-	Mesh.Initialize(vertices, indices);
+		Mesh.Material = &Material;
+		Mesh.Initialize(vertices, indices);
+		Mesh.Type = BeginMode::Triangles;
+
+		meshes.Add(meshName, &Mesh);
+	}
+	
 
 	return Drawable::OnInitialize();
 }
@@ -67,6 +80,11 @@ void Sprite::OnRender(const GameTime& time)
 
 		check_gl_error();
 	}
+
 	
+	Uniforms.SetUniform("InScreenSpace", InScreenSpace);
+	Uniforms.SetUniform("Layer", (float)Layer);
+	Uniforms.SetUniform("MaxLayers", (float)MaxLayers);
+
 	Drawable::OnRender(time);
 }

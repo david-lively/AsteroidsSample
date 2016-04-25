@@ -44,7 +44,7 @@ bool StateMachine::OnInitialize()
 
 		this->Scoreboard->AsteroidsRemaining = numAsteroids;
 
-		this->Game->CreateAsteroids(numAsteroids);
+		this->Game->CreateAsteroids(numAsteroids, this->Scoreboard->Level);
 		this->Ship->Transform.Stop();
 		this->Ship->Transform.Move(0, 0, 0);
 	};

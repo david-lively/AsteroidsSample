@@ -6,6 +6,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "UniformCollection.h"
+#include "Bounds.h"
 
 class Drawable :
 	public WorldEntity
@@ -14,6 +15,7 @@ public:
 	class Mesh& Mesh;
 	class Material& Material;
 	UniformCollection Uniforms;
+	BoundingSphere TransformedBounds;
 
 	Drawable(const std::string& name) : WorldEntity(name)
 		, Mesh(Create<class Mesh>(name + ".mesh"))
@@ -29,8 +31,14 @@ public:
 
 	}
 
+	BoundingSphere& Bounds()
+	{
+		return Mesh.Bounds;
+	}
+
 	bool OnInitialize() override;
 	void OnRender(const GameTime& time) override;
+	void OnUpdate(const GameTime& time) override;
 
 private:
 

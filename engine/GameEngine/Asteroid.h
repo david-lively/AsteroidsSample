@@ -44,13 +44,13 @@ public:
 	}
 
 
-	bool TwoD = false;
+	bool TwoD = true;
     
     bool OnInitialize() override;
     
 	void OnRender(const GameTime& time) override;
     void OnUpdate(const GameTime& time) override;
-
+private:
 };
 
 

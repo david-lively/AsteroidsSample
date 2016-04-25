@@ -46,7 +46,7 @@ public:
     Grid& CreateGrid();
 	void CreateLights(std::vector<Light*>& lights);
 
-	void CreateAsteroids(const int count);
+	void CreateAsteroids(const int count, const int level = 0);
 	void DoCollisionCheck(const GameTime& time);
 	void DoWrapping(const GameTime& time);
 
@@ -55,6 +55,8 @@ public:
 	std::vector<std::tuple<WorldEntity*, WorldEntity*>> GetCollisionPairs();
 	void OnReset(const GameTime& time) override;
 
+	WorldEntity& CreateMap();
+
 
 private:
 	StateMachine* m_stateMachine;
@@ -62,6 +64,9 @@ private:
 	Hud* m_hud = nullptr; 
     Grid* m_grid = nullptr;
     Ship* m_ship = nullptr;
+	Drawable* m_map;
+
+
 	Scoreboard* m_scoreboard = nullptr;
 	
 

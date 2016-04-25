@@ -159,6 +159,9 @@
     <ClCompile Include="Primitive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\include\GLFW\glfw3.h">
@@ -338,6 +341,12 @@
     <ClInclude Include="Primitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelStore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag.glsl">
@@ -431,6 +440,15 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\textured.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\draw.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\draw.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\draw.vert.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

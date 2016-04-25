@@ -91,6 +91,7 @@
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AsteroidsGame.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="Explodable.cpp" />
     <ClCompile Include="Files.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Draw.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Explodable.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Missile.h" />
+    <ClInclude Include="ModelStore.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Resource.h" />
@@ -201,6 +204,9 @@
     <None Include="Shaders\demo.frag.glsl" />
     <None Include="Shaders\demo.geom.glsl" />
     <None Include="Shaders\demo.vert.glsl" />
+    <None Include="Shaders\draw.frag.glsl" />
+    <None Include="Shaders\draw.geom.glsl" />
+    <None Include="Shaders\draw.vert.glsl" />
     <None Include="Shaders\edgeDetection.frag.glsl" />
     <None Include="Shaders\edgeDetection.vert.glsl" />
     <None Include="Shaders\lit.frag.glsl" />

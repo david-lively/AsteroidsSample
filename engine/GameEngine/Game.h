@@ -6,8 +6,8 @@
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
-#ifndef Game_hpp
-#define Game_hpp
+#ifndef GAME_H
+#define GAME_H
 
 #include <vector>
 
@@ -16,7 +16,8 @@
 #include "Camera.h"
 #include "GameEnvironment.h"
 #include "PerlinNoise.h"
-#include "Game.h"
+
+#include "ModelStore.h"
 
 class Game : public GameObject
 {
@@ -29,6 +30,7 @@ public:
 	bool IsPlaying = false;
 	Vector4 ClearColor;
 	PerlinNoise Noise;
+	ModelStore Models;
 	
 	Game();
 
