@@ -24,7 +24,7 @@
 #include "Sprite.h"
 #include "StateMachine.h"
 #include "Hud.h"
-
+#include "Text.h"
 
 class AsteroidsGame : public Game
 {
@@ -65,7 +65,7 @@ private:
     Grid* m_grid = nullptr;
     Ship* m_ship = nullptr;
 	Drawable* m_map;
-
+	Text* m_text = nullptr;
 
 	Scoreboard* m_scoreboard = nullptr;
 	
@@ -92,6 +92,8 @@ private:
 	void ExpandMissilePool(const int count);
 
 	StateMachine& CreateStateMachine();
+
+	void CreateTextPool();
 };
 
 

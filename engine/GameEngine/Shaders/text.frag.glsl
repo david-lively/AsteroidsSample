@@ -12,7 +12,19 @@ out vec4 fragmentColor;
 
 void main() 
 {
-	float d = texture(FontTexture, gTexCoord).r;
+	if (ForceWireframe > 0)
+	{
+		fragmentColor = vec4(1);
+		return;
+	}
+
+
+	vec2 tex = gTexCoord;
+
+
+
+
+	float d = texture(FontTexture, tex).r;
 
 	if (d > SignedDistanceThreshold)
 		fragmentColor = vec4(1);

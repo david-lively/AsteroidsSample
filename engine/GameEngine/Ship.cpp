@@ -56,7 +56,7 @@ void Ship::CreateShipMesh()
 
 	Mesh.Initialize(vertices, indices);
 
-	
+
 	Mesh.CullBackfaces = false;
 
 }
@@ -171,14 +171,26 @@ bool Ship::Fire()
 
 void Ship::CreateAccessories()
 {
-	auto& orbiter = Create<Primitive>("ship.orbiter.asteroid");
+	return;
 
-	orbiter.Transform.Sequence = TransformSequence::ScaleRotateTranslate;// TranslateRotate;
-	orbiter.Transform.Scale *= 0.25f;
-	orbiter.Transform.Move(1.f, 0, 0);
-	orbiter.Transform.Spin(0, 0, TO_RADIANS(10.f));
-	orbiter.Transform.RotationDrag = 0.f;
+	WorldEntity* parent = this;
 
-	m_orbiter = &orbiter;
+	for (int i = 0; i < 5; ++i)
+	{
+		auto& orbiter = parent->Create<Primitive>("ship.orbiter.asteroid");
+
+		if (0 == i)
+			m_orbiter = &orbiter;
+
+		orbiter.Transform.Sequence = TransformSequence::ScaleTranslateRotate;// ::ScaleRotateTranslate;// TranslateRotate;
+		orbiter.Transform.Scale *= 0.5f;
+		orbiter.Transform.Move(2.f, 0, 0);
+		orbiter.Transform.Spin(0, 0, 10);// TO_RADIANS(10.f));
+		orbiter.Transform.RotationDrag = 0.f;
+
+		parent = &orbiter;
+
+	}
+
 }
 

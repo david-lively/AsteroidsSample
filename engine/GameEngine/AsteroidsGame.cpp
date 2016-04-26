@@ -31,7 +31,9 @@ bool AsteroidsGame::OnCreateScene()
 {
 	m_ship = &CreateShip();
 	m_grid = &CreateGrid();
+	CreateTextPool();
 
+	m_text->Enabled = false;
 	//CreateMap();
 	//m_map = &CreateMap();
 
@@ -280,6 +282,12 @@ Ship& AsteroidsGame::CreateShip()
 
 	ship.EnableInput(true);
 
+	auto& text = ship.Create<Text>("score.text");
+
+	text.Data = "The quick brown fox jumps over the lazy dog.";
+
+	m_text = &text;
+
 	return ship;
 }
 
@@ -328,7 +336,7 @@ Asteroid& AsteroidsGame::CreateAsteroid()
 
 	}
 	;
-	
+
 	return asteroid;
 
 }
@@ -376,7 +384,7 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 {
 	vector<float> positions =
 	{
-		0,0,1
+		0, 0, 1
 		,
 		//0, 0, 1
 		//,
@@ -436,7 +444,12 @@ void AsteroidsGame::UpdateStatus()
 
 	string info = "Score: " + to_string(m_scoreboard->Score) + " asteroids " + to_string(activeCount) + " lives " + to_string(m_scoreboard->LivesRemaining);
 
+	m_hud->Transform.Translation = Vector3(-1, 1, Environment().TestFloat);
 	m_hud->Data = info;
+
+	m_text->RenderPosition.X = -1;
+	m_text->RenderPosition.Y = +1;
+
 }
 
 Drawable& AsteroidsGame::GetMissile(bool forceCreateNew)
@@ -483,7 +496,7 @@ Asteroid& AsteroidsGame::GetAsteroid(bool forceCreateNew)
 	item->BreaksRemaining = 2;
 	item->Reset(Game::Instance().Time);
 	item->Transform.Scale = Vector3(4.f);
-	
+
 	return *item;
 }
 
@@ -545,7 +558,7 @@ void AsteroidsGame::OnReset(const GameTime& time)
 	{
 		if (a->Enabled)
 			a->Explode(time);
-		
+
 		a->Enabled = false;
 		m_inactiveAsteroids.push(a);
 	}
@@ -609,35 +622,37 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 				if (asteroid->BreaksRemaining-- <= 0)
 				{
 					asteroid->Explode(time, 1.f);
+					m_text->Transform.Translation = asteroid->Transform.Translation;
+					m_text->Data = "BOOM!";
+					m_text->Transform.Scale = Vector3(20);
 				}
 				else
 				{
 					Log::Info << "Break asteroid " << asteroid->Name << endl;
-					
-					auto& newAsteroid = GetAsteroid();
-				
-					newAsteroid.Transform = asteroid->Transform;
-					newAsteroid.BreakPlanes = asteroid->BreakPlanes;
-					newAsteroid.BreaksRemaining = asteroid->BreaksRemaining;
 
-					//newAsteroid.Break(time, missileBounds.Center, false);
-					//asteroid->Break(time, missileBounds.Center, true);
+					for (int i = -1; i <= 1; i += 2)
+					{
+						auto& newAsteroid = GetAsteroid();
 
-					asteroid->PointValue *= 2;
-					newAsteroid.PointValue *= 2;
+						newAsteroid.Transform = asteroid->Transform;
+						newAsteroid.BreakPlanes = asteroid->BreakPlanes;
+						newAsteroid.BreaksRemaining = asteroid->BreaksRemaining;
 
-					float pushSpeed = asteroid->PointValue / 1000.f;
-					Vector3 pushDir = missile->Transform.Velocity().Normalized();
-					float t = pushDir.X;
-					pushDir.X = -pushDir.Y;
-					pushDir.Y = t;
+						newAsteroid.PointValue *= 2;
 
+						float pushSpeed = asteroid->PointValue / 1000.f;
+						Vector3 pushDir = missile->Transform.Velocity().Normalized();
+						float t = pushDir.X;
 
-					newAsteroid.Transform.Push(pushDir * pushSpeed);
-					newAsteroid.Transform.Scale *= 0.75f;
+						pushDir.X = -pushDir.Y;
+						pushDir.Y = t;
 
-					asteroid->Transform.Push(pushDir * -pushSpeed);
-					asteroid->Transform.Scale *= 0.75f;
+						newAsteroid.Transform.Push(pushDir * pushSpeed * i);
+						newAsteroid.Transform.Scale *= 0.75f;
+					}
+
+					/// explode the old asteroid so we get some nice particulates around the split
+					asteroid->Explode(time, 1.f);
 
 				}
 
@@ -741,3 +756,6 @@ WorldEntity& AsteroidsGame::CreateMap()
 
 }
 
+void AsteroidsGame::CreateTextPool()
+{
+}

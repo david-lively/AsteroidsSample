@@ -113,7 +113,6 @@ public:
 		return GameState::OnInitialize();
 	}
 
-
 	//GameState& GetNext(const GameTime& time) override
 	//{
 	//	if (TimeInState >= WaitForSeconds)

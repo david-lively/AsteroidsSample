@@ -34,18 +34,21 @@ bool Asteroid::OnInitialize()
 	Material.FillType = PolygonMode::Fill;
 	Material.Build("Shaders/asteroid");
 
-	if (models.Exists(modelName))
+	bool exists = models.Exists(modelName);
+
+	if (exists)
 	{
+		Log::Info << "Found mesh \"" << modelName << "\". Reusing." << endl;
+		
 		this->Mesh = *models.Get(modelName);
 		this->Mesh.Parent = this;
 		this->Mesh.Material = &Material;
 	}
 	else
 	{
-		Log::Info << "Found mesh \"" << modelName << "\". Reusing." << endl;
 
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 2);
+		GeometryProvider::Tessellate(vertices, indices, 3);
 		GeometryProvider::Spherize(vertices);
 		GeometryProvider::Noisify(vertices, 20, 0.3f);
 		GeometryProvider::FitToUnitCube(vertices);
