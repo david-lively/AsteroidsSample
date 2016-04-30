@@ -3,6 +3,8 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 12) out;
 
+
+#include "Common.h.glsl"
 uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;
@@ -32,20 +34,6 @@ out gOutputType
 	out vec4 WorldPosition;
 	out vec4 Color;
 } gOut;
-
-vec2 rotate(vec2 p, float theta)
-{
-	vec2 result = p;
-
-	float x1 = p.x * cos(theta) - p.y * sin(theta);
-	float y1 = p.x * sin(theta) + p.y * cos(theta);
-
-	result.x = x1;
-	result.y = y1;
-
-	return result;
-}
-
 
 void EmitTriangle(vec3 v0, vec3 v1, vec3 v2)
 {
@@ -79,22 +67,20 @@ void main()
 
 	vec3 normal = normalize(cross(v0 - v1, v2 - v1));
 
-	vec3 vtop = (center - normal * sideLength * (1 + noiseValue));
+	vec3 vtop = (center - normal * sideLength * 2 * (1 + noiseValue));
 	
 	vec3 v[] = { v0, v1, v2, vtop };
 
-	vec3 explodeDirection = normal;
-
 	for (int i = 0; i < 4; ++i)
 	{
-		v[i] += explodeDirection *  ExplosionFactor;
+		v[i] += normal * 2 * ExplosionFactor;
 	}
 	
 	EmitTriangle(v[0], v[1], v[2]);
 
 	if (ExplosionFactor > 0)
 	{
-		// generate some interior chunks
+		// convert face to pyramid for "solid" explosions
 		EmitTriangle(v[0], v[1], v[3]);
 		EmitTriangle(v[1], v[2], v[3]);
 		EmitTriangle(v[2], v[0], v[3]);

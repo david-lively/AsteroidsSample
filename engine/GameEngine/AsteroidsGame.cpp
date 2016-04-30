@@ -33,7 +33,6 @@ bool AsteroidsGame::OnCreateScene()
 	m_grid = &CreateGrid();
 	CreateTextPool();
 
-	m_text->Enabled = false;
 	//CreateMap();
 	//m_map = &CreateMap();
 
@@ -42,7 +41,6 @@ bool AsteroidsGame::OnCreateScene()
 	m_scoreboard = &Create<Scoreboard>("scoreboard");
 
 	m_hud = &Create<Hud>("hud");
-	m_hud->Transform.Move(-50.f, 0.5f, 0);
 
 	m_stateMachine->Ship = m_ship;
 	m_stateMachine->Scoreboard = m_scoreboard;
@@ -282,12 +280,6 @@ Ship& AsteroidsGame::CreateShip()
 
 	ship.EnableInput(true);
 
-	auto& text = ship.Create<Text>("score.text");
-
-	text.Data = "The quick brown fox jumps over the lazy dog.";
-
-	m_text = &text;
-
 	return ship;
 }
 
@@ -325,9 +317,9 @@ Asteroid& AsteroidsGame::CreateAsteroid()
 	asteroid.OnExploded =
 		[=](const GameTime& time, GameObject& sender)
 	{
-		sender.Enabled = false;
 		Asteroid* a = dynamic_cast<Asteroid*>(&sender);
 		this->m_inactiveAsteroids.push(a);
+		a->Enabled = false;
 	};
 
 	asteroid.OnReset =
@@ -360,7 +352,7 @@ void AsteroidsGame::CreateAsteroids(const int count, const int level)
 		asteroid.Transform.Reset();
 		asteroid.Transform.Push(dir * 0.005f);
 		/// and make it spin
-		asteroid.Transform.Spin(Vector3(0, 0, 0.005f));
+		asteroid.Transform.Spin(Vector3(0, 0.01f, 0.005f));
 		asteroid.Transform.Move(center);
 		asteroid.Enabled = true;
 	}
@@ -386,17 +378,17 @@ void AsteroidsGame::CreateLights(vector<Light*>& lights)
 	{
 		0, 0, 1
 		,
-		//0, 0, 1
-		//,
-		//0, 0, -1
-		//,
+		0, 0, 1
+		,
+		0, 0, -1
+		,
 		1, 0, 0
-		//,
-		//-1, 0, 0
-		//,
-		//0, 1, 0
-		//,
-		//0, -1, 0
+		,
+		-1, 0, 0
+		,
+		0, 1, 0
+		,
+		0, -1, 0
 	};
 
 	vector<float> colors =
@@ -446,9 +438,6 @@ void AsteroidsGame::UpdateStatus()
 
 	m_hud->Transform.Translation = Vector3(-1, 1, Environment().TestFloat);
 	m_hud->Data = info;
-
-	m_text->RenderPosition.X = -1;
-	m_text->RenderPosition.Y = +1;
 
 }
 
@@ -517,7 +506,7 @@ void AsteroidsGame::Fire(Ship& ship)
 	missile.Transform.SetRotation(m_ship->Transform.Rotation);
 	missile.Transform.Move(shipMatrix.Translation());
 
-	float missileSpeed = 0.04f;
+	float missileSpeed = 0.1f;
 	missile.Transform.Push(up * missileSpeed);
 
 	Log::Debug << Time.FrameNumber() << " Fire! missile (" << missile.Id << ")" << endl;
@@ -622,9 +611,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 				if (asteroid->BreaksRemaining-- <= 0)
 				{
 					asteroid->Explode(time, 1.f);
-					m_text->Transform.Translation = asteroid->Transform.Translation;
-					m_text->Data = "BOOM!";
-					m_text->Transform.Scale = Vector3(20);
+					asteroid->Transform.Stop();
 				}
 				else
 				{
@@ -651,6 +638,7 @@ void AsteroidsGame::DoCollisionCheck(const GameTime& time)
 						newAsteroid.Transform.Scale *= 0.75f;
 					}
 
+					asteroid->Transform.Stop();
 					/// explode the old asteroid so we get some nice particulates around the split
 					asteroid->Explode(time, 1.f);
 

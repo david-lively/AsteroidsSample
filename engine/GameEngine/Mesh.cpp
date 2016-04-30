@@ -35,8 +35,8 @@ void Mesh::OnRender(const GameTime& time)
 
 	check_gl_error();
 
-    Material->Bind();
-	check_gl_error();
+ //   Material->Bind();
+	//check_gl_error();
 
 	auto& env = Game::Instance().Environment();
 

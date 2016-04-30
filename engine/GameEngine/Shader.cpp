@@ -8,7 +8,7 @@ using namespace std;
 #include "Common.h"
 #include "Files.h"
 #include "Enums.h"
-
+#include "ShaderProcessor.h"
 
 Shader::Shader() : Shader("unknown.shader")
 {
@@ -143,10 +143,25 @@ string Shader::GetShaderFilename(const std::string& basePath, const ShaderType s
 	return basePath + "." + extensions[shaderType] + ".glsl";
 }
 
+GLint Shader::CompileShader(const std::string& source)
+{
+	/*
+	1. Generate a shader
+	2. Preprocess, emit any found errors (missing #includes, etc.)
+	3. Pass to driver -gl::CompileShader
+	4. Check compile log, emit any errors
+	5. Repeat until successful
+	6. Return GL id for the shader.
+	*/
+	throw;
+}
+
 
 
 bool Shader::LoadSources(const std::string& basePath, std::map<ShaderType, std::string>& sources)
 {
+	ShaderProcessor preProcessor;
+
 	// linked programs require at least a vertex and fragment shader. 
 	bool hasFragmentShader = false;
 	bool hasVertexShader = false;
@@ -162,7 +177,9 @@ bool Shader::LoadSources(const std::string& basePath, std::map<ShaderType, std::
 
 		Log::Info << "Found shader file \"" << filename << "\"" << endl;
 
-		sources[typeExt.first] = Files::Read(filename);
+		string source = preProcessor.Parse(Files::Read(filename));
+
+		sources[typeExt.first] = ShaderProcessor::Parse(Files::Read(filename));
 
 		hasFragmentShader |= ShaderType::FragmentShader == typeExt.first;
 		hasVertexShader |= ShaderType::VertexShader == typeExt.first;

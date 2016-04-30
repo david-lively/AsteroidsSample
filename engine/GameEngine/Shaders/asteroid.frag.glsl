@@ -107,11 +107,11 @@ void main() {
 	if (abs(dot(vec3(0, 0, -1), normal)) > cos(TO_RADIANS(80)))
 		color *= vec3(0.2f);
 
-	//if (ColorByDepth > 0.5f)
-	//{
-	//	float brightness = 2 * (length(gOut.ObjectPosition)  - 1);
-	//	color *= brightness;
-	//}
+	if (ColorByDepth > 0.5f)
+	{
+		float brightness = 2 * (length(gOut.ObjectPosition)  - 1);
+		color *= brightness;
+	}
 
 	if (ForceWireframe > 0.5f)
 		color = vec3(1);

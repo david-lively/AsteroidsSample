@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "Drawable.h"
+#include "Explodable.h"
 
-class Sprite : public Drawable
+class Sprite : public Explodable
 {
 public:
 	const int MaxLayers = 10;
@@ -21,7 +21,7 @@ public:
 	Sprite();
 	~Sprite();
 
-	Sprite(const std::string& name) : Drawable(name)
+	Sprite(const std::string& name) : Explodable(name)
 	{
 
 	}

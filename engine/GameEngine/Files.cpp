@@ -4,6 +4,7 @@
 #include <fstream>
 #include <streambuf>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -42,6 +43,30 @@ bool Files::Exists(const string& path)
 	ifstream ifile(path.c_str());
 
 	return ifile.is_open();
+}
+
+vector<string> Files::ReadLines(const std::string& path)
+{
+	/*
+	std::ifstream file("filename");
+	std::string line;
+	while (std::getline(file, line)) {
+		// whatever
+	}
+	*/
+	vector<string> lines;
+	
+	ifstream file(path);
+	string line;
+
+	while (getline(file, line))
+	{
+		lines.push_back(line);
+	}
+
+	Log::Info << "Read " << lines.size() << " lines from \"" << path << "\"" << endl;
+
+	return lines;
 }
 
 

@@ -42,7 +42,6 @@ public:
 	bool OnInitialize() override;
 	void OnPreUpdate(const  GameTime& time) override;
 
-	bool CanFire();
 	bool Fire();
 
 	void EnableInput(bool isEnabled)

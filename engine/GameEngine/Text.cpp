@@ -60,7 +60,7 @@ void Text::OnRender(const GameTime& time)
 	Uniforms.SetUniform("TextureSize", TextureSize);
 	Uniforms.SetUniform("CellSize", CellSize);
 	Uniforms.SetUniform("FirstCharacterInTexture", (int)' ');
-	Uniforms.SetUniform("FontSize", 4.f);
+	Uniforms.SetUniform("FontSize", FontSize);
 
 
 	if (FontTextureId > 0)
@@ -81,7 +81,9 @@ void Text::OnRender(const GameTime& time)
 		check_gl_error();
 	}
 
-	Uniforms.SetUniform("RenderPosition", RenderPosition);
+
+	Vector3 uniformRenderPos(RenderPosition.X, RenderPosition.Y, 1);
+	Uniforms.SetUniform("RenderPosition", uniformRenderPos);
 
 
 

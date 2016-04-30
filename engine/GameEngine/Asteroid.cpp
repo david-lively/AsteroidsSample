@@ -28,11 +28,14 @@ bool Asteroid::OnInitialize()
 	vector<Vector3> vertices;
 	vector<GLushort> indices;
 
+	Caption.FontSize = 1;
+
 	string modelName = "asteroid";
 	auto& models = Game::Instance().Models;
 
 	Material.FillType = PolygonMode::Fill;
 	Material.Build("Shaders/asteroid");
+	Material.Blend = true;
 
 	bool exists = models.Exists(modelName);
 
@@ -48,9 +51,9 @@ bool Asteroid::OnInitialize()
 	{
 
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 3);
+		GeometryProvider::Tessellate(vertices, indices, 5);
 		GeometryProvider::Spherize(vertices);
-		GeometryProvider::Noisify(vertices, 20, 0.3f);
+		GeometryProvider::Noisify(vertices, 1, 0.15f);
 		GeometryProvider::FitToUnitCube(vertices);
 
 		Mesh.Bounds = BoundingSphere::FromVectors(vertices);
@@ -70,6 +73,7 @@ bool Asteroid::OnInitialize()
 
 	float explodeSpeed = 0.02f;
 
+	Caption.Enabled = false;
 	return Explodable::OnInitialize();
 }
 
@@ -88,6 +92,7 @@ void Asteroid::OnUpdate(const GameTime& time)
 	//bounds = mvp.Transform(bounds);
 	//float radius = (bounds - pos).Length() / 2.f;
 
+	Caption.Data = to_string(PointValue);
 	Explodable::OnUpdate(time);
 }
 

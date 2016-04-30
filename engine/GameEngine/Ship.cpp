@@ -152,20 +152,18 @@ void Ship::OnPreUpdate(const  GameTime& time)
 
 }
 
-bool Ship::CanFire()
-{
-	return TimeUntilCanFire <= 0;
-}
 
 bool Ship::Fire()
 {
 
-	if (!CanFire())
+	if (TimeUntilCanFire > 0)
 		return false;
+	else
+	{
+		TimeUntilCanFire = FireIntervalSec;
+		return true;
+	}
 
-	TimeUntilCanFire = FireIntervalSec;
-
-	return true;
 }
 
 

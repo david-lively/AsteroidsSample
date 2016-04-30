@@ -239,7 +239,7 @@ void GameObject::ProcessNewObjects()
 	for (auto it : m_newObjects)
 	{
 		it->ProcessNewObjects();
-		m_children.push_back(it);
+		m_children.insert(it);
 	}
 
 	m_newObjects.clear();

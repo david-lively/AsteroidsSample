@@ -65,7 +65,6 @@ private:
     Grid* m_grid = nullptr;
     Ship* m_ship = nullptr;
 	Drawable* m_map;
-	Text* m_text = nullptr;
 
 	Scoreboard* m_scoreboard = nullptr;
 	

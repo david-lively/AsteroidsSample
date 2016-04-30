@@ -89,6 +89,14 @@ inline T lerp(const T& left, const T& right, const float f)
 	return (right - left) * f + left;
 }
 
+template<typename T>
+void clear(T& collection)
+{
+	while (collection.size() > 0)
+		collection.pop();
+}
+
+
 #include "GLError.h"
 
 

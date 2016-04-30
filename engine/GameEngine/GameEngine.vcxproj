@@ -118,6 +118,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderProcessor.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderProcessor.h" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StateMachine.h" />

@@ -61,6 +61,7 @@ void Hud::OnRender(const GameTime& time)
 	Uniforms.SetUniform("CellSize", CellSize);
 	Uniforms.SetUniform("FirstCharacterInTexture", (int)' ');
 	Uniforms.SetUniform("FontSize", 4.f);
+	Uniforms.SetUniform("RenderPosition", Vector3(-0.95f, 0.95f, 0));
 
 
 	if (FontTextureId > 0)

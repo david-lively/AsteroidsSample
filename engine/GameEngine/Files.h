@@ -2,6 +2,7 @@
 #define FILES_H
 
 #include <string>
+#include <vector>
 
 #ifdef _MSC_VER
 #include <direct.h>
@@ -41,6 +42,8 @@ public:
 
 	/// pre-process any macros (#include, etc.). This is mostly intended for GLSL #includes. 
 	std::string Preprocess(const std::string& source);
+
+	std::vector<std::string> ReadLines(const std::string& path);
 
 
 };

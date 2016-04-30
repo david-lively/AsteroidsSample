@@ -12,6 +12,7 @@
 #include "Explodable.h"
 #include "Mesh.h"
 #include "InputHandler.h"
+#include "Text.h"
 
 
 enum class AsteroidMaterial
@@ -24,6 +25,8 @@ class Asteroid : public Explodable
 {
 public:
 	NotifyEvent OnReset = nullptr;
+	
+	Text& Caption;
 	/* What the asteroid is made of - for different explosion effects, mass etc.*/
 	AsteroidMaterial MadeOf;
 	int PointValue = 10;
@@ -33,12 +36,12 @@ public:
 
 	InputHandler& Input;
 
-	Asteroid() : Asteroid("asteroid")
+	Asteroid() : Asteroid("asteroid") 
     {
         
     }
 
-	Asteroid(const std::string& name) : Explodable(name), Input(Create<InputHandler>("asteroid-input"))
+	Asteroid(const std::string& name) : Explodable(name), Input(Create<InputHandler>("asteroid-input")), Caption(Create<Text>("asteroid.caption"))
 	{
 
 	}

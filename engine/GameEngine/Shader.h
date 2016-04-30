@@ -37,6 +37,7 @@ private:
 	std::string m_basePath;
 	std::map<ShaderType, GLuint> m_shaders;
 
+	std::string Preprocess(const std::string& source);
 
 	std::string GetShaderFilename(const std::string& basePath, const ShaderType shaderType) const;
 	bool LoadSources(const std::string& basePath, std::map<ShaderType, std::string>& sources);
@@ -45,6 +46,8 @@ private:
 
 	static std::string GetProgramLog(const GLuint program);
 	static std::string GetShaderLog(GLuint shader);
+
+	GLint CompileShader(const std::string& source);
 
 
 

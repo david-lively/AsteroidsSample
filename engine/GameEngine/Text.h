@@ -17,6 +17,7 @@ public:
 	Vector2 TextureSize;
 	Vector2 CellSize;
 	Vector2 RenderPosition;
+	float FontSize = 100.f;
 
 
 	//std::queue<std::string> Strings;
