@@ -37,7 +37,8 @@ out gOutputType
 
 void EmitTriangle(vec3 v0, vec3 v1, vec3 v2)
 {
-	vec3 verts[] = { v0, v1, v2 };
+	// float a[5] = float[](3.4, 4.2, 5.0, 5.2, 1.1);
+	vec3 verts[] = vec3[]( v0, v1, v2 );
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -59,7 +60,7 @@ void main()
 	vec3 v1 = ObjectPosition[1].xyz;
 	vec3 v2 = ObjectPosition[2].xyz;
 
-	float sideLength = length(v1 - v0);
+	float sideLength = length(v1 - v0) * 5;
 
 	float noiseValue = NoiseValues[gl_PrimitiveID % NoiseArrayLength]; 
 
@@ -69,7 +70,7 @@ void main()
 
 	vec3 vtop = (center - normal * sideLength * 2 * (1 + noiseValue));
 	
-	vec3 v[] = { v0, v1, v2, vtop };
+	vec3 v[] = vec3[]( v0, v1, v2, vtop );
 
 	for (int i = 0; i < 4; ++i)
 	{

@@ -46,7 +46,7 @@ vec4 saturate(vec4 val)
 	return vec4(saturate(val.xyz), saturate(val.w));
 }
 
-vec3 ProcessLights(vec3 normal)
+vec4 ProcessLights(vec3 normal)
 {
 	vec4 color;
 
@@ -83,7 +83,7 @@ void main() {
 
 	vec3 normal = cross(dx,dy);
 
-	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
+	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal).rgb;
 	
 	if (ColorByDepth > 0.5f)
 	{

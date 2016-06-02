@@ -132,24 +132,6 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\soil\etc1_utils.cpp">
-      <Filter>ThirdParty\SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\soil\image_DXT.cpp">
-      <Filter>ThirdParty\SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\soil\image_helper.cpp">
-      <Filter>ThirdParty\SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\soil\SOIL2.cpp">
-      <Filter>ThirdParty\SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\soil\stb_image.cpp">
-      <Filter>ThirdParty\SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="ThirdParty\soil\stb_image_write.cpp">
-      <Filter>ThirdParty\SOIL</Filter>
-    </ClCompile>
     <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -167,6 +149,24 @@
     </ClCompile>
     <ClCompile Include="ShaderProcessor.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\etc1_utils.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\image_DXT.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\image_helper.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\SOIL2.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\stb_image.c">
+      <Filter>ThirdParty\SOIL</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\soil\stb_image_write.c">
+      <Filter>ThirdParty\SOIL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

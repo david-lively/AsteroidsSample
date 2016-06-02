@@ -1,0 +1,42 @@
+/// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
+#version 330 core
+layout(triangles) in;
+layout(triangle_strip, max_vertices = 3) out;
+
+uniform mat4 World;
+uniform mat4 View;
+uniform mat4 Projection;
+
+in gl_PerVertex
+{
+	vec4 gl_Position;
+	float gl_PointSize;
+	float gl_ClipDistance[];
+} gl_in[];
+
+out gOutputType
+{
+	out vec4 ObjectPosition;
+	out vec4 WorldPosition;
+	out vec4 Color;
+} gOut;
+
+
+void main()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		vec4 pos = gl_in[i].gl_Position;
+
+		gOut.ObjectPosition = pos;
+		gOut.WorldPosition = World * pos;
+		gOut.Color = vec4(1);
+
+		gl_Position = Projection * View *  World * pos;
+
+		EmitVertex();
+	}
+
+	EndPrimitive();
+
+}

@@ -30,103 +30,6 @@ void Shader::OnReload(const string& tag)
 		Build(m_basePath);
 }
 
-GLuint Shader::Build(const string& basePath)
-{
-	m_basePath = basePath;
-	check_gl_error();
-
-	map<ShaderType, string> sources;
-	bool success = false;
-
-	Log::Info << "Building m_shaders for \"" << basePath << "\"" << endl;
-
-	GLuint programId = Handle;
-
-	do
-	{
-		sources.clear();
-
-		if (!(success = LoadSources(basePath, sources)))
-		{
-			Log::Error << "Could not load required sources for shader \"" << basePath << "\"" << endl;
-		}
-
-		if (success)
-		{
-			for (auto& typeSource : sources)
-			{
-				Log::Info << "Compiling shader " << to_string(typeSource.first) << "..." << endl;
-				ShaderType shaderType = typeSource.first;
-				string source = typeSource.second;
-
-				GLuint shader;
-
-				if (m_shaders.count(shaderType) > 0)
-					shader = m_shaders[shaderType];
-				else
-				{
-					shader = gl::CreateShader((GLenum)shaderType);
-					m_shaders[shaderType] = shader;
-				}
-
-				check_gl_error();
-
-				GLchar* sourceStr = (GLchar*)source.c_str();
-				GLint sourceLength = (GLint)source.length();
-
-				gl::ShaderSource(shader, 1, &sourceStr, &sourceLength);
-
-				check_gl_error();
-
-				gl::CompileShader(shader);
-
-				if (!CompileSuccessful(shader))
-				{
-					Log::Error << "Shader compilation error for " << to_string(shaderType) << " " << GetShaderFilename(basePath, shaderType) << endl;
-					Log::Error << GetShaderLog(shader) << endl;
-					Log::Error << "Press enter to retry" << endl;
-					getchar();
-					success = false;
-					break;
-				}
-			}
-		}
-
-		Handle = gl::CreateProgram();
-
-		for (auto shader : m_shaders)
-		{
-			gl::AttachShader(Handle, shader.second);
-		}
-
-		gl::LinkProgram(Handle);
-
-		if (!LinkSuccessful(Handle))
-		{
-			success = false;
-			Log::Error << "Link error for shader \"" << basePath << "\"" << endl << GetProgramLog(Handle) << endl;
-			Log::Error << "Press enter to retry." << endl;
-
-			gl::DeleteProgram(Handle);
-			Handle = -1;
-			getchar();
-		}
-		/// if we make it here, compilation was succesful.
-
-	} while (!success);
-
-
-	check_gl_error();
-
-
-	//for (auto shader : m_shaders)
-	//{
-	//	gl::DeleteShader(shader.second);
-	//}
-
-	return Handle;
-}
-
 static map<ShaderType, string> extensions =
 {
 	{ ShaderType::FragmentShader, "frag" },
@@ -138,12 +41,82 @@ static map<ShaderType, string> extensions =
 };
 
 
-string Shader::GetShaderFilename(const std::string& basePath, const ShaderType shaderType) const
+GLuint Shader::Build(const string& basePath)
+{
+	m_basePath = basePath;
+
+	Log::Info << "Building m_shaders for \"" << basePath << "\"" << endl;
+
+
+	map<ShaderType, GLuint> shaders;
+
+	GLuint programId = gl::CreateProgram();
+	bool success = true;
+
+	do
+	{
+		for (auto ext : extensions)
+		{
+			auto filename = basePath + "." + ext.second + ".glsl";
+
+			if (!Files::Exists(filename))
+				continue;
+
+			if (shaders.count(ext.first) > 0)
+			{
+				auto id = shaders[ext.first];
+				gl::DetachShader(programId, id);
+				gl::DeleteShader(id);
+			}
+
+			shaders[ext.first] = CompileShader(filename, ext.first);
+		}
+
+		if (shaders.size() == 0)
+		{
+			success = false;
+			Log::Error << "No shaders found! Press enter to retry.\n";
+			getchar();
+			continue;
+		}
+
+		for (auto shader : shaders)
+		{
+			gl::AttachShader(programId, shader.second);
+		}
+
+		gl::LinkProgram(programId);
+
+		GLint linkStatus;
+		gl::GetProgramiv(programId, gl::LINK_STATUS, &linkStatus);
+
+		if (!linkStatus)
+		{
+			success = false;
+
+			Log::Error << "Program link error for \"" << basePath << "\"" << endl;
+			Log::Error << GetProgramLog(programId) << endl;
+			Log::Error << "Press enter to retry." << endl;
+			
+			getchar();
+
+		}
+
+
+	} while (!success);
+
+	Handle = programId;
+
+	return Handle;
+}
+
+
+string Shader::GetShaderFilename(const std::string& basePath, ShaderType shaderType) const
 {
 	return basePath + "." + extensions[shaderType] + ".glsl";
 }
 
-GLint Shader::CompileShader(const std::string& source)
+GLuint Shader::CompileShader(const std::string& path, const ShaderType shaderType)
 {
 	/*
 	1. Generate a shader
@@ -153,7 +126,40 @@ GLint Shader::CompileShader(const std::string& source)
 	5. Repeat until successful
 	6. Return GL id for the shader.
 	*/
-	throw;
+	bool success = true;
+	
+	auto shader = gl::CreateShader((GLenum)shaderType);
+	
+	do
+	{
+		string source = Files::Read(path);
+		source = ShaderProcessor::Parse(source);
+
+		const GLchar* const src = source.c_str();
+		const GLint len = source.size();
+
+
+		gl::ShaderSource(shader, 1, &src, &len);
+
+		gl::CompileShader(shader);
+
+		GLint status;
+		gl::GetShaderiv(shader, gl::COMPILE_STATUS, &status);
+
+		success = status != 0;
+
+		if (!success)
+		{
+			Log::Error << "Error when building shader \"" << path << "\"" << endl;
+			Log::Error << "Log:\n" << GetShaderLog(shader) << endl;
+			Log::Error << "Press enter to retry.\n";
+			getchar();
+		}
+
+	} while (!success);
+
+	return shader;
+
 }
 
 

@@ -56,7 +56,7 @@ vec3 CalculateLight(vec3 color, float emissive, vec3 pos, vec3 dir, vec3 normal)
 	return (intensity + emissive) * color;
 }
 
-vec3 ProcessLights(vec3 normal)
+vec4 ProcessLights(vec3 normal)
 {
 	vec4 color;
 
@@ -101,7 +101,7 @@ void main() {
 
 	vec3 normal = cross(dx,dy);
 
-	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal);
+	vec3 color = EmissiveColorIntensity.rgb * EmissiveColorIntensity.a + ProcessLights(normal).rgb;
 	
 	color *= dot(vec3(0, 0, 1), normal);
 	if (abs(dot(vec3(0, 0, -1), normal)) > cos(TO_RADIANS(80)))

@@ -47,7 +47,7 @@ private:
 	static std::string GetProgramLog(const GLuint program);
 	static std::string GetShaderLog(GLuint shader);
 
-	GLint CompileShader(const std::string& source);
+	GLuint CompileShader(const std::string& source, const ShaderType shaderType);
 
 
 
