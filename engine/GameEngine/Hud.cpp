@@ -17,7 +17,7 @@ bool Hud::OnInitialize()
 
 	Material.FillType = PolygonMode::Fill;
 	Mesh.Type = BeginMode::Points;
-	Material.Build("Shaders/text");
+	Material.Build("text");
 	//Material.Blend = false;
 	Material.DepthTesting = false;
 

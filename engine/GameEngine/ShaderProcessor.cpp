@@ -9,6 +9,8 @@
 
 using namespace std;
 
+#include "Files.h"
+
 ShaderProcessor::ShaderProcessor()
 {
 }
@@ -24,6 +26,9 @@ string combine(vector<string>& lines, const string& delimiter)
 {
 
 	string result;
+
+	/// reserve an arbitrary amount of space for the string
+	result.reserve(lines.size() * 255);
 
 	for (auto& line : lines)
 	{
@@ -41,15 +46,38 @@ string ShaderProcessor::Parse(const std::string& source)
 	string line;
 	vector<string> lines;
 
-	//#include ((<[^>]+>)|("[^"]+"))
-	regex include("#include ((<[^>]+>)|(\"[^\"]+\"))");
-	smatch match;
+	string pattern = "\\s*#\\s*include\\s*[<\"]([^>^\"]+)[>\"]";
+	regex include(pattern);
+
+	smatch matches;
 
 	while (getline(stream, line))
 	{
-		if (regex_match(line, match, include))
+		if (regex_match(line, matches, include))
 		{
-			Log::Info << "Found #include:\n" << line << endl;
+			if (matches.size() < 2)
+			{
+				Log::Error << "#include directive does specify a filename\n";
+				continue;
+			}
+			else
+			{
+				string filename = matches[1];
+
+				if (!Files::Exists(filename))
+				{
+					Log::Warning << "#include references missing file \"" << filename << "\"." << endl;
+					continue;
+				}
+
+				Log::Info << "Parsing #include file " << filename << endl;
+
+				auto content = Files::Read(filename);
+
+
+				lines.push_back(Parse(content));
+			}
+		
 		}
 		else
 			lines.push_back(line);

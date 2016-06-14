@@ -43,7 +43,7 @@ void main()
 	else
 	{
 		position = World * position;
-		position.z = clamp(2 * Layer / MaxLayers - 1f, -1, +1);
+		position.z = clamp(2 * Layer / MaxLayers - 1.f, -1, +1);
 		position = Projection * position;
 		//position.z = TestFloat;
 		//position = position;

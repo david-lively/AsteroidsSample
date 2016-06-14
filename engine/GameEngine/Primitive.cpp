@@ -27,7 +27,7 @@ bool Primitive::OnInitialize()
 
 		Material.FillType = PolygonMode::Line;
 		Mesh.Type = BeginMode::Lines;
-		Material.Build("Shaders/primitive");
+		Material.Build("primitive");
 
 		GeometryProvider::Circle(vertices, indices, Vector3::Zero, 0.5f, 12);
 

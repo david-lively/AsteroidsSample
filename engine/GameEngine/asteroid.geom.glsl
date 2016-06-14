@@ -4,7 +4,6 @@ layout(triangles) in;
 layout(triangle_strip, max_vertices = 12) out;
 
 
-#include "Common.h.glsl"
 uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;

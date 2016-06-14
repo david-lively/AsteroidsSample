@@ -24,7 +24,7 @@ bool Grid::OnInitialize()
 
 	Mesh.Bounds = BoundingSphere::FromVectors(vertices);
     
-    Material.Build("Shaders/primitive");
+    Material.Build("primitive");
     
     Mesh.Material = &Material;
     Mesh.Initialize(vertices);

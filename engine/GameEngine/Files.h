@@ -26,7 +26,7 @@ public:
 	static std::string Read(const std::string& path);
 	static bool Exists(const std::string& path);
     
-    static std::string GetCurrentDirectory()
+    static std::string GetWorkingDirectory()
     {        
         char cCurrentPath[FILENAME_MAX];
         

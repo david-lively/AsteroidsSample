@@ -202,47 +202,49 @@
     <ClInclude Include="WorldEntity.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\asteroid.frag.glsl" />
-    <None Include="Shaders\asteroid.geom.glsl" />
-    <None Include="Shaders\asteroid.vert.glsl" />
-    <None Include="Shaders\demo.frag.glsl" />
-    <None Include="Shaders\demo.geom.glsl" />
-    <None Include="Shaders\demo.vert.glsl" />
-    <None Include="Shaders\draw.frag.glsl" />
-    <None Include="Shaders\draw.geom.glsl" />
-    <None Include="Shaders\draw.vert.glsl" />
-    <None Include="Shaders\edgeDetection.frag.glsl" />
-    <None Include="Shaders\edgeDetection.vert.glsl" />
-    <None Include="Shaders\lit.frag.glsl" />
-    <None Include="Shaders\lit.vert.glsl" />
-    <None Include="Shaders\matrix.frag.glsl" />
-    <None Include="Shaders\matrix.vert.glsl" />
-    <None Include="Shaders\particle.frag.glsl" />
-    <None Include="Shaders\particle.vert.glsl" />
-    <None Include="Shaders\primitive.frag.glsl" />
-    <None Include="Shaders\primitive.vert.glsl" />
-    <None Include="Shaders\ship.frag.glsl" />
-    <None Include="Shaders\ship.geom.glsl" />
-    <None Include="Shaders\ship.vert.glsl" />
-    <None Include="Shaders\simple.frag.glsl" />
-    <None Include="Shaders\simple.vert.glsl" />
-    <None Include="Shaders\simpleLight.frag.glsl" />
-    <None Include="Shaders\simpleLight.vert.glsl" />
-    <None Include="Shaders\tessellation.frag.glsl" />
-    <None Include="Shaders\tessellation.geom.glsl" />
-    <None Include="Shaders\tessellation.vert.glsl" />
-    <None Include="Shaders\text.frag.glsl" />
-    <None Include="Shaders\text.geom.glsl" />
-    <None Include="Shaders\text.vert.glsl" />
-    <None Include="Shaders\textured.frag.glsl" />
-    <None Include="Shaders\textured.vert.glsl" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="..\..\..\..\personal\cpp\Terrain\Terrain\verasansmono.png" />
     <Image Include="..\..\..\..\personal\cpp\Terrain\Terrain\verasansmono32.png" />
     <Image Include="Textures\AsteroidsTitle.png" />
     <Image Include="Textures\courier_sdf.png" />
     <Image Include="Textures\lucidagrande_sdf.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="asteroid.frag.glsl" />
+    <None Include="asteroid.geom.glsl" />
+    <None Include="asteroid.vert.glsl" />
+    <None Include="common.glsl" />
+    <None Include="demo.frag.glsl" />
+    <None Include="demo.geom.glsl" />
+    <None Include="demo.vert.glsl" />
+    <None Include="draw.frag.glsl" />
+    <None Include="draw.geom.glsl" />
+    <None Include="draw.vert.glsl" />
+    <None Include="edgeDetection.frag.glsl" />
+    <None Include="edgeDetection.vert.glsl" />
+    <None Include="lighting.glsl" />
+    <None Include="lit.frag.glsl" />
+    <None Include="lit.vert.glsl" />
+    <None Include="matrix.frag.glsl" />
+    <None Include="matrix.vert.glsl" />
+    <None Include="particle.frag.glsl" />
+    <None Include="particle.vert.glsl" />
+    <None Include="primitive.frag.glsl" />
+    <None Include="primitive.vert.glsl" />
+    <None Include="ship.frag.glsl" />
+    <None Include="ship.geom.glsl" />
+    <None Include="ship.vert.glsl" />
+    <None Include="simple.frag.glsl" />
+    <None Include="simple.vert.glsl" />
+    <None Include="simpleLight.frag.glsl" />
+    <None Include="simpleLight.vert.glsl" />
+    <None Include="tessellation.frag.glsl" />
+    <None Include="tessellation.geom.glsl" />
+    <None Include="tessellation.vert.glsl" />
+    <None Include="text.frag.glsl" />
+    <None Include="text.geom.glsl" />
+    <None Include="text.vert.glsl" />
+    <None Include="textured.frag.glsl" />
+    <None Include="textured.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

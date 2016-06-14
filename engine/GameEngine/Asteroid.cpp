@@ -34,7 +34,7 @@ bool Asteroid::OnInitialize()
 	auto& models = Game::Instance().Models;
 
 	Material.FillType = PolygonMode::Fill;
-	Material.Build("Shaders/asteroid");
+	Material.Build("asteroid");
 	Material.Blend = true;
 
 	bool exists = models.Exists(modelName);

@@ -29,7 +29,7 @@
 class AsteroidsGame : public Game
 {
 public:
-	AsteroidsGame() : ShaderFolder("Shaders/")
+	AsteroidsGame() : ShaderFolder("")
     {
 		Name = "ASTEROIDS";
     }

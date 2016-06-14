@@ -52,7 +52,7 @@ void Ship::CreateShipMesh()
 	Material.FillType = PolygonMode::Fill;
 	Mesh.Type = BeginMode::Triangles;
 
-	Material.Build("Shaders/ship");
+	Material.Build("ship");
 
 	Mesh.Initialize(vertices, indices);
 

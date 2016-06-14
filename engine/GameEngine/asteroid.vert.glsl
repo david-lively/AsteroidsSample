@@ -1,11 +1,7 @@
 #version 330 core
 
-#define PI (3.141592f)
-#define TO_RADIANS(degrees) (degrees * PI / 180.f)
+#include "common.glsl"
 
-uniform mat4 World;
-uniform mat4 View;
-uniform mat4 Projection;
 uniform float Broken;
 
 /// uniforms - same value for all vertices

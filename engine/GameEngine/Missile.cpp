@@ -28,7 +28,7 @@ bool Missile::OnInitialize()
 	Mesh.CullBackfaces = false;
 
 	
-	Material.Build("Shaders/primitive");
+	Material.Build("primitive");
 	Material.Name = "Missile.primitive";
 
 	vertices.push_back(Vector3(0, 0, 0));

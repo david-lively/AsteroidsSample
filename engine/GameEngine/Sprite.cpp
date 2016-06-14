@@ -24,7 +24,7 @@ bool Sprite::OnInitialize()
 	auto& meshes = Game::Instance().Models;
 	string meshName = "Quad";
 
-	Material.Build("Shaders/textured");
+	Material.Build("textured");
 	Material.FillType = PolygonMode::Fill;
 	Material.DepthTesting = true;
 

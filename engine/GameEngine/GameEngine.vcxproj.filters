@@ -361,110 +361,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\simple.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\simple.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\lit.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\lit.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\matrix.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\matrix.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\primitive.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\primitive.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\simpleLight.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\simpleLight.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\edgeDetection.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\edgeDetection.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\particle.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\particle.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\ship.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\ship.geom.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\ship.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\text.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\text.geom.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\text.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\asteroid.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\asteroid.geom.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\asteroid.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\tessellation.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\tessellation.geom.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\tessellation.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\demo.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\demo.geom.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\demo.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\textured.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\textured.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\draw.frag.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\draw.geom.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\draw.vert.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="Textures\AsteroidsTitle.png">
       <Filter>Textures</Filter>
     </Image>
@@ -480,5 +376,115 @@
     <Image Include="Textures\lucidagrande_sdf.jpg">
       <Filter>Textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="asteroid.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="asteroid.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="asteroid.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="common.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="demo.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="demo.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="demo.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="draw.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="draw.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="draw.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="edgeDetection.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="edgeDetection.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lighting.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lit.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lit.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="matrix.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="matrix.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="particle.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="particle.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="primitive.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="primitive.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="ship.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="ship.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="ship.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="simple.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="simple.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="simpleLight.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="simpleLight.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="tessellation.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="tessellation.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="tessellation.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="text.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="text.geom.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="text.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="textured.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="textured.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
