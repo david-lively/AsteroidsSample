@@ -17,14 +17,6 @@ in vec4 ObjectPosition;
 in vec4 WorldPosition;
 in vec4 Color;
 
-in gOutputType
-{
-	in vec4 ObjectPosition;
-	in vec4 WorldPosition;
-	in vec4 Color;
-} gOut;
-
-
 
 vec4 ProcessLights(vec3 normal)
 {

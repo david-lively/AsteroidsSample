@@ -1,14 +1,24 @@
-#version 330 core
+#version 430 core
 
 #include "common.glsl"
 #include "lighting.glsl"
 
 out vec4 fragmentColor;
 
+in gOutputType gOut;
+
 uniform float ExplosionFactor = 0;
 
-
 void main() {
+	const float wireDistance = 0.05f;
+
+	bool showWire = gOut.BaryPosition.x < wireDistance
+					|| gOut.BaryPosition.y < wireDistance
+					|| gOut.BaryPosition.z < wireDistance
+					;
+
+	if (!showWire) 
+		discard;
 
 	vec3 fragmentPosition = gOut.WorldPosition.xyz;
 

@@ -9,6 +9,8 @@ uniform mat4 View;
 uniform mat4 Projection;
 
 uniform float ForceWireframe = 0;
+uniform float GameTimeTotalSeconds = 0.f;
+
 
 
 float saturate(float val)
@@ -25,5 +27,14 @@ vec4 saturate(vec4 val)
 {
 	return vec4(saturate(val.xyz), saturate(val.w));
 }
+
+struct gOutputType
+{
+	vec4 ObjectPosition;
+	vec4 WorldPosition;
+	vec4 Color;
+	vec3 BaryPosition;
+};
+
 
 #endif

@@ -1,14 +1,9 @@
-/// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
-#version 330 core
+#version 430 core
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 12) out;
 
+#include "common.glsl"
 
-uniform mat4 World;
-uniform mat4 View;
-uniform mat4 Projection;
-
-uniform float GameTimeTotalSeconds = 0.f;
 
 uniform int NoiseArrayLength = 128;
 uniform float[128] NoiseValues;
@@ -27,12 +22,14 @@ in gl_PerVertex
 	float gl_ClipDistance[];
 } gl_in[];
 
-out gOutputType
-{
-	out vec4 ObjectPosition;
-	out vec4 WorldPosition;
-	out vec4 Color;
-} gOut;
+
+out gOutputType gOut;
+//{
+//	out vec4 ObjectPosition;
+//	out vec4 WorldPosition;
+//	out vec4 Color;
+//	out vec3 BaryPosition;
+//} gOut;
 
 void EmitTriangle(vec3 v0, vec3 v1, vec3 v2)
 {
@@ -47,6 +44,11 @@ void EmitTriangle(vec3 v0, vec3 v1, vec3 v2)
 		gOut.ObjectPosition = p;
 		gOut.WorldPosition = World * p;
 		gOut.Color = vec4(1, 0, 1, 1);
+		gOut.BaryPosition = vec3(i == 0, i == 1, i == 2);
+		//gOut.BaryPosition.rgb = vec3(1.0f);
+
+		
+		
 		EmitVertex();
 	}
 

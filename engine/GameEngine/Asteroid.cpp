@@ -51,7 +51,7 @@ bool Asteroid::OnInitialize()
 	{
 
 		GeometryProvider::Icosahedron(vertices, indices);
-		GeometryProvider::Tessellate(vertices, indices, 4);
+		GeometryProvider::Tessellate(vertices, indices, 2);
 		GeometryProvider::Spherize(vertices);
 		GeometryProvider::Noisify(vertices, 1, 0.15f);
 		GeometryProvider::FitToUnitCube(vertices);

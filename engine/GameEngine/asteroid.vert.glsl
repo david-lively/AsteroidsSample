@@ -1,11 +1,10 @@
-#version 330 core
+#version 430 core
 
 #include "common.glsl"
 
 uniform float Broken;
 
 /// uniforms - same value for all vertices
-uniform float GameTimeTotalSeconds;
 uniform float TimeScale = 1;
 
 in vec3 Position;
