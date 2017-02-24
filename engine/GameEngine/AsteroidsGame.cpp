@@ -350,7 +350,7 @@ void AsteroidsGame::CreateAsteroids(const int count, const int level)
 
 		Vector3 dir(cosf(radians), sinf(radians), 0);
 		asteroid.Transform.Reset();
-		asteroid.Transform.Push(dir * 0.005f);
+		asteroid.Transform.Push(dir * 0.01f);
 		/// and make it spin
 		asteroid.Transform.Spin(Vector3(0, 0.01f, 0.005f));
 		asteroid.Transform.Move(center);
