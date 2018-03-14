@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 
 uniform sampler2D FontTexture;
 
@@ -20,9 +20,6 @@ void main()
 
 
 	vec2 tex = gTexCoord;
-
-
-
 
 	float d = texture(FontTexture, tex).r;
 

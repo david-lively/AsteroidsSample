@@ -139,7 +139,7 @@ void Ship::OnPreUpdate(const  GameTime& time)
 
 	bool wasExploding = IsExploding;
 
-	TimeUntilCanFire = max(TimeUntilCanFire - time.ElapsedSeconds(), 0);;
+    TimeUntilCanFire = std::max(TimeUntilCanFire - time.ElapsedSeconds(), 0.f);
 
 	//if (IsExploding)
 	//	EnableInput(false);

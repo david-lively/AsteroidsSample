@@ -1,5 +1,4 @@
-#ifndef INPUTSYSTEM_H
-#define INPUTSYSTEM_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -36,14 +35,17 @@ struct KeyEvent
 class InputSystem
 {
 public:
+    InputSystem();
+    
 	static void Subscribe(int key, int modifiers, int action, KeyHandler handler);
 
 	static void Dispatch();
 
 	static InputSystem& Instance();
 private:
+    static InputSystem* m_instance;
+};
 
-#endif
 
 
 

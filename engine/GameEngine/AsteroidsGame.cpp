@@ -669,7 +669,7 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 {
 
 	auto& camera = Game::Instance().Camera();
-	auto& viewMatrix = camera.GetViewMatrix();
+	const auto& viewMatrix = camera.GetViewMatrix();
 
 	for (auto entityPtr : m_itemsToWrap)
 	{
@@ -677,7 +677,7 @@ void AsteroidsGame::DoWrapping(const GameTime& time)
 			continue;
 
 		auto& entity = *entityPtr;
-		auto& worldView = entity.Transform.GetMatrix() * viewMatrix;
+		const auto& worldView = entity.Transform.GetMatrix() * viewMatrix;
 
 		Vector3 center(0);
 		Vector3 bound(0.5f, 0, 0);

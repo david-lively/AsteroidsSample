@@ -19,23 +19,26 @@ Preprocessor::~Preprocessor()
 
 string Preprocessor::Process(const string& text)
 {
-	string result(text.length() * 2);
+    string result;
+    result.resize(text.length()* 2);
 
 	for (auto it = begin(text); it != end(text); ++it)
 	{
-		if ("#" == *it)
+		if ('#' == *it)
 		{
 
 		}
 		else
 		{
-			while ("\n" != *it)
+			while ('\n' != *it)
 			{
 
 			}
 		}
 
 	}
+    
+    throw;
 }
 
 

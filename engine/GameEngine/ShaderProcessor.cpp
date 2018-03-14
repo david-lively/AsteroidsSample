@@ -46,13 +46,22 @@ string ShaderProcessor::Parse(const std::string& source)
 	string line;
 	vector<string> lines;
 
-	string pattern = "\\s*#\\s*include\\s*[<\"]([^>^\"]+)[>\"]";
+//    string pattern = "^\\s*#\\s*include\\s+(?:<[^>]*>|\"[^\"]*\")\\s*";
+    //    string pattern = R"reg(\s*#\s*include\s*([<"])([^>"]+)([>"]))reg";
+    //    string pattern = "\\s*#\\s*include\\s*([<\"])([^>\"]+)([>\"])";
+
+//    string pattern = "^\\s*#\\s*include\\s+\\\"([^\\\"]+)\\\"";
+//    string pattern = R"(^\s*#\s*include\s+\"([^\"]+)\")";
+    string pattern = R"(^\s*#\s*include\s+\"([^\"]+)\"[\r\n]*)";
+    // [\r\n]+
+    Log::Info << "Regex: " << pattern << endl;
 	regex include(pattern);
 
 	smatch matches;
 
 	while (getline(stream, line))
 	{
+        Log::Info << "Preprocessor: line " << line << endl;
 		if (regex_match(line, matches, include))
 		{
 			if (matches.size() < 2)

@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 /// http://www.lighthouse3d.com/cg-topics/code-samples/opengl-3-3-glsl-1-5-sample/
 
 in int Character;

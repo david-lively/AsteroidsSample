@@ -32,10 +32,32 @@
 		9831A2F11C56A221005F2989 /* stb_image.c in Sources */ = {isa = PBXBuildFile; fileRef = 9831A2DD1C56A221005F2989 /* stb_image.c */; };
 		9831A2F21C56A221005F2989 /* stb_image_write.c in Sources */ = {isa = PBXBuildFile; fileRef = 9831A2DF1C56A221005F2989 /* stb_image_write.c */; };
 		9831A2F31C56A221005F2989 /* gl_core_4_3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9831A2EA1C56A221005F2989 /* gl_core_4_3.cpp */; };
+		98A62D3C20587DCA003F5AD3 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 98A62D3A20587D76003F5AD3 /* libglfw.3.3.dylib */; };
 		98BD50D11C6BAA0E004A88C1 /* Vectors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */; };
 		98BD50D21C6BAA0E004A88C1 /* Vectors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */; };
 		98BD50D51C6BAB0A004A88C1 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */; };
 		98BD50D61C6BAB0A004A88C1 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */; };
+		98D27A9520587411007C5D13 /* Explodable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27A9320587410007C5D13 /* Explodable.cpp */; };
+		98D27AC12058746C007C5D13 /* Light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27A9720587466007C5D13 /* Light.cpp */; };
+		98D27AC22058746C007C5D13 /* StateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27A9A20587467007C5D13 /* StateMachine.cpp */; };
+		98D27AC32058746C007C5D13 /* Primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AA120587468007C5D13 /* Primitive.cpp */; };
+		98D27AC42058746C007C5D13 /* Scoreboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AA220587468007C5D13 /* Scoreboard.cpp */; };
+		98D27AC52058746C007C5D13 /* Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AA420587468007C5D13 /* Identity.cpp */; };
+		98D27AC62058746C007C5D13 /* PerlinNoise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AA520587468007C5D13 /* PerlinNoise.cpp */; };
+		98D27AC72058746C007C5D13 /* GameEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AA620587469007C5D13 /* GameEnvironment.cpp */; };
+		98D27AC82058746C007C5D13 /* UniformCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AA820587469007C5D13 /* UniformCollection.cpp */; };
+		98D27AC92058746C007C5D13 /* SimplexNoise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AAC20587469007C5D13 /* SimplexNoise.cpp */; };
+		98D27ACA2058746C007C5D13 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AAD20587469007C5D13 /* Text.cpp */; };
+		98D27ACB2058746C007C5D13 /* Drawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AB12058746A007C5D13 /* Drawable.cpp */; };
+		98D27ACC2058746C007C5D13 /* ShaderProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AB42058746A007C5D13 /* ShaderProcessor.cpp */; };
+		98D27ACD2058746C007C5D13 /* Draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AB52058746A007C5D13 /* Draw.cpp */; };
+		98D27ACE2058746C007C5D13 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AB62058746B007C5D13 /* GameState.cpp */; };
+		98D27ACF2058746C007C5D13 /* Preprocessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27AB82058746B007C5D13 /* Preprocessor.cpp */; };
+		98D27AD02058746C007C5D13 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27ABA2058746B007C5D13 /* Shader.cpp */; };
+		98D27AD12058746C007C5D13 /* Hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27ABB2058746B007C5D13 /* Hud.cpp */; };
+		98D27AD22058746C007C5D13 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27ABC2058746B007C5D13 /* Sprite.cpp */; };
+		98D27AD32058746C007C5D13 /* Missile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27ABD2058746B007C5D13 /* Missile.cpp */; };
+		98D27AD42058746C007C5D13 /* InputSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D27ABF2058746C007C5D13 /* InputSystem.cpp */; };
 		98D48EEA1C624E0F00C3A36B /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D48EE81C624E0F00C3A36B /* Resource.cpp */; };
 		98D48EF01C62716800C3A36B /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98D48EEE1C62716800C3A36B /* Material.cpp */; };
 		98DEDA5E1C7F9F11005776DB /* InputHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98DEDA5C1C7F9F11005776DB /* InputHandler.cpp */; };
@@ -106,8 +128,6 @@
 		980D9BE01C7E23A400C30167 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		980D9BE11C7E23A400C30167 /* WorldEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldEntity.cpp; sourceTree = "<group>"; };
 		980D9BE21C7E23A400C30167 /* WorldEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldEntity.h; sourceTree = "<group>"; };
-		980D9BED1C7E23B100C30167 /* primitive.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = primitive.frag.glsl; sourceTree = "<group>"; };
-		980D9BEE1C7E23B100C30167 /* primitive.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = primitive.vert.glsl; sourceTree = "<group>"; };
 		980D9BEF1C7E254100C30167 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
 		980D9BF01C7E254100C30167 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ship.h; sourceTree = "<group>"; };
 		9831A2BB1C56A0A4005F2989 /* GameEngine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameEngine; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,11 +162,93 @@
 		9831A2E71C56A221005F2989 /* stbi_pvr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stbi_pvr.h; sourceTree = "<group>"; };
 		9831A2E81C56A221005F2989 /* stbi_pvr_c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stbi_pvr_c.h; sourceTree = "<group>"; };
 		9831A2EA1C56A221005F2989 /* gl_core_4_3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gl_core_4_3.cpp; sourceTree = "<group>"; };
+		9850A77A2059C4BD00E019A1 /* lit.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lit.frag.glsl; path = GameEngine/lit.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A77B2059C4BD00E019A1 /* ship.geom.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ship.geom.glsl; path = GameEngine/ship.geom.glsl; sourceTree = SOURCE_ROOT; };
+		9850A77C2059C4BD00E019A1 /* tessellation.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tessellation.frag.glsl; path = GameEngine/tessellation.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A77D2059C4BD00E019A1 /* demo.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = demo.vert.glsl; path = GameEngine/demo.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A77E2059C4BD00E019A1 /* asteroid.geom.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = asteroid.geom.glsl; path = GameEngine/asteroid.geom.glsl; sourceTree = SOURCE_ROOT; };
+		9850A77F2059C4BD00E019A1 /* Asteroids.mdj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Asteroids.mdj; path = GameEngine/Asteroids.mdj; sourceTree = SOURCE_ROOT; };
+		9850A7802059C4BD00E019A1 /* lit.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lit.vert.glsl; path = GameEngine/lit.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7812059C4BD00E019A1 /* primitive.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = primitive.frag.glsl; path = GameEngine/primitive.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7822059C4BD00E019A1 /* text.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text.vert.glsl; path = GameEngine/text.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7832059C4BD00E019A1 /* lighting.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lighting.glsl; path = GameEngine/lighting.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7842059C4BD00E019A1 /* ship.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ship.frag.glsl; path = GameEngine/ship.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7852059C4BD00E019A1 /* matrix.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = matrix.frag.glsl; path = GameEngine/matrix.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7862059C4BE00E019A1 /* tessellation.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tessellation.vert.glsl; path = GameEngine/tessellation.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7872059C4BE00E019A1 /* demo.geom.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = demo.geom.glsl; path = GameEngine/demo.geom.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7882059C4BE00E019A1 /* edgeDetection.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = edgeDetection.frag.glsl; path = GameEngine/edgeDetection.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7892059C4BE00E019A1 /* ship.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ship.vert.glsl; path = GameEngine/ship.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A78A2059C4BE00E019A1 /* textured.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = textured.frag.glsl; path = GameEngine/textured.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A78B2059C4BE00E019A1 /* primitive.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = primitive.vert.glsl; path = GameEngine/primitive.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A78C2059C4BE00E019A1 /* particle.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = particle.frag.glsl; path = GameEngine/particle.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A78D2059C4BE00E019A1 /* common.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = common.glsl; path = GameEngine/common.glsl; sourceTree = SOURCE_ROOT; };
+		9850A78E2059C4BE00E019A1 /* asteroid.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = asteroid.frag.glsl; path = GameEngine/asteroid.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A78F2059C4BE00E019A1 /* demo.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = demo.frag.glsl; path = GameEngine/demo.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7902059C4BE00E019A1 /* draw.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = draw.vert.glsl; path = GameEngine/draw.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7912059C4BE00E019A1 /* particle.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = particle.vert.glsl; path = GameEngine/particle.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7922059C4BE00E019A1 /* edgeDetection.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = edgeDetection.vert.glsl; path = GameEngine/edgeDetection.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7932059C4BE00E019A1 /* simple.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = simple.vert.glsl; path = GameEngine/simple.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7942059C4BE00E019A1 /* draw.geom.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = draw.geom.glsl; path = GameEngine/draw.geom.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7952059C4BE00E019A1 /* draw.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = draw.frag.glsl; path = GameEngine/draw.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7962059C4BE00E019A1 /* simpleLight.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = simpleLight.vert.glsl; path = GameEngine/simpleLight.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7972059C4BE00E019A1 /* text.geom.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text.geom.glsl; path = GameEngine/text.geom.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7982059C4BE00E019A1 /* asteroid.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = asteroid.vert.glsl; path = GameEngine/asteroid.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A7992059C4BE00E019A1 /* matrix.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = matrix.vert.glsl; path = GameEngine/matrix.vert.glsl; sourceTree = SOURCE_ROOT; };
+		9850A79A2059C4BE00E019A1 /* simple.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = simple.frag.glsl; path = GameEngine/simple.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A79B2059C4BE00E019A1 /* simpleLight.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = simpleLight.frag.glsl; path = GameEngine/simpleLight.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A79C2059C4BE00E019A1 /* tessellation.geom.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tessellation.geom.glsl; path = GameEngine/tessellation.geom.glsl; sourceTree = SOURCE_ROOT; };
+		9850A79D2059C4BE00E019A1 /* text.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text.frag.glsl; path = GameEngine/text.frag.glsl; sourceTree = SOURCE_ROOT; };
+		9850A79E2059CB3D00E019A1 /* textured.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = textured.vert.glsl; path = GameEngine/textured.vert.glsl; sourceTree = SOURCE_ROOT; };
 		9858A4041C91FE1A003832B8 /* Bounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bounds.h; sourceTree = "<group>"; };
+		98A62D3A20587D76003F5AD3 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../usr/local/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vectors.cpp; sourceTree = "<group>"; };
 		98BD50D01C6BAA0E004A88C1 /* Vectors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vectors.h; sourceTree = "<group>"; };
 		98BD50D31C6BAB0A004A88C1 /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		98BD50D41C6BAB0A004A88C1 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
+		98D27A9320587410007C5D13 /* Explodable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Explodable.cpp; sourceTree = "<group>"; };
+		98D27A9420587410007C5D13 /* Explodable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Explodable.h; sourceTree = "<group>"; };
+		98D27A9720587466007C5D13 /* Light.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Light.cpp; sourceTree = "<group>"; };
+		98D27A9820587467007C5D13 /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
+		98D27A9920587467007C5D13 /* ModelStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelStore.h; sourceTree = "<group>"; };
+		98D27A9A20587467007C5D13 /* StateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StateMachine.cpp; sourceTree = "<group>"; };
+		98D27A9B20587467007C5D13 /* Draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Draw.h; sourceTree = "<group>"; };
+		98D27A9C20587467007C5D13 /* InputSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputSystem.h; sourceTree = "<group>"; };
+		98D27A9D20587467007C5D13 /* GameEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEnvironment.h; sourceTree = "<group>"; };
+		98D27A9E20587467007C5D13 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		98D27A9F20587468007C5D13 /* ShaderProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProcessor.h; sourceTree = "<group>"; };
+		98D27AA020587468007C5D13 /* SimplexNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplexNoise.h; sourceTree = "<group>"; };
+		98D27AA120587468007C5D13 /* Primitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Primitive.cpp; sourceTree = "<group>"; };
+		98D27AA220587468007C5D13 /* Scoreboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scoreboard.cpp; sourceTree = "<group>"; };
+		98D27AA320587468007C5D13 /* Scoreboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scoreboard.h; sourceTree = "<group>"; };
+		98D27AA420587468007C5D13 /* Identity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Identity.cpp; sourceTree = "<group>"; };
+		98D27AA520587468007C5D13 /* PerlinNoise.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PerlinNoise.cpp; sourceTree = "<group>"; };
+		98D27AA620587469007C5D13 /* GameEnvironment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEnvironment.cpp; sourceTree = "<group>"; };
+		98D27AA720587469007C5D13 /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
+		98D27AA820587469007C5D13 /* UniformCollection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UniformCollection.cpp; sourceTree = "<group>"; };
+		98D27AA920587469007C5D13 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
+		98D27AAA20587469007C5D13 /* Light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light.h; sourceTree = "<group>"; };
+		98D27AAB20587469007C5D13 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
+		98D27AAC20587469007C5D13 /* SimplexNoise.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimplexNoise.cpp; sourceTree = "<group>"; };
+		98D27AAD20587469007C5D13 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
+		98D27AAE2058746A007C5D13 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
+		98D27AAF2058746A007C5D13 /* Missile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Missile.h; sourceTree = "<group>"; };
+		98D27AB02058746A007C5D13 /* UniformCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniformCollection.h; sourceTree = "<group>"; };
+		98D27AB12058746A007C5D13 /* Drawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawable.cpp; sourceTree = "<group>"; };
+		98D27AB22058746A007C5D13 /* Primitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitive.h; sourceTree = "<group>"; };
+		98D27AB32058746A007C5D13 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
+		98D27AB42058746A007C5D13 /* ShaderProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProcessor.cpp; sourceTree = "<group>"; };
+		98D27AB52058746A007C5D13 /* Draw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Draw.cpp; sourceTree = "<group>"; };
+		98D27AB62058746B007C5D13 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
+		98D27AB72058746B007C5D13 /* PerlinNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerlinNoise.h; sourceTree = "<group>"; };
+		98D27AB82058746B007C5D13 /* Preprocessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Preprocessor.cpp; sourceTree = "<group>"; };
+		98D27AB92058746B007C5D13 /* Preprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preprocessor.h; sourceTree = "<group>"; };
+		98D27ABA2058746B007C5D13 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
+		98D27ABB2058746B007C5D13 /* Hud.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cpp; sourceTree = "<group>"; };
+		98D27ABC2058746B007C5D13 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
+		98D27ABD2058746B007C5D13 /* Missile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Missile.cpp; sourceTree = "<group>"; };
+		98D27ABE2058746C007C5D13 /* Identity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Identity.h; sourceTree = "<group>"; };
+		98D27ABF2058746C007C5D13 /* InputSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputSystem.cpp; sourceTree = "<group>"; };
+		98D27AC02058746C007C5D13 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
 		98D48EE81C624E0F00C3A36B /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
 		98D48EE91C624E0F00C3A36B /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
 		98D48EEE1C62716800C3A36B /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
@@ -166,8 +268,6 @@
 		98F03C321C5FCC77008EEF9B /* glError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glError.h; sourceTree = "<group>"; };
 		98F03C341C5FDD5D008EEF9B /* Files.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Files.cpp; sourceTree = "<group>"; };
 		98F03C351C5FDD5D008EEF9B /* Files.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Files.h; sourceTree = "<group>"; };
-		98F03C381C5FDDB8008EEF9B /* simple.frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = simple.frag.glsl; sourceTree = "<group>"; };
-		98F03C391C5FDDB8008EEF9B /* simple.vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = simple.vert.glsl; sourceTree = "<group>"; };
 		98F03C411C5FDEBB008EEF9B /* Enums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Enums.h; sourceTree = "<group>"; };
 		98F4ADB01C60087700D98467 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		98F4ADB11C60087700D98467 /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
@@ -179,6 +279,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98A62D3C20587DCA003F5AD3 /* libglfw.3.3.dylib in Frameworks */,
 				9831A2C61C56A11A005F2989 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,6 +298,7 @@
 		9831A2B21C56A0A4005F2989 = {
 			isa = PBXGroup;
 			children = (
+				98D27A8F205872BD007C5D13 /* Frameworks */,
 				9831A2BD1C56A0A4005F2989 /* GameEngine */,
 				9831A2C51C56A11A005F2989 /* OpenGL.framework */,
 				9831A2BC1C56A0A4005F2989 /* Products */,
@@ -292,13 +394,54 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		98D27A8F205872BD007C5D13 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				98A62D3A20587D76003F5AD3 /* libglfw.3.3.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		98F03C371C5FDDB8008EEF9B /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				980D9BED1C7E23B100C30167 /* primitive.frag.glsl */,
-				980D9BEE1C7E23B100C30167 /* primitive.vert.glsl */,
-				98F03C381C5FDDB8008EEF9B /* simple.frag.glsl */,
-				98F03C391C5FDDB8008EEF9B /* simple.vert.glsl */,
+				9850A78E2059C4BE00E019A1 /* asteroid.frag.glsl */,
+				9850A77E2059C4BD00E019A1 /* asteroid.geom.glsl */,
+				9850A7982059C4BE00E019A1 /* asteroid.vert.glsl */,
+				9850A77F2059C4BD00E019A1 /* Asteroids.mdj */,
+				9850A78D2059C4BE00E019A1 /* common.glsl */,
+				9850A78F2059C4BE00E019A1 /* demo.frag.glsl */,
+				9850A7872059C4BE00E019A1 /* demo.geom.glsl */,
+				9850A77D2059C4BD00E019A1 /* demo.vert.glsl */,
+				9850A7952059C4BE00E019A1 /* draw.frag.glsl */,
+				9850A7942059C4BE00E019A1 /* draw.geom.glsl */,
+				9850A7902059C4BE00E019A1 /* draw.vert.glsl */,
+				9850A7882059C4BE00E019A1 /* edgeDetection.frag.glsl */,
+				9850A7922059C4BE00E019A1 /* edgeDetection.vert.glsl */,
+				9850A7832059C4BD00E019A1 /* lighting.glsl */,
+				9850A77A2059C4BD00E019A1 /* lit.frag.glsl */,
+				9850A7802059C4BD00E019A1 /* lit.vert.glsl */,
+				9850A7852059C4BD00E019A1 /* matrix.frag.glsl */,
+				9850A7992059C4BE00E019A1 /* matrix.vert.glsl */,
+				9850A78C2059C4BE00E019A1 /* particle.frag.glsl */,
+				9850A7912059C4BE00E019A1 /* particle.vert.glsl */,
+				9850A7812059C4BD00E019A1 /* primitive.frag.glsl */,
+				9850A78B2059C4BE00E019A1 /* primitive.vert.glsl */,
+				9850A7842059C4BD00E019A1 /* ship.frag.glsl */,
+				9850A77B2059C4BD00E019A1 /* ship.geom.glsl */,
+				9850A7892059C4BE00E019A1 /* ship.vert.glsl */,
+				9850A79A2059C4BE00E019A1 /* simple.frag.glsl */,
+				9850A7932059C4BE00E019A1 /* simple.vert.glsl */,
+				9850A79B2059C4BE00E019A1 /* simpleLight.frag.glsl */,
+				9850A7962059C4BE00E019A1 /* simpleLight.vert.glsl */,
+				9850A77C2059C4BD00E019A1 /* tessellation.frag.glsl */,
+				9850A79C2059C4BE00E019A1 /* tessellation.geom.glsl */,
+				9850A7862059C4BE00E019A1 /* tessellation.vert.glsl */,
+				9850A79D2059C4BE00E019A1 /* text.frag.glsl */,
+				9850A7972059C4BE00E019A1 /* text.geom.glsl */,
+				9850A7822059C4BD00E019A1 /* text.vert.glsl */,
+				9850A78A2059C4BE00E019A1 /* textured.frag.glsl */,
+				9850A79E2059CB3D00E019A1 /* textured.vert.glsl */,
 			);
 			name = Shaders;
 			path = GameEngine/Shaders;
@@ -311,17 +454,28 @@
 				980D9BDA1C7E23A400C30167 /* Asteroid.h */,
 				980D9BDB1C7E23A400C30167 /* AsteroidsGame.cpp */,
 				980D9BDC1C7E23A400C30167 /* AsteroidsGame.h */,
+				9858A4041C91FE1A003832B8 /* Bounds.h */,
 				980D9BDD1C7E23A400C30167 /* Camera.cpp */,
 				980D9BDE1C7E23A400C30167 /* Camera.h */,
 				98F03C301C5FCC3D008EEF9B /* Common.h */,
 				980D867A1C8487C100B2C81E /* Component.h */,
+				98D27AB52058746A007C5D13 /* Draw.cpp */,
+				98D27A9B20587467007C5D13 /* Draw.h */,
+				98D27AB12058746A007C5D13 /* Drawable.cpp */,
+				98D27AC02058746C007C5D13 /* Drawable.h */,
 				98F03C411C5FDEBB008EEF9B /* Enums.h */,
+				98D27A9320587410007C5D13 /* Explodable.cpp */,
+				98D27A9420587410007C5D13 /* Explodable.h */,
 				98F03C341C5FDD5D008EEF9B /* Files.cpp */,
 				98F03C351C5FDD5D008EEF9B /* Files.h */,
 				98F03C211C5FA3A2008EEF9B /* Game.cpp */,
 				98F03C221C5FA3A2008EEF9B /* Game.h */,
+				98D27AA620587469007C5D13 /* GameEnvironment.cpp */,
+				98D27A9D20587467007C5D13 /* GameEnvironment.h */,
 				98F03C241C5FCAF3008EEF9B /* GameObject.cpp */,
 				98F03C251C5FCAF3008EEF9B /* GameObject.h */,
+				98D27AB62058746B007C5D13 /* GameState.cpp */,
+				98D27A9E20587467007C5D13 /* GameState.h */,
 				98F03C2A1C5FCBB4008EEF9B /* GameTime.cpp */,
 				98F03C2B1C5FCBB4008EEF9B /* GameTime.h */,
 				980D86831C8F3DAD00B2C81E /* GeometryProvider.cpp */,
@@ -330,8 +484,16 @@
 				98F03C321C5FCC77008EEF9B /* glError.h */,
 				980D867F1C8F32F400B2C81E /* Grid.cpp */,
 				980D86801C8F32F400B2C81E /* Grid.h */,
+				98D27ABB2058746B007C5D13 /* Hud.cpp */,
+				98D27AAE2058746A007C5D13 /* Hud.h */,
+				98D27AA420587468007C5D13 /* Identity.cpp */,
+				98D27ABE2058746C007C5D13 /* Identity.h */,
 				98DEDA5C1C7F9F11005776DB /* InputHandler.cpp */,
 				98DEDA5D1C7F9F11005776DB /* InputHandler.h */,
+				98D27ABF2058746C007C5D13 /* InputSystem.cpp */,
+				98D27A9C20587467007C5D13 /* InputSystem.h */,
+				98D27A9720587466007C5D13 /* Light.cpp */,
+				98D27AAA20587469007C5D13 /* Light.h */,
 				98F03C2D1C5FCBF6008EEF9B /* Log.cpp */,
 				98F03C2E1C5FCBF6008EEF9B /* Log.h */,
 				9831A2BE1C56A0A4005F2989 /* main.cpp */,
@@ -341,17 +503,42 @@
 				98BD50D41C6BAB0A004A88C1 /* Matrix.h */,
 				98F4ADB01C60087700D98467 /* Mesh.cpp */,
 				98F4ADB11C60087700D98467 /* Mesh.h */,
+				98D27ABD2058746B007C5D13 /* Missile.cpp */,
+				98D27AAF2058746A007C5D13 /* Missile.h */,
+				98D27A9920587467007C5D13 /* ModelStore.h */,
+				98D27AA520587468007C5D13 /* PerlinNoise.cpp */,
+				98D27AB72058746B007C5D13 /* PerlinNoise.h */,
+				98D27AB82058746B007C5D13 /* Preprocessor.cpp */,
+				98D27AB92058746B007C5D13 /* Preprocessor.h */,
+				98D27AA120587468007C5D13 /* Primitive.cpp */,
+				98D27AB22058746A007C5D13 /* Primitive.h */,
 				98D48EE81C624E0F00C3A36B /* Resource.cpp */,
 				98D48EE91C624E0F00C3A36B /* Resource.h */,
+				98D27AA220587468007C5D13 /* Scoreboard.cpp */,
+				98D27AA320587468007C5D13 /* Scoreboard.h */,
+				98D27ABA2058746B007C5D13 /* Shader.cpp */,
+				98D27AAB20587469007C5D13 /* Shader.h */,
+				98D27AB42058746A007C5D13 /* ShaderProcessor.cpp */,
+				98D27A9F20587468007C5D13 /* ShaderProcessor.h */,
 				980D9BEF1C7E254100C30167 /* Ship.cpp */,
 				980D9BF01C7E254100C30167 /* Ship.h */,
+				98D27AAC20587469007C5D13 /* SimplexNoise.cpp */,
+				98D27AA020587468007C5D13 /* SimplexNoise.h */,
+				98D27ABC2058746B007C5D13 /* Sprite.cpp */,
+				98D27AA920587469007C5D13 /* Sprite.h */,
+				98D27A9A20587467007C5D13 /* StateMachine.cpp */,
+				98D27AA720587469007C5D13 /* StateMachine.h */,
+				98D27AAD20587469007C5D13 /* Text.cpp */,
+				98D27AB32058746A007C5D13 /* Text.h */,
 				980D9BDF1C7E23A400C30167 /* Transform.cpp */,
 				980D9BE01C7E23A400C30167 /* Transform.h */,
+				98D27AA820587469007C5D13 /* UniformCollection.cpp */,
+				98D27AB02058746A007C5D13 /* UniformCollection.h */,
 				98BD50CF1C6BAA0E004A88C1 /* Vectors.cpp */,
 				98BD50D01C6BAA0E004A88C1 /* Vectors.h */,
+				98D27A9820587467007C5D13 /* Vertex.h */,
 				980D9BE11C7E23A400C30167 /* WorldEntity.cpp */,
 				980D9BE21C7E23A400C30167 /* WorldEntity.h */,
-				9858A4041C91FE1A003832B8 /* Bounds.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -399,7 +586,7 @@
 		9831A2B31C56A0A4005F2989 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "David Lively";
 				TargetAttributes = {
 					9831A2BA1C56A0A4005F2989 = {
@@ -430,34 +617,55 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98D27AC12058746C007C5D13 /* Light.cpp in Sources */,
 				980D86851C8F3DAD00B2C81E /* GeometryProvider.cpp in Sources */,
+				98D27AD42058746C007C5D13 /* InputSystem.cpp in Sources */,
 				980D86811C8F32F400B2C81E /* Grid.cpp in Sources */,
+				98D27ACD2058746C007C5D13 /* Draw.cpp in Sources */,
+				98D27ACF2058746C007C5D13 /* Preprocessor.cpp in Sources */,
+				98D27AC62058746C007C5D13 /* PerlinNoise.cpp in Sources */,
 				98F03C231C5FA3A2008EEF9B /* Game.cpp in Sources */,
+				98D27A9520587411007C5D13 /* Explodable.cpp in Sources */,
+				98D27ACA2058746C007C5D13 /* Text.cpp in Sources */,
+				98D27ACB2058746C007C5D13 /* Drawable.cpp in Sources */,
 				98DEDA5E1C7F9F11005776DB /* InputHandler.cpp in Sources */,
+				98D27AD22058746C007C5D13 /* Sprite.cpp in Sources */,
 				98F03C331C5FCC77008EEF9B /* glError.cpp in Sources */,
 				9831A2F31C56A221005F2989 /* gl_core_4_3.cpp in Sources */,
 				98BD50D51C6BAB0A004A88C1 /* Matrix.cpp in Sources */,
+				98D27AC22058746C007C5D13 /* StateMachine.cpp in Sources */,
+				98D27AD12058746C007C5D13 /* Hud.cpp in Sources */,
+				98D27AC72058746C007C5D13 /* GameEnvironment.cpp in Sources */,
+				98D27AD32058746C007C5D13 /* Missile.cpp in Sources */,
 				98F03C361C5FDD5D008EEF9B /* Files.cpp in Sources */,
 				9831A2ED1C56A221005F2989 /* etc1_utils.c in Sources */,
 				980D9BE71C7E23A400C30167 /* Camera.cpp in Sources */,
+				98D27AD02058746C007C5D13 /* Shader.cpp in Sources */,
+				98D27AC92058746C007C5D13 /* SimplexNoise.cpp in Sources */,
 				9831A2EF1C56A221005F2989 /* image_helper.c in Sources */,
 				98F03C261C5FCAF3008EEF9B /* GameObject.cpp in Sources */,
 				98D48EF01C62716800C3A36B /* Material.cpp in Sources */,
 				9831A2BF1C56A0A4005F2989 /* main.cpp in Sources */,
 				98F03C2F1C5FCBF6008EEF9B /* Log.cpp in Sources */,
 				980D9BF11C7E254100C30167 /* Ship.cpp in Sources */,
+				98D27AC52058746C007C5D13 /* Identity.cpp in Sources */,
 				980D9BEB1C7E23A400C30167 /* WorldEntity.cpp in Sources */,
+				98D27ACC2058746C007C5D13 /* ShaderProcessor.cpp in Sources */,
 				98F4ADB21C60087700D98467 /* Mesh.cpp in Sources */,
 				98BD50D11C6BAA0E004A88C1 /* Vectors.cpp in Sources */,
 				9831A2F21C56A221005F2989 /* stb_image_write.c in Sources */,
+				98D27AC32058746C007C5D13 /* Primitive.cpp in Sources */,
 				98D48EEA1C624E0F00C3A36B /* Resource.cpp in Sources */,
 				980D9BE51C7E23A400C30167 /* AsteroidsGame.cpp in Sources */,
 				980D9BE91C7E23A400C30167 /* Transform.cpp in Sources */,
+				98D27AC82058746C007C5D13 /* UniformCollection.cpp in Sources */,
 				9831A2F01C56A221005F2989 /* SOIL2.c in Sources */,
 				98F03C2C1C5FCBB4008EEF9B /* GameTime.cpp in Sources */,
 				9831A2EE1C56A221005F2989 /* image_DXT.c in Sources */,
 				980D9BE31C7E23A400C30167 /* Asteroid.cpp in Sources */,
 				9831A2F11C56A221005F2989 /* stb_image.c in Sources */,
+				98D27AC42058746C007C5D13 /* Scoreboard.cpp in Sources */,
+				98D27ACE2058746C007C5D13 /* GameState.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,13 +715,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -550,13 +766,21 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -583,17 +807,13 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/include,
 					"$(SRCROOT)/GameEngine/ThirdParty/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/lib,
+					"/usr/local/lib/**",
 				);
-				OTHER_LDFLAGS = (
-					"-l",
-					glfw3,
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = GameEngine;
 			};
 			name = Debug;
@@ -603,17 +823,13 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/include,
 					"$(SRCROOT)/GameEngine/ThirdParty/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/lib,
+					"/usr/local/lib/**",
 				);
-				OTHER_LDFLAGS = (
-					"-l",
-					glfw3,
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = GameEngine;
 			};
 			name = Release;

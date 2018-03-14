@@ -62,7 +62,8 @@ Matrix Transform::GetMatrix()
 		break;
 	default:
 		Log::Error << "Unhandled transform sequence!" << std::endl;
-		return Matrix::Identity;
+            throw;
+//        return Matrix::Identity;
 		break;
 	}
 }

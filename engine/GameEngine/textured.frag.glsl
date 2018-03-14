@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 
 uniform sampler2D Texture0;
 uniform float TestFloat;
@@ -9,7 +9,6 @@ uniform float GameTimeTotalSeconds;
 out vec4 fragmentColor;
 
 in vec2 texCoord;
-
 
 vec2 rotZ(vec2 v, float theta)
 {

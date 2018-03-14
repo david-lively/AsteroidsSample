@@ -9,7 +9,7 @@
 
 using namespace std;
 
-InputSystem* InputSystem::m_instance = InputSystem();
+InputSystem* InputSystem::m_instance = nullptr;
 
 /*
 events[key][modifiers][action] = handler
@@ -38,7 +38,7 @@ void keyCallback(GLFWwindow* window, int key, int modifiers, int scancode, int a
 }
 
 
-InputSystem::InputSystem()
+InputSystem::InputSystem() 
 {
 	if (nullptr != m_instance)
 	{
@@ -47,11 +47,6 @@ InputSystem::InputSystem()
 
 	m_instance = this;
 	glfwSetKeyCallback(Game::Instance().Window(), keyCallback);
-}
-
-
-InputSystem::~InputSystem()
-{
 }
 
 void InputSystem::Subscribe(int key, int modifiers, int action, KeyHandler handler)

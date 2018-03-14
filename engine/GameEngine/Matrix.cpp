@@ -13,7 +13,7 @@
 
 using namespace std;
 
-const Matrix Matrix::Identity = Matrix();
+//const Matrix Matrix::Identity = Matrix();
 
 void Matrix::CreateRotationX(Matrix& m, float radians)
 {

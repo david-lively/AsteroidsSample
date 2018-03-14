@@ -12,7 +12,9 @@
 #include <cmath>
 #include <ostream>
 #include <string>
-#include <minmax.h>
+//#include <minmax.h>
+
+using namespace std;
 
 struct Vector2
 {
@@ -61,7 +63,7 @@ struct Vector3 : public Vector2
     static Vector3 Min(const Vector3& left, const Vector3& right)
     {
         return Vector3(
-                       min(left.X,right.X)
+                       std::min(left.X,right.X)
                        ,min(left.Y,right.Y)
                        ,min(left.Z,right.Z)
                        );

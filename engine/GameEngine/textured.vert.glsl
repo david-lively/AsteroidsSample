@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 
 #define PI (3.141592f)
 #define TO_RADIANS(degrees) (degrees * PI / 180.f)
@@ -50,6 +50,7 @@ void main()
 	}
 
 	vertexColor = Color;
+    texCoord = vec2(1,1);
 
     gl_Position = position;
 }

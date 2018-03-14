@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 /// Text renderer - see http://github.prideout.net/strings-inside-vertex-buffers/
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;

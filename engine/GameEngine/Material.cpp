@@ -14,7 +14,7 @@
 #include "Enums.h"
 #include "Files.h"
 #include "Game.h"
-#include "Parser.h"
+//#include "Parser.h"
 #include "Shader.h"
 
 using namespace std;

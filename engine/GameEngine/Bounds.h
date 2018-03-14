@@ -6,8 +6,7 @@
 //  Copyright © 2016 David Lively. All rights reserved.
 //
 
-#ifndef BOUNDINGBOX_H
-#define BOUNDINGBOX_H
+#pragma once
 
 #include "Vectors.h"
 #include "Common.h"
@@ -162,4 +161,4 @@ public:
 };
 
 
-#endif /* BoundingBox_h */
+

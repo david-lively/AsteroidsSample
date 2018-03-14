@@ -13,10 +13,11 @@
 
 #include <vector>
 
+
 class Matrix
 {
 public:
-	static const Matrix Identity;
+//    const Matrix Identity;
 
 
     /// X basis vector
@@ -104,7 +105,7 @@ public:
         return Multiply(*this, right);
     }
 
-	static friend Matrix operator*(const Matrix& left, const Matrix& right)
+	friend Matrix operator*(const Matrix& left, const Matrix& right)
 	{
 		return Multiply(left, right);
 	}

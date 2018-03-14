@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 
 #define PI (3.141592f)
 #define TO_RADIANS(x) (x * PI / 180)

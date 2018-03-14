@@ -1,7 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include <minmax.h>
+//#include <minmax.h>
 #include <string>
 
 

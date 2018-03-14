@@ -8,7 +8,7 @@
 #include "Common.h"
 //#include "gl_core_4_3.hpp"
 //
-//#include "Log.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -40,6 +40,6 @@ void m_check_gl_error(const char *file, int line) {
     if (shouldStop && Log::StopOnErrors)
     {
         Log::Error << "Errors were encountered - stopping\n";
-        DEBUG_BREAK;
+//        DEBUG_BREAK;
     }
 }

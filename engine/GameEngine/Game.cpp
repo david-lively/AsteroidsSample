@@ -1,4 +1,4 @@
-﻿//
+//
 //  Game.cpp
 //
 //  Created by David Lively on 2/1/16.
@@ -25,7 +25,7 @@ void framebufferSizeChanged(GLFWwindow* window, int width, int height)
 
 void errorCallback(int code, const char* message)
 {
-	Log::Error << "GLFW Error: (" << code << ") \"" << message << "\"" << endl;
+    Log::Error << "GLFW Error: (" << code << ") \"" << message << "\"" << endl;
 }
 
 
@@ -55,9 +55,18 @@ bool Game::OnInitialize()
 		return false;
 	}
 
+    
+    glfwSetErrorCallback(errorCallback);
+
+    
 	/// specify some window and OpenGL API parameters
 	/// enable multisampling on a 4x4 grid (for full-screen anti-aliasing)
-	glfwWindowHint(GLFW_SAMPLES, 4);
+//    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1); // ,GL_TRUE);
+
 
 	/* Create a windowed mode window and its OpenGL context */
 	m_window = glfwCreateWindow(1280 * 2, 720 * 2, "Asteroids", NULL, NULL);
@@ -71,25 +80,24 @@ bool Game::OnInitialize()
 	/* Make the window's context current */
 	glfwMakeContextCurrent(m_window);
 
-	if (!gl::sys::LoadFunctions())
+    glfwSetFramebufferSizeCallback(m_window, framebufferSizeChanged);
+
+    if (!gl::sys::LoadFunctions())
 	{
 		Log::Error << "Could not bind OpenGL function pointers.\n";
 		glfwTerminate();
 		return false;
 	}
 
+    const GLubyte* renderer = gl::GetString(gl::RENDERER); // get renderer string
+    const GLubyte* version = gl::GetString(gl::VERSION); // version as a string
+    
+    Log::Info << "Renderer " << renderer << endl;
+    Log::Info << "OpenGL version supported: " << version << endl;
+    
 
-	check_gl_error();
+//    check_gl_error();
 
-	const GLubyte* renderer = gl::GetString(gl::RENDERER); // get renderer string
-	const GLubyte* version = gl::GetString(gl::VERSION); // version as a string
-
-	Log::Info << "Renderer " << renderer << endl;
-	Log::Info << "OpenGL version supported: " << version << endl;
-
-
-	glfwSetFramebufferSizeCallback(m_window, framebufferSizeChanged);
-	glfwSetErrorCallback(errorCallback);
 
 	int w, h;
 
